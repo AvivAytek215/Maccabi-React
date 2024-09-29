@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './component/Login-Page';
 import SignUp from './component/SignUp';;
 
 const App = () => {
-  const [currentPage, setCurrentPage] = useState('home');
+  return(
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} /> 
+        <Route path="/signup" element={<SignUp />} /> 
+      </Routes>
+    </BrowserRouter>
+  );
+}; 
 
-    if (currentPage === '') {
-      return <LoginPage />;
-    } else if (currentPage === 'signup') {
-      return <SignUp />;
-    }
-  }; 
 
 export default App;
 

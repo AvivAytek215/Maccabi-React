@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SignUp.css';
+
 const SignUp = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState(''); // State for phone
   const [email, setEmail] = useState(''); // State for email
   const [id, setId] = useState(''); // State for ID
-  // const [credit, setCredit] = useState(''); // State for credit
   const [message, setMessage] = useState('');
-  const [currentPage, setCurrentPage] = useState('signup');
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-//   const navigate = useNavigate(); // Get the navigate function
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -43,7 +39,7 @@ const SignUp = () => {
     
     try {
       const response = await fetch('http://localhost:5000/signup', {
-        method: 'POST', // Changed method to POST
+        method: 'POST', 
         headers: {
           'Content-Type': 'application/json',
         },
@@ -55,6 +51,7 @@ const SignUp = () => {
 
       if (response.ok) {
         setMessage('Signup successful!');
+        navigate('/'); 
       } else {
         setMessage(data.message || 'Signup failed!'); // Show error message from server
       }
@@ -63,10 +60,11 @@ const SignUp = () => {
       setMessage('Error connecting to the server');
     }
   };
+
   return (
     <div className="SignUp">
-      <h2>SignUp</h2>
-      <form onSubmit={handleSubmit}>
+      <h2>Sign Up</h2>
+      <form className="signup-form" onSubmit={handleSubmit}>
         <div className="input-group">
           <label htmlFor="username">Username:</label>
           <input
@@ -122,18 +120,10 @@ const SignUp = () => {
             required
           />
         </div>
-        <button type="submit" onClick={() => handlePageChange('/')}>Sign Up</button>
-        <div className="client-message">
-          <label htmlFor="message">ID:</label>
-          <input
-            type="text"
-            id="message"
-            value={message}
-          />
-        </div>
+        <button id="submitSignUp" type="submit">Sign Up</button>
+        <button id="goBackToLogin" onClick={() => navigate('/')}>Back to Login</button>
       </form>
       <p className={message === 'Signup successful!' ? 'success-message' : 'error-message'}>{message}</p>
-      <button onClick={() => handlePageChange('/')}>Go to Login</button>
     </div>
   );
 };

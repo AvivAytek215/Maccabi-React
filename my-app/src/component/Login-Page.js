@@ -1,15 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Login-Page.css';
-const LoginPage = () => {
-  const [username, setUsername] = useState(' ');
-  const [password, setPassword] = useState(' ');
-  const [message, setMessage] = useState(' ');
-  const [currentPage, setCurrentPage] = useState('home');
+import { Link } from 'react-router-dom';
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
- // Get the navigate function
+const LoginPage = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -23,10 +19,11 @@ const LoginPage = () => {
     console.log('Logging in with:', { username, password });
     setMessage('Login successful!'); // Replace with actual logic
   };
+
   return (
     <div className="login-page">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form className="login-form" onSubmit={handleSubmit}>
         <div className="input-group">
           <label htmlFor="username">Username:</label>
           <input
@@ -49,23 +46,14 @@ const LoginPage = () => {
             required
           />
         </div>
-        <div className='button-group'>
-        <button type="submit">Login</button>
-        <button  onClick={() => handlePageChange('signup')}>Sign-Up</button>
-        </div>
+        <button id='buttonLogin' type="submit">Login</button>
+        <Link to='/signup'>
+          <button id='buttonSignUp' type="button">Sign Up</button>
+        </Link>
       </form>
       {message && <p>{message}</p>}
-      <div className="client-message">
-          <label htmlFor="message">ID:</label>
-          <input
-            type="text"
-            id="message"
-            value={message}
-          />
-        </div>
     </div>
   );
 };
 
 export default LoginPage;
-
