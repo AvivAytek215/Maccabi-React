@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const gameSchema = new mongoose.Schema({
-    homeTeam: { type: string, required: true},
-    awayTeam: { type: string, required: true},
-    stadium: { type: string, required: true},
-    Date: { type: Date, required: true},
-    hour: { type: string, required: true},
-    gameId: { type: string, required: true,unique:true},
-})
-const game = mongoose.model('game', gameSchema);
+    homeTeam: { type: String, required: true},
+    awayTeam: { type: String, required: true},
+    stadium: { type: String, required: true},
+    date: { type: Date, required: true},
+    hour: { type: String, required: true},
+    gameId: { type: String, required: true,unique:true},   
+},{ collection: 'Game' })
+const game = mongoose.model('Game', gameSchema);
 module.exports = game;

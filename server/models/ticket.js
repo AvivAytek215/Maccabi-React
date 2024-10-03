@@ -7,7 +7,7 @@ const ticketSchema = new mongoose.Schema({
     seatrow:{type:Number,required:true},
     section:{type:Number,required:true},
     price:{type:Number,required:true,default:0}
-});
+},{ collection: 'Ticket' });
 
 const ticket = mongoose.model('ticket', ticketSchema);
 module.exports = ticket;

@@ -10,7 +10,7 @@ const itemSchema = new mongoose.Schema({
     price:{type:Number,required:true,default:0},
     size:{type:String,enum:['S','M','L','XL'],required:true,default:'S'},
     quantity:{type:Number,required:true,default:0}
-});
+},{collection:"Item"});
 
 const item = mongoose.model('item', itemSchema);
 module.exports = item;

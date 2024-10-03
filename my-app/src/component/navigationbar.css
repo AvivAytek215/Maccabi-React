@@ -1,0 +1,96 @@
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Navigation Bar styles */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space between logo and hamburger */
+  padding: 10px 20px; /* Adjust padding as needed */
+  background-color: #fff; /* Background color for header */
+  position: relative; /* To position the menu */
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.logo-container img {
+  height: 40px; /* Adjust logo size */
+}
+
+/* Hamburger Menu styles */
+.hamburger {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+}
+
+.bar1, .bar2, .bar3 {
+  height: 3px;
+  width: 100%;
+  background-color: #333; /* Color for the bars */
+  transition: all 0.3s ease;
+}
+
+/* Change styles for animation */
+.change {
+  transform: rotate(45deg);
+}
+
+.change.bar1 {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.change.bar2 {
+  opacity: 0; /* Hide the middle bar */
+}
+
+.change.bar3 {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Navigation links styles */
+.nav-links {
+  top: 0; /* Align to the top of the page */
+  left: -100%; /* Start hidden off-screen to the left */
+  width: 200px; /* Width of the navigation */
+  height: 100%; /* Full height */
+  background-color: #f7f7f7; /* Background color for dropdown */
+  display: flex; /* Use flexbox for vertical alignment */
+  flex-direction: column; /* Stack links vertically */
+  justify-content: start; /* Align items from the top */
+  align-items: flex-start; /* Align links to the left */
+  transition: left 0.3s ease; /* Smooth transition for sliding */
+  padding: 20px; /* Padding for the menu */
+}
+
+.nav-links.open {
+  left: 0; /* Slide in when open */
+}
+
+/* Style for links */
+.nav-links ul {
+  list-style: none; /* Remove bullet points */
+  padding: 0;
+}
+
+.nav-links li {
+  margin: 15px 0; /* Space between links */
+  font-size: 1.5rem; /* Font size for links */
+}
+
+/* Optional: Hover effect for links */
+.nav-links a {
+  text-decoration: none; /* Remove underline */
+  color: #0a1d54; /* Link color */
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #007BFF; /* Change color on hover */
+}

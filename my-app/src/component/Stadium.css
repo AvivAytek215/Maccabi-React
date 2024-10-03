@@ -1,0 +1,38 @@
+.stadium-container {
+    position: relative;
+    width: 100%; /* Set to desired width */
+    max-width: 800px; /* Set to desired maximum width */
+    margin: auto; /* Center the container */
+  }
+  
+  .stadium-image {
+    width: 100%; /* Make the image responsive */
+    height: auto; /* Keep the aspect ratio */
+  }
+  
+  .sections {
+    position: absolute; /* Position the sections on top of the image */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    width: 100%; /* Match the image width */
+    height: 100%; /* Match the image height */
+    pointer-events: none; /* Prevent events on this div to allow clicks through */
+  }
+  
+  .section {
+    position: absolute; /* Position sections absolutely based on their coordinates */
+    border: 1px solid rgba(255, 255, 255, 0.6); /* Optional: Add border for visibility */
+    display: flex;
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    background-color: rgba(255, 255, 255, 0.3); /* Optional: Background color */
+    transition: background-color 0.3s; /* Smooth transition */
+    pointer-events: auto; /* Enable events for sections */
+  }
+  
+  .section:hover {
+    background-color: rgba(255, 255, 255, 0.6); /* Change background color on hover */
+  }
+  
+  

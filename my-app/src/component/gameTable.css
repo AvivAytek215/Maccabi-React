@@ -1,0 +1,139 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Game Schedule Specific Styles */
+.game-schedule {
+  padding: 40px 20px;
+  background-color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+}
+
+.game-schedule h2 {
+  color: #0a1d54;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.game-tables-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 30px;
+  padding: 20px 0;
+  scrollbar-width: thin;
+  scrollbar-color: #007BFF #f1f1f1;
+}
+
+.game-table {
+  min-width: 500px;
+  background-color: #f7f7f7;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column; /* Make sure that elements inside are vertically aligned */
+  justify-content: space-between; /* Ensures the button stays at the bottom */
+  height: 100%; /* Stretch all tables to the same height */
+}
+
+.game-table table {
+  width: 200%;
+  border-collapse: collapse;
+}
+
+.game-table th {
+  background-color: #0a1d54;
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.game-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.1rem;
+}
+
+.game-table tr:last-child td {
+  border-bottom: none;
+}
+
+.teams-header-horizontal {
+  display: flex;
+  align-items: center; /* Vertically align team logos and names */
+  justify-content: space-between; /* Spread teams horizontally */
+}
+
+.team-info-horizontal {
+  display: flex;
+  flex-direction: column; /* Stack name and logo vertically */
+  align-items: center; /* Center the name and logo */
+}
+
+.team-logo-horizontal {
+  max-width: 100px;  /* Size the logo */
+  max-height: 100px;
+  margin-top: 5px; /* Add spacing between the name and logo */
+  width: auto;
+  height: auto;
+}
+
+.ticket-button {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  border-radius: 4px;
+}
+
+.ticket-button:hover {
+  background-color: #0056b3;
+}
+
+/* Scrollbar Styles */
+.game-tables-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.game-tables-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.game-tables-container::-webkit-scrollbar-thumb {
+  background: #007BFF;
+  border-radius: 4px;
+}
+
+.game-tables-container::-webkit-scrollbar-thumb:hover {
+  background: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .game-table {
+      min-width: 200px;
+  }
+
+  .game-table th,
+  .game-table td {
+      font-size: 0.9rem;
+      padding: 8px;
+  }
+
+  .ticket-button {
+      font-size: 0.9rem;
+      padding: 8px 16px;
+  }
+}
+
+
+  

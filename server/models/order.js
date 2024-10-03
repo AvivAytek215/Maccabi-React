@@ -6,6 +6,6 @@ const orderSchema = new mongoose.Schema({
     numOfItems: { type: Number},
     totalPrice: { type: Number, required: true},
 
-})
+},{collection:"Order"})
 const order = mongoose.model('order', orderSchema);
 module.exports = order;

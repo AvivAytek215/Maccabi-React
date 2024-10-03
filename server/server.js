@@ -4,13 +4,15 @@ const connectDB = require('./config/db'); // Your database connection configurat
 const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/Login');
+const GetGame=require('./routes/UpcomingGames');
+const GenerateSeats=require('./config/GenerateSeats');
 
 // Load environment variables
 dotenv.config();
 
 // Connect to MongoDB
 connectDB();
-
+GenerateSeats();
 const app = express();
 
 // Middleware
@@ -18,17 +20,15 @@ app.use(express.json());
 
 // Use CORS
 app.use(cors({
-  origin: 'http://localhost:3000', // React app's origin
-  methods: ['GET', 'POST'],        // Allowed methods
-  allowedHeaders: ['Content-Type'], // Allowed headers
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
 }));
-// Sample route
-app.get('/', (req, res) => {
-  res.send('API running');
-});
-
 // Login route
-app.use('/api', authRoutes);
+app.use('/api/auth',authRoutes);
+//GameTable route
+app.use('/api/Games',GetGame);
+app.use('/Photos', express.static('Photos'));
 
 
 const PORT = 5000;

@@ -7,7 +7,7 @@ const subscriptionSchema = new mongoose.Schema({
     seatrow:{type:Number,required:true,ref:'seat'},
     section:{type:Number,required:true,ref:'seat'},
     price:{type:Number,required:true,default:0}
-});
+},{collection:"Subscription"});
 
 const subscription = mongoose.model('subscription', subscriptionSchema);
 module.exports = subscription;

@@ -6,7 +6,6 @@
     align-items: center;
     justify-content: center;
     height: 100vh; /* Full height of the viewport */
-    background-image: url('footballFieldBackground.jpg');
     font-family: Arial, sans-serif; /* Font family */
   }
 

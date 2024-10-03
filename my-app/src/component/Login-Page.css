@@ -1,81 +1,68 @@
-/* LoginPage.css */
-
+/* Ensure full-width and no padding/margins on header and footer */
+header, footer {
+  width: 100vw;
+  background-color: #0a1d54;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box; /* Ensures no overflow */
+}
 .login-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh; /* Full height of the viewport */
-  background-image: url('footballFieldBackground.jpg');
-  font-family: Arial, sans-serif; /* Font family */
-}
-
-h2 {
-  margin-bottom: 20px;
-  color: #333; /* Dark color for the header */
-}
-
-.login-form {
-  background-color: white; /* White background for the form */
+  max-width: 500px;
+  margin: auto;
   padding: 20px;
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  width: 300px; /* Set a width for the form */
-  height: 270px;
+  background-color: #f7f7f7;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  text-align: center;
 }
 
-.input-group {
-  margin-bottom: 15px; /* Space between input groups */
-  padding: 5px;
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
 }
 
-label {
-  display: block; /* Make labels block elements */
-  margin-bottom: 5px; /* Space below labels */
-  font-weight: bold; /* Bold labels */
+nav {
+  display: flex;
+  justify-content: center;
+  background-color: #0a1d54;
+  padding: 10px 0;
 }
 
-input {
-  width: 100%; /* Full width */
-  padding: 10px; /* Padding inside inputs */
-  border: 1px solid #ccc; /* Border */
-  border-radius: 4px; /* Rounded corners for inputs */
-  box-sizing: border-box; /* Include padding in width */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
 }
 
-input:focus {
-  border-color: #007bff; /* Highlight border on focus */
-  outline: none; /* Remove outline */
+nav ul li a {
+  color: white;
+  text-transform: uppercase;
+  text-decoration: none;
 }
 
-#buttonSignUp , #buttonLogin{
-  background-color: #007bff; /* Button color */
-  color: white; /* Text color */
-  margin-top: 7px;
-  padding: 15px; /* Padding */
-  border: none; /* No border */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Pointer on hover */
-  width: 100%; /* Full width */
-  font-weight: bold; /* Bold text */
-  transition: background-color 0.3s ease-in-out;
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  color: white;
+  position: fixed;
+  bottom: 0;
 }
 
-#buttonLogin:hover, #buttonSignUp:hover {
-  background-color: #00cc5c; /* Glowing color */
+/* Reset margins and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-button:hover {
-  background-color: #0056b3; /* Darker shade on hover */
+html, body {
+  min-height: 100vh;
+    width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
-.message {
-  margin-top: 10px; /* Space above message */
-  color: red; /* Error message color */
-}
-
-.buttonframe{
-    display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    gap: 10px; /* Space between buttons */
-}
