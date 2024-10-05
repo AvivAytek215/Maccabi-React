@@ -3,10 +3,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 
 /* Navigation Bar styles */
 header {
+  max-width: 400px;
   display: flex;
   align-items: center;
   justify-content: space-between; /* Space between logo and hamburger */

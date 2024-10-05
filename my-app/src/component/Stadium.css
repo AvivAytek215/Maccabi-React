@@ -1,38 +1,142 @@
-.stadium-container {
-    position: relative;
-    width: 100%; /* Set to desired width */
-    max-width: 800px; /* Set to desired maximum width */
-    margin: auto; /* Center the container */
+/* Stadium Layout Container */
+.stadium-layout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Stadium Title */
+.stadium-title {
+  text-align: center;
+  color: #333;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* SVG Container */
+.stadium-svg-container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.stadium-svg {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+}
+
+/* Football Field */
+.football-field {
+  transition: fill 0.3s ease;
+}
+
+.football-field:hover {
+  fill: #7CFC00;
+}
+
+/* Center Circle */
+.center-circle {
+  transition: stroke 0.3s ease, stroke-width 0.3s ease;
+}
+
+.center-circle:hover {
+  stroke: #FFD700;
+  stroke-width: 3;
+}
+
+/* Legend Container */
+.legend-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Legend Section */
+.legend-section {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.legend-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Legend Title */
+.legend-title {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+}
+
+/* Legend Item */
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+/* Legend Color Box */
+.legend-color-box {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+/* Stadium Section */
+.stadium-section {
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.stadium-section:hover {
+  opacity: 0.8;
+}
+
+.stadium-section:active {
+  opacity: 0.7;
+}
+
+/* Ensure sections don't move or scale */
+.stadium-section,
+.stadium-section:hover,
+.stadium-section:active {
+  transform: none;
+  stroke-width: 1;
+}
+
+/* Section Label */
+.section-label {
+  font-weight: bold;
+  pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stadium-title {
+    font-size: 2rem;
   }
-  
-  .stadium-image {
-    width: 100%; /* Make the image responsive */
-    height: auto; /* Keep the aspect ratio */
+
+  .legend-container {
+    grid-template-columns: 1fr;
   }
-  
-  .sections {
-    position: absolute; /* Position the sections on top of the image */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    width: 100%; /* Match the image width */
-    height: 100%; /* Match the image height */
-    pointer-events: none; /* Prevent events on this div to allow clicks through */
-  }
-  
-  .section {
-    position: absolute; /* Position sections absolutely based on their coordinates */
-    border: 1px solid rgba(255, 255, 255, 0.6); /* Optional: Add border for visibility */
-    display: flex;
-    align-items: center; /* Center text vertically */
-    justify-content: center; /* Center text horizontally */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    background-color: rgba(255, 255, 255, 0.3); /* Optional: Background color */
-    transition: background-color 0.3s; /* Smooth transition */
-    pointer-events: auto; /* Enable events for sections */
-  }
-  
-  .section:hover {
-    background-color: rgba(255, 255, 255, 0.6); /* Change background color on hover */
-  }
-  
-  
+}

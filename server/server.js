@@ -5,14 +5,13 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/Login');
 const GetGame=require('./routes/UpcomingGames');
-const GenerateSeats=require('./config/GenerateSeats');
+const Sections=require('./routes/Sections');
 
 // Load environment variables
 dotenv.config();
 
 // Connect to MongoDB
 connectDB();
-GenerateSeats();
 const app = express();
 
 // Middleware
@@ -28,6 +27,7 @@ app.use(cors({
 app.use('/api/auth',authRoutes);
 //GameTable route
 app.use('/api/Games',GetGame);
+app.use('/api/sections/',Sections);
 app.use('/Photos', express.static('Photos'));
 
 

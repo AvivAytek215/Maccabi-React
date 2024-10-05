@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import './Login-Page.css';
-import NavigationBar from './navigationbar';
-
 const LoginPage = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -46,9 +44,6 @@ const LoginPage = () => {
       <header>
         <img src="https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg" alt="Real Madrid Logo" />
       </header>
-
-      <NavigationBar />
-
       <section className="hero">
         <h2>Login</h2>
         <form className="login-form" onSubmit={handleSubmit}>

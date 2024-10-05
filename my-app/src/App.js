@@ -5,7 +5,7 @@ import SignUp from './component/SignUp';
 import Tickets from './component/tickets';
 import NavigationBar from './component/navigationbar';
 import Stadium from './component/Stadium';
-
+import Section from './component/section';
 const App = () => {
   return(
     <BrowserRouter>
@@ -14,7 +14,8 @@ const App = () => {
         <Route path="/home" element={<LoginPage />} /> 
         <Route path="/signup" element={<SignUp />} /> 
         <Route path="/tickets" element={<Tickets />} /> 
-        <Route path="/" element={<Stadium />} /> 
+        <Route path="/Stadium/:gameId" element={<Stadium />} /> 
+        <Route path="/section/:sectionId" element={<Section />} /> 
         </Routes>
     </BrowserRouter>
   );

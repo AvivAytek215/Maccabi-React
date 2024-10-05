@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './gameTable.css';
 
 const GameTable = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
+  const navigate=useNavigate();
+ const handleTicketClick=(game)=>{
+  const gameId=game.gameId;
+   return ()=> navigate(`/Stadium/${gameId}`);
+  };
   useEffect(() => {
     const fetchGames = async () => {
       try {
@@ -81,7 +86,7 @@ const GameTable = () => {
               <strong>Location:</strong> {game.stadium}
             </p>
           </div>
-          <button className="ticket-button">Get Tickets</button>
+          <button onClick={handleTicketClick(game)} className="ticket-button">Get Tickets</button>
         </div>
       ))}
     </div>

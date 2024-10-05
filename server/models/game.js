@@ -6,7 +6,7 @@ const gameSchema = new mongoose.Schema({
     stadium: { type: String, required: true},
     date: { type: Date, required: true},
     hour: { type: String, required: true},
-    gameId: { type: String, required: true,unique:true},   
+    gameId: { type: Number, required: true,unique:true}   
 },{ collection: 'Game' })
 const game = mongoose.model('Game', gameSchema);
 module.exports = game;

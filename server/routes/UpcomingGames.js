@@ -17,8 +17,6 @@ router.get('/upcoming', async (req, res) => {
         }
       ]
     });
-
-    console.log('Upcoming Games:', upcomingGames); // Log the upcoming games
     res.status(200).json(upcomingGames);
   } catch (error) {
     console.error('Error fetching upcoming games:', error);
