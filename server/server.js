@@ -4,9 +4,10 @@ const connectDB = require('./config/db'); // Your database connection configurat
 const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/Login');
-const GetGame=require('./routes/UpcomingGames');
+const GetUpcomingGames=require('./routes/UpcomingGames');
 const Sections=require('./routes/Sections');
-
+const Seats=require('./routes/seats');
+const GetGameById=require('./routes/GameById');
 // Load environment variables
 dotenv.config();
 
@@ -26,8 +27,13 @@ app.use(cors({
 // Login route
 app.use('/api/auth',authRoutes);
 //GameTable route
-app.use('/api/Games',GetGame);
-app.use('/api/sections/',Sections);
+app.use('/api/Games',GetUpcomingGames);
+//fetching game by id
+app.use('/api/GameById',GetGameById);
+//stadium route
+app.use('/api/sections',Sections);
+//section route
+app.use('/api/seats',Seats);
 app.use('/Photos', express.static('Photos'));
 
 

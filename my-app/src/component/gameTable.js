@@ -15,7 +15,7 @@ const GameTable = () => {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/Games/upcoming');        
+        const response = await axios.get('http://localhost:5000/api/Games/upcominggames');        
         if (response.data.message === "No games found") {
           setGames([]);
         } else {

@@ -3,7 +3,6 @@ const Section = require('../models/section'); // Adjust the path based on your p
 const router = express.Router();
 router.get('/:gameId',async (req, res) => {
   try {
-    console.log(req.params);
     const { gameId } = req.params;
     
     // Assuming you have a 'gameId' field in your Section model

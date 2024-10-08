@@ -54,7 +54,7 @@ const StadiumLayout = () => {
   if (error) return <div>Error: {error}</div>;
   if (sections.length === 0) return <div>No sections available for this game.</div>;
   const handleSectionClick = (section) => {
-    navigate(`/section/${section.id}`);
+    navigate(`/section/${gameId}/${section.id}`);
   };
 
   

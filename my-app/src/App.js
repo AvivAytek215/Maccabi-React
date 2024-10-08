@@ -3,19 +3,21 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './component/Login-Page';
 import SignUp from './component/SignUp';
 import Tickets from './component/tickets';
-import NavigationBar from './component/navigationbar';
 import Stadium from './component/Stadium';
 import Section from './component/section';
+import Paying from './component/PaymentPage';
+import Homepage from './component/HomePage';
 const App = () => {
   return(
     <BrowserRouter>
-     <NavigationBar/>
        <Routes>
-        <Route path="/home" element={<LoginPage />} /> 
+        <Route path="/" element={<Homepage/>}/>
+        <Route path="/Login" element={<LoginPage />} /> 
         <Route path="/signup" element={<SignUp />} /> 
         <Route path="/tickets" element={<Tickets />} /> 
         <Route path="/Stadium/:gameId" element={<Stadium />} /> 
-        <Route path="/section/:sectionId" element={<Section />} /> 
+        <Route path="/section/:gameId/:sectionId" element={<Section />} /> 
+        <Route path="/payment" element={<Paying/>}/>
         </Routes>
     </BrowserRouter>
   );
