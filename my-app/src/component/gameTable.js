@@ -2,16 +2,20 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './gameTable.css';
-
+import LoadingSpinner from './Loading';
+import CustomAlert from './CustomAlert';
+//component to arrange each game table in tickets page
 const GameTable = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [alertVisible, setAlertVisible] = useState(false);
   const navigate=useNavigate();
  const handleTicketClick=(game)=>{
   const gameId=game.gameId;
    return ()=> navigate(`/Stadium/${gameId}`);
   };
+  //fetching the game info thru gameId from the server
   useEffect(() => {
     const fetchGames = async () => {
       try {
@@ -24,10 +28,8 @@ const GameTable = () => {
       } catch (err) {
         if (err.response) {
           // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
           console.error('Error data:', err.response.data);
           console.error('Error status:', err.response.status);
-          console.error('Error headers:', err.response.headers);
         } else if (err.request) {
           // The request was made but no response was received
           console.error('No response received:', err.request);
@@ -43,9 +45,16 @@ const GameTable = () => {
 
     fetchGames();
   }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const handleAlertClose = () => {
+    setAlertVisible(false);
+  };
+  //checking if the server responsed yet or if got an error
+  if (loading) return <div><LoadingSpinner/></div>;
+  if (error) return <div><CustomAlert 
+  message={error}
+  isVisible={alertVisible}
+  onClose={handleAlertClose}
+/></div>;
   return (
 <div className="game-schedule">
   {games.length === 0 ? (

@@ -7,13 +7,13 @@ const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-
+//function for recieving the data from the user
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     if (id === 'username') setUsername(value.trim());
     else if (id === 'password') setPassword(value);
   };
-
+//send the data to the server and check if there is an user and paswword correct
   const handleSubmit = async (e) => {
     e.preventDefault();
   

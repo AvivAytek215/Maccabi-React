@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignUp.css';
-
+//component for signup form
 const SignUp = () => {
+  //all the neccesery fields
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState(''); // State for phone
@@ -10,7 +11,7 @@ const SignUp = () => {
   const [id, setId] = useState(''); // State for ID
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
-
+  //handles the input change by the user
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     switch (id) {
@@ -33,7 +34,7 @@ const SignUp = () => {
         break;
     }
   };
-
+  //sending the form and add the user to the db
   const handleSubmit = async (e) => {
     e.preventDefault();
     

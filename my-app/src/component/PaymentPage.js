@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
-import './PaymentPage.css'; // You'll need to create this CSS file
+import {useLocation } from 'react-router-dom';
+import './PaymentPage.css';
+import LoadingSpinner from './Loading';
+import CustomAlert from './CustomAlert';
 
-const PaymentPage = ({ total, onPaymentComplete }) => {
+const PaymentPage = () => {
+  const location = useLocation();
+  const { totalPrice, selectedSeats, gameDetails } = location.state || {};
+    //creating a form for paying this is all the input data
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
@@ -9,13 +15,30 @@ const PaymentPage = ({ total, onPaymentComplete }) => {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [zipCode, setZipCode] = useState('');
+  const [id,setId]=useState('');
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState('DisApproved');
+  console.log(JSON.stringify(totalPrice, null, 2));
+  if (!totalPrice || !selectedSeats || !gameDetails) {
+    return <div>Error: Missing payment information. Please go back and try again.</div>;
+  }
 
+//function to handle ths submit of the form
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically send the payment information to your payment processor
-    console.log('Payment submitted');
-    // After successful payment processing:
-    onPaymentComplete();
+    setIsLoading(true);
+    setPaymentStatus('Approved');
+
+    // Simulate payment processing
+    setTimeout(() => {
+      setIsLoading(false);
+      setPaymentStatus('Payment Approved');
+    }, 3000);
+  };
+  //function for the close of the alert
+  const handleAlertClose = () => {
+    setAlertVisible(false);
   };
 
   return (
@@ -103,12 +126,30 @@ const PaymentPage = ({ total, onPaymentComplete }) => {
             />
           </div>
         </div>
+        <div>        
+            <div className="form-group">
+            <label htmlFor="Id">Id</label>
+            <input
+              type="text"
+              id="zipCode"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              placeholder="123456789"
+              required
+            />
+          </div></div>
         <div className="order-summary">
           <h3>Order Summary</h3>
-          <p>Total: ${total.toFixed(2)}</p>
+          <p>Total: {totalPrice}₪</p>
         </div>
         <button type="submit" className="pay-button">Pay Now</button>
       </form>
+      {isLoading && <LoadingSpinner />}
+      {paymentStatus && <div><CustomAlert 
+       message={"Your Payment is"+{paymentStatus}}
+      isVisible={alertVisible}
+      onClose={handleAlertClose}
+/></div>}
     </div>
   );
 };

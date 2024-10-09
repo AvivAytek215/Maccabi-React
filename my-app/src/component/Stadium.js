@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Stadium.css';
+import LoadingSpinner from './Loading';
+import CustomAlert from './CustomAlert';
+//set the colors to the section by their names
 const getSectionColor = (name) => {
   switch (name) {
     case 'Bottom West': return '#98FB98';
@@ -22,11 +25,14 @@ const StadiumLayout = () => {
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [alertVisible, setAlertVisible] = useState(false);
   const navigate = useNavigate();
   const { gameId } = useParams();
 
-
-  
+  const handleAlertClose = () => {
+    setAlertVisible(false);
+  };
+  //fetching the section with the given gameid
   useEffect(() => {
     const fetchSections = async () => {
       if (!gameId) {
@@ -50,14 +56,23 @@ const StadiumLayout = () => {
     fetchSections();
   }, [gameId]);
 
-  if (loading) return <div>Loading sections...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (sections.length === 0) return <div>No sections available for this game.</div>;
+  if (loading) return <div><LoadingSpinner/></div>;
+  if (error) return <div><CustomAlert 
+  message={error}
+  isVisible={alertVisible}
+  onClose={handleAlertClose}
+/></div>;
+  if (sections.length === 0) return<div><CustomAlert 
+  message={"No sections available for this game."}
+  isVisible={alertVisible}
+  onClose={handleAlertClose}
+/></div>;
+//navigate to the section page
   const handleSectionClick = (section) => {
     navigate(`/section/${gameId}/${section.id}`);
   };
 
-  
+  //set the section location bay name and coordinates
   const renderSection = (section) => {
     let x, y, width, height;
     
@@ -122,7 +137,7 @@ const StadiumLayout = () => {
       </g>
     );
   };
-  
+  //component to render only the cornors that added to the stadium
   const renderCorner = (section) => {
     let cx, cy, startAngle, endAngle, radius;
     switch (section.id) {
@@ -161,7 +176,6 @@ const StadiumLayout = () => {
           fill={getSectionColor('Corner')}
           stroke="white"
           strokeWidth="1"
-          onClick={() => handleSectionClick(section)}
           className="stadium-section cursor-pointer"
         />
         <text
@@ -178,7 +192,7 @@ const StadiumLayout = () => {
       </g>
     );
   };
-  
+  //render the field in the middle
   const renderField = () => (
     <g className="football-field">
       <rect x="200" y="210" width="600" height="240" fill="#4CAF50" stroke="white" strokeWidth="2" />
@@ -198,7 +212,7 @@ const StadiumLayout = () => {
         uniqueSections[section.name] = {
           name: section.name,
           price: section.price,
-          color: section.color // Assume we have added color to our section data
+          color: section.color
         };
       }
     });
