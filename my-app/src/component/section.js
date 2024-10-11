@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import axios from 'axios';
-import { useParams,useNavigate } from 'react-router-dom';
+import { useParams,useNavigate,useLocation } from 'react-router-dom';
 import CustomAlert from './CustomAlert';
 import LoadingSpinner from './Loading';
 import './section.css';
@@ -66,7 +66,11 @@ const SeatSVG = ({ isSelected, isTaken, seatNumber }) => {
     const [error, setError] = useState(null);
     const { gameId, sectionId } = useParams();
     const [alertVisible, setAlertVisible] = useState(false);
+    const [timeLeft, setTimeLeft] = useState(10 * 60);
+    const [showTimeoutAlert, setShowTimeoutAlert] = useState(false);
     const navigate=useNavigate();
+    const location = useLocation();
+    const { user} = location.state || {};
     const MAX_SEATS=3;
     //fetching the data from the server of the price for the section 
     useEffect(()=>{
@@ -114,6 +118,27 @@ const SeatSVG = ({ isSelected, isTaken, seatNumber }) => {
   
       fetchSeats();
     }, [gameId, sectionId]);
+     useEffect(() => {
+      if (timeLeft <= 0) {
+        setShowTimeoutAlert(true);
+        return;
+      }
+    const timerId = setInterval(() => {
+      setTimeLeft(time => time - 1);
+    }, 1000);
+
+    return () => clearInterval(timerId);
+  }, [timeLeft, navigate]);
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
+  const handleTimeoutAlertClose = useCallback(() => {
+    setShowTimeoutAlert(false);
+    navigate('/tickets',{state:user});
+  }, [navigate,user])
   //function that handles the seat selected by the user
     const handleSeatSelect = (seat) => {
         if (!seat.isTaken) {
@@ -148,6 +173,7 @@ const SeatSVG = ({ isSelected, isTaken, seatNumber }) => {
     //navigate to the payment page with the relevante data
     navigate('/payment', {
       state: {
+        user,
         totalPrice,
         selectedSeats: selectedSeatsDetails,
         gameDetails: {
@@ -233,6 +259,9 @@ const SeatSVG = ({ isSelected, isTaken, seatNumber }) => {
   
     return (
         <div className="container">
+         <div className="countdown-timer">
+        Time left: {formatTime(timeLeft)}
+          </div>
           <main>
          <CustomAlert 
           message={`You can only select up to ${MAX_SEATS} seats.`}
@@ -271,6 +300,13 @@ const SeatSVG = ({ isSelected, isTaken, seatNumber }) => {
             <button onClick={handleBuy} className="buy-button" disabled={selectedSeats.length === 0}>
               Buy Tickets
             </button>
+            <div>
+      <CustomAlert 
+        message="Time's up! You will be redirected to the tickets page."
+        isVisible={showTimeoutAlert}
+        onClose={handleTimeoutAlertClose}
+      />
+    </div>
           </main>
         </div>
       );

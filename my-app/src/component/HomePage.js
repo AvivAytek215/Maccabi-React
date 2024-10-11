@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate,useLocation } from 'react-router-dom';
 import './HomePage.css';  // Import CSS for styling the Home Page
+import LoadingSpinner from './Loading';
 
 const HomePage = () => {
   const navigate = useNavigate();  // Initialize useNavigate for navigation
@@ -8,6 +9,8 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);  // State to handle loading state
   const [message, setMessage] = useState('');  // State to handle messages (e.g., no games found)
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle the hamburger menu
+  const location = useLocation();
+  const { user} = location.state || {};
 
   // useEffect to fetch the next game when the component is mounted
   useEffect(() => {
@@ -54,7 +57,7 @@ const HomePage = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;  // Display loading text while fetching data
+    return <div><LoadingSpinner/></div>;  // Display loading spinner while fetching data
   }
 
   return (
@@ -89,8 +92,18 @@ const HomePage = () => {
               &times;  {/* Unicode for the close 'X' icon */}
             </button>
             <nav className="menu-links">
-              <Link to="/tickets" onClick={toggleMenu}>Tickets</Link>
-              <Link to="/shop" onClick={toggleMenu}>Shop</Link>
+            <Link 
+            to="/tickets" 
+            state={{ user: user }} 
+            onClick={toggleMenu}
+            >
+              Tickets</Link>
+            <Link 
+            to="/shop" 
+            state={{ user: user }} 
+            onClick={toggleMenu}
+            >
+            Shop</Link>
             </nav>
           </div>
         </div>

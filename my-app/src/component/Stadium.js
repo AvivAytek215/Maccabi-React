@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useParams,useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './Stadium.css';
 import LoadingSpinner from './Loading';
@@ -28,6 +27,8 @@ const StadiumLayout = () => {
   const [alertVisible, setAlertVisible] = useState(false);
   const navigate = useNavigate();
   const { gameId } = useParams();
+  const location = useLocation();
+  const { user} = location.state || {};
 
   const handleAlertClose = () => {
     setAlertVisible(false);
@@ -69,7 +70,7 @@ const StadiumLayout = () => {
 /></div>;
 //navigate to the section page
   const handleSectionClick = (section) => {
-    navigate(`/section/${gameId}/${section.id}`);
+    navigate(`/section/${gameId}/${section.id}`,{state:user});
   };
 
   //set the section location bay name and coordinates

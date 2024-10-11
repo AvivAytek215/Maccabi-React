@@ -21,7 +21,11 @@ const LoginPage = () => {
       const response = await axios.post('http://localhost:5000/api/auth/login', { username, password });
       console.log('Server response:', response);
       if (response.data.message==="Login successful") {
-        navigate('/tickets');
+        const user=response.data;
+        navigate('/',{
+          state:
+          user
+        });
       } else {
         setMessage('Invalid username or password');
       }

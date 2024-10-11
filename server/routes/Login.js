@@ -29,7 +29,7 @@ router.post('/login', async (req, res) => {
 
     // Log successful login
     console.log('Login successful for user:', username);
-    return res.status(200).json({ message: 'Login successful', user: { id: user._id, username: user.Username } });
+    return res.status(200).json({ message: 'Login successful',user});
 
   } catch (error) {
     // Log any errors that occur during login

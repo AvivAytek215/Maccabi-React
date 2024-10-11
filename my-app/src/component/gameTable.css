@@ -73,6 +73,61 @@
   flex-direction: column; /* Stack name and logo vertically */
   align-items: center; /* Center the name and logo */
 }
+.legend {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.legend h3 {
+  color: #343a40;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 10px;
+}
+
+.legend-item {
+  margin-bottom: 12px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.legend-item:hover {
+  background-color: #e9ecef;
+}
+
+.legend-item span {
+  color: #495057;
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .legend {
+    padding: 15px;
+  }
+
+  .legend h3 {
+    font-size: 1.1em;
+  }
+
+  .legend-item {
+    padding: 8px;
+  }
+
+  .legend-item span {
+    font-size: 0.9em;
+  }
+}
 
 .team-logo-horizontal {
   max-width: 100px;  /* Size the logo */
