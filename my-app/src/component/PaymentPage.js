@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import {useLocation } from 'react-router-dom';
+import React, { useState,useEffect,useCallback,useRef} from 'react';
+import {useLocation,useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './PaymentPage.css';
 import LoadingSpinner from './Loading';
 import CustomAlert from './CustomAlert';
+import { useCountdown } from './countTimeContext';
 
 const PaymentPage = () => {
   const location = useLocation();
-  const { totalPrice, selectedSeats, gameDetails } = location.state || {};
+  const {user, totalPrice, gameDetails } = location.state || {};
+  const [showTimeoutAlert, setShowTimeoutAlert] = useState(false); 
+  const [showBackButtonAlert, setShowBackButtonAlert] = useState(false);
+  const [unselectedSeats, setUnSelectedSeats] = useState([]);
+  const [selectedSeats, setSelectedSeats] = useState(location.state?.selectedSeats || []);
+  const [loading, setLoading] = useState(false);
     //creating a form for paying this is all the input data
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
@@ -17,32 +24,136 @@ const PaymentPage = () => {
   const [zipCode, setZipCode] = useState('');
   const [id,setId]=useState('');
   const [alertVisible, setAlertVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState('DisApproved');
-  console.log(JSON.stringify(totalPrice, null, 2));
-  if (!totalPrice || !selectedSeats || !gameDetails) {
-    return <div>Error: Missing payment information. Please go back and try again.</div>;
-  }
+  const { timeLeft, formatTime,resetTimer } = useCountdown();
+  const navigate=useNavigate();
+  const stateRef = useRef({ user, totalPrice, selectedSeats, gameDetails });
+  console.log(selectedSeats)
+    useEffect(() => {
+    stateRef.current = { user, totalPrice, selectedSeats :selectedSeats || [], gameDetails };
+  }, [user, totalPrice, selectedSeats, gameDetails]);
 
-//function to handle ths submit of the form
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setPaymentStatus('Approved');
+  const updateUnselectedSeats = useCallback(async () => {
+    if (unselectedSeats.length === 0) return; // Don't update if no seats are selected
+    console.log("entering update seats call back");
+    setLoading(true);
+    try {
+      const seatsToUpdate = unselectedSeats.map(seat => seat._id);
+      const response = await axios.post(`http://localhost:5000/api/seats/updatef`, {unselectedSeats:seatsToUpdate});
+      console.log('Seats updated successfully', response.data);
+    } catch (err) {
+      console.error('Error updating seats:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [unselectedSeats]);
 
-    // Simulate payment processing
-    setTimeout(() => {
-      setIsLoading(false);
-      setPaymentStatus('Payment Approved');
-    }, 3000);
-  };
-  //function for the close of the alert
-  const handleAlertClose = () => {
+  useEffect(() => {
+    updateUnselectedSeats();
+  }, [updateUnselectedSeats]);
+  useEffect(() => {
+    if (timeLeft <= 0){
+      setUnSelectedSeats(stateRef.selectedSeats|| []);
+      updateUnselectedSeats(unselectedSeats);
+      setShowTimeoutAlert(true);
+    }
+  },  [timeLeft,navigate,user,selectedSeats,updateUnselectedSeats,unselectedSeats]);  
+
+ 
+  useEffect(() => {
+    stateRef.current = { user, totalPrice, selectedSeats, gameDetails };
+  }, [user, totalPrice, selectedSeats, gameDetails]);
+
+  useEffect(() => {
+    const handleBackButton = (event) => {
+      event.preventDefault();
+      setUnSelectedSeats(stateRef.current.selectedSeats || []);
+      setShowBackButtonAlert(true);
+      window.history.pushState({ ...stateRef.current, backButtonPressed: true }, '');
+    };
+
+    window.history.pushState({ ...stateRef.current, backButtonPressed: false }, '');
+    window.addEventListener('popstate', handleBackButton);
+
+    return () => {
+      window.removeEventListener('popstate', handleBackButton);
+    };
+  }, []);
+
+  const handleBackButtonAlertClose = useCallback(() => {
+    setShowBackButtonAlert(false);
+    const preservedState = window.history.state || {};
+    const { user, selectedSeats: preservedSelectedSeats } = preservedState;
+
+    if (preservedSelectedSeats) {
+      setSelectedSeats(preservedSelectedSeats);
+      updateUnselectedSeats(preservedSelectedSeats);
+    }
+
+    navigate('/tickets', { state: { user, selectedSeats: preservedSelectedSeats } });
+  }, [navigate, updateUnselectedSeats])
+
+  const handleTimeoutAlertClose = useCallback(() => {
+    setShowTimeoutAlert(false);
+    resetTimer();
+    navigate('/tickets',{state:user});
+  }, [navigate,user,resetTimer])
+  const handleAlertClose = useCallback(() => {
     setAlertVisible(false);
-  };
+    if(paymentStatus==='Approved')
+    {
+      resetTimer();
+      navigate('/',{state:user});
+    }
+  }, [navigate,user,resetTimer,paymentStatus])  
+//function to handle ths submit of the form
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setAlertVisible(false);
+  setPaymentStatus('Processing');
+  try {
+    const createTicket = (seat) => {
+      const userData = user.user;
+      return {
+        Userid: userData.ID,
+        gameId: gameDetails.id,
+        seatrow: seat.row,
+        seatnum: seat.number,
+        section: gameDetails.section.id,
+      };
+    };
+    const tickets = selectedSeats.map(createTicket);
+
+    const response = await axios.post('http://localhost:5000/api/tickets/newTickets', { tickets });
+
+    console.log('Server response:', response);
+
+    if (response.status >= 200 && response.status < 300) {
+      setPaymentStatus('Approved');
+      setAlertVisible(true);
+      
+      // Navigate after a short delay
+      setTimeout(() => {
+        navigate('/', { state: { user } });
+      }, 2000);
+    } else {
+      throw new Error(`Unexpected status code: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error creating tickets:', error);
+    setPaymentStatus(`Failed: ${error.message}`);
+    setAlertVisible(true);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="payment-page">
+      <div className="countdown-timer">
+        Time left: {formatTime(timeLeft)}
+      </div>
       <h2>Payment Details</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -144,12 +255,25 @@ const PaymentPage = () => {
         </div>
         <button type="submit" className="pay-button">Pay Now</button>
       </form>
-      {isLoading && <LoadingSpinner />}
-      {paymentStatus && <div><CustomAlert 
-       message={"Your Payment is"+{paymentStatus}}
-      isVisible={alertVisible}
-      onClose={handleAlertClose}
-/></div>}
+      {loading && <LoadingSpinner />}
+      {!loading && alertVisible && (
+  <CustomAlert 
+    message={`Your Payment is ${paymentStatus}`}
+    isVisible={true}
+    onClose={handleAlertClose}
+  />
+  
+)}
+  <CustomAlert 
+    message={`Your Time is Up! returning to the ticket Page`}
+    isVisible={showTimeoutAlert}
+    onClose={handleTimeoutAlertClose}
+  />
+              <CustomAlert 
+        message="Your seat will be free. Are you sure?"
+        isVisible={showBackButtonAlert}
+        onClose={handleBackButtonAlertClose}
+      />
     </div>
   );
 };

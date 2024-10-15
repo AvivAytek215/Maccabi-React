@@ -1,5 +1,6 @@
 import React from 'react';
-//loading spinner component
+import './Loading.css';
+
 const LoadingSpinner = () => {
   return (
     <div className="loading-spinner-container">

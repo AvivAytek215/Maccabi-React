@@ -28,8 +28,7 @@ const StadiumLayout = () => {
   const navigate = useNavigate();
   const { gameId } = useParams();
   const location = useLocation();
-  const { user} = location.state || {};
-
+  const user = location.state;
   const handleAlertClose = () => {
     setAlertVisible(false);
   };
@@ -70,7 +69,8 @@ const StadiumLayout = () => {
 /></div>;
 //navigate to the section page
   const handleSectionClick = (section) => {
-    navigate(`/section/${gameId}/${section.id}`,{state:user});
+    console.log(section);
+    navigate(`/section/${gameId}/${section.id}`,{state: { user, section }});
   };
 
   //set the section location bay name and coordinates

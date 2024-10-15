@@ -4,7 +4,7 @@ import GameTable from "./gameTable";
 import {useLocation } from 'react-router-dom';
 const Tickets = () => {
   const location = useLocation();
-  const { user} = location.state || {};
+  const user = location.state;
   const Legend = () => (
     <div className="legend">
       <h3>Tickets Legend</h3>

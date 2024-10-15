@@ -7,8 +7,10 @@ import Stadium from './component/Stadium';
 import Section from './component/section';
 import Paying from './component/PaymentPage';
 import Homepage from './component/HomePage';
+import { CountdownProvider } from './component/countTimeContext';
 const App = () => {
   return(
+    <CountdownProvider>
     <BrowserRouter>
        <Routes>
         <Route path="/" element={<Homepage/>}/>
@@ -20,6 +22,7 @@ const App = () => {
         <Route path="/payment" element={<Paying/>}/>
         </Routes>
     </BrowserRouter>
+    </CountdownProvider>
   );
 }; 
 

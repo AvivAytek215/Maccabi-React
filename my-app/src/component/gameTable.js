@@ -11,7 +11,6 @@ const GameTable = ({ user }) => {
   const [error, setError] = useState('');
   const [alertState, setAlertState] = useState({ isVisible: false, message: '' });
   const navigate = useNavigate();
-
   const handleTicketClick = useCallback((game) => {
     if (!user) {
       setAlertState({
@@ -26,8 +25,7 @@ const GameTable = ({ user }) => {
     const daysDifference = Math.ceil((gameDate - currentDate) / (1000 * 60 * 60 * 24));
 
     if (user.member&&user.subscription===null && daysDifference <= 3) {
-      navigate(`/Stadium/${game.gameId}`,{ state: user }
-      );
+      navigate(`/Stadium/${game.gameId}`,{ state: user }  );
     } else if (user.subscription !== null && daysDifference <= 1) {
       navigate(`/Stadium/${game.gameId}`,{state:user});
     } else if (daysDifference <= 2) {
