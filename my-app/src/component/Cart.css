@@ -1,0 +1,60 @@
+/* CartModal.css */
+.cart-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.cart-modal {
+    background: white;
+    padding: 70px;
+    border-radius: 5px;
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border: none;
+    background: #004080;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.Payment,.empty-cart{
+    background: #004080;
+    font-size: 20px;
+    padding-bottom: 10px;
+    margin-top: 20px;
+}
+
+.cart-item-image {
+    height:100px;
+    width: 100px;
+}
+
+.cart-row {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.cart-item-name {
+    text-align: center;
+    padding-left: 10px;
+}
+
+.cart-item-quantity {
+    padding-right: 15px;
+    font-weight: bold;
+}

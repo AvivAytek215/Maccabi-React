@@ -21,11 +21,6 @@ const Tickets = () => {
   );
   return (
     <div className="App">
-      {/* Header with Logo */}
-      <header>
-      </header>
-    <>
-    </>
       {/* Main Content */}
       <main>
         <h2>Upcoming Matches</h2>

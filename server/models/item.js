@@ -3,14 +3,12 @@ const mongoose = require('mongoose');
 const itemSchema = new mongoose.Schema({
     id: { type: String, required: true ,unique:true},
     name:{type:String,required:true},
-    category: { type: String,enum:['Men','Women','Children'], required: true},
-    subcategory: { type: String,enum:['shirts','pants','scarf','shoes','accessories'] ,required: true},
+    category: { type: String, required: true},
+    subcategory: { type: String, required: true},
     description:{type:String},
-    Image:{type:Image},
-    price:{type:Number,required:true,default:0},
-    size:{type:String,enum:['S','M','L','XL'],required:true,default:'S'},
-    quantity:{type:Number,required:true,default:0}
-},{collection:"Item"});
+    image:{type:String},
+    price:{type:Number, required:true, default:0},
+},{collection:"ItemInStore"});
 
 const item = mongoose.model('item', itemSchema);
 module.exports = item;

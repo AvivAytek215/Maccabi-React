@@ -1,140 +1,158 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate,useLocation } from 'react-router-dom';
-import './HomePage.css';  // Import CSS for styling the Home Page
-import LoadingSpinner from './Loading';
+import { useNavigate, useLocation } from 'react-router-dom';
+import './HomePage.css';  
+import LoadingSpinner from './Loading';  
+import HamburgerBar from './HamburgerBar';  
 
 const HomePage = () => {
-  const navigate = useNavigate();  // Initialize useNavigate for navigation
-  const [nextMatch, setNextMatch] = useState(null);  // State to store the next match object
-  const [loading, setLoading] = useState(true);  // State to handle loading state
-  const [message, setMessage] = useState('');  // State to handle messages (e.g., no games found)
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle the hamburger menu
+  const navigate = useNavigate();  // For navigation
   const location = useLocation();
-  const { user} = location.state || {};
+  const { user } = location.state || {};
 
-  // useEffect to fetch the next game when the component is mounted
+  const [nextMatch, setNextMatch] = useState(null);  // State to store the next match
+  const [loading, setLoading] = useState(true);  // Loading state for matches
+  const [trophies, setTrophies] = useState([]);  // State to store trophies
+  const [trophyLoading, setTrophyLoading] = useState(true);  // Loading state for trophies
+  const [currentYear, setCurrentYear] = useState(1948);  // Updated default value to founding year (most left)
+  const [displayedTrophies, setDisplayedTrophies] = useState({});  // State to store displayed trophies
+  const [message, setMessage] = useState('');  // State to hold error or status messages
+  
+
+  const startYear = 1948;  // Club founding year
+  const endYear = new Date().getFullYear();  // Current year
+
+  // Updated trophy types to include icons
+  const trophyTypes = [
+    { name: 'Champions League', icon: '🏆' },
+    { name: 'Israeli Premier League', icon: '⚽' },
+    { name: 'Israeli Cup', icon: '🥇' },
+    { name: 'Toto Cup', icon: '🏅' },
+    { name: 'Club World Cup', icon: '🌍' },
+    { name: 'UEFA Super Cup', icon: '🇪🇺' }
+  ];
+
+  // Fetch upcoming match
   useEffect(() => {
     const fetchNextGame = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/games/upcoming');  
-        const data = await response.json();  // Parse the response as JSON
-
+        const response = await fetch('http://localhost:5000/api/Games/upcoming');
+        const data = await response.json();
         if (data.message === 'No upcoming games found') {
-          // If no game is found, set a message instead of game data
           setMessage(data.message);
         } else {
-          // Set the next match in state if found
           setNextMatch(data);
         }
-
-        setLoading(false);  // Set loading to false after data is fetched
-      } catch (err) {
-        // If an error occurs, set a message
+        setLoading(false);
+      } catch (error) {
         setMessage('Error fetching next match');
-        setLoading(false);  // Set loading to false even if there is an error
+        setLoading(false);
       }
     };
+    fetchNextGame();
+  }, []);  // Fetch only once on component mount
 
-    fetchNextGame();  // Call the function to fetch the next game when the component is mounted
-  }, []);  // Empty dependency array means this effect runs only once after the initial render
+  // Fetch all trophies
+  useEffect(() => {
+    const fetchTrophies = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/alltrophies/alltrophies');
+        const data = await response.json();
+        setTrophies(data);
+        setTrophyLoading(false);
+      } catch (error) {
+        console.error('Error fetching trophies:', error);
+        setTrophyLoading(false);
+      }
+    };
+    fetchTrophies();
+  }, []);
 
-  // Helper function to format the date into a more readable format
-  const formatDate = (isoDate) => {
-    const dateObj = new Date(isoDate);
-    return dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  };
+  // Update displayed trophies based on the current year
+  useEffect(() => {
+    const updatedTrophies = {};
+    
+    // Initialize all trophy types to 0
+    trophyTypes.forEach((type) => {
+      updatedTrophies[type.name] = 0;
+    });
 
-  // Toggle the hamburger menu's visibility
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);  // Toggle the state between true and false for the menu
-  };
+    // Loop through all trophies and accumulate the count based on year
+    trophies.forEach((trophy) => {
+      if (parseInt(trophy.yearReceived) <= currentYear) {
+        updatedTrophies[trophy.competitionName] += 1;
+      }
+    });
 
-  // Close the menu when clicking outside of it
-  const closeMenuOnClickOutside = (e) => {
-    if (e.target.className === 'menu-overlay') {
-      setIsMenuOpen(false);
-    }
-  };
+    setDisplayedTrophies(updatedTrophies);  // Update displayed trophies based on the slider year
+  }, [currentYear, trophies]);
 
   if (loading) {
-    return <div><LoadingSpinner/></div>;  // Display loading spinner while fetching data
+    return <div><LoadingSpinner /></div>;  // Show loading spinner if still fetching match
   }
 
   return (
     <div className="home-page">
-      {/* Top Bar */}
-      <header className="top-bar">
-        {/* Hamburger Menu for Navigation Links */}
-        <div className="hamburger-menu">
-          <button className="hamburger-icon" onClick={toggleMenu}>
-            &#9776;  {/* Unicode for the hamburger icon (three horizontal lines) */}
-          </button>
-        </div>
-
-        {/* Club logo */}
-        <div className="club-logo">
-          <img src="MACCABI.png" alt="Maccabi React Logo" />  {/* Replace with the actual path to your logo */}
-        </div>
-
-        {/* Login button */}
-        <div className="login-section">
-          <button className="login-button" onClick={() => navigate('/Login')}>
-            Login
-          </button>
-        </div>
-      </header>
-
-      {/* Sliding Menu Overlay */}
-      {isMenuOpen && (
-        <div className="menu-overlay" onClick={closeMenuOnClickOutside}>
-          <div className="slide-menu">
-            <button className="close-menu" onClick={toggleMenu}>
-              &times;  {/* Unicode for the close 'X' icon */}
-            </button>
-            <nav className="menu-links">
-            <Link 
-            to="/tickets" 
-            state={{ user: user }} 
-            onClick={toggleMenu}
-            >
-              Tickets</Link>
-            <Link 
-            to="/shop" 
-            state={{ user: user }} 
-            onClick={toggleMenu}
-            >
-            Shop</Link>
-            </nav>
-          </div>
-        </div>
-      )}
-
-      {/* Main Content */}
       <main className="main-content">
         <h2>Next Match</h2>
-
-        {/* Conditionally render match details if match data is available */}
         {nextMatch ? (
           <div className="match-presentation">
             <div className="teams">
-              <span className="home-team">{nextMatch.homeTeam}</span>  {/* Display home team */}
+              <span className="home-team">{nextMatch.homeTeam}</span>
               <span> vs </span>
-              <span className="away-team">{nextMatch.awayTeam}</span>  {/* Display away team */}
+              <span className="away-team">{nextMatch.awayTeam}</span>
             </div>
             <div className="match-details">
-              <p>Date: {formatDate(nextMatch.date)}</p>  {/* Format and display match date */}
-              <p>Time: {nextMatch.hour}</p>  {/* Display match time */}
-              <p>Location: {nextMatch.stadium}</p>  {/* Display match stadium */}
+              <p>Date: {nextMatch.date}</p>
+              <p>Time: {nextMatch.hour}</p>
+              <p>Location: {nextMatch.stadium}</p>
             </div>
           </div>
         ) : (
-          <p>{message}</p>  
+          <p>{message}</p>
         )}
+
+        {/* Trophy Section */}
+        <section className="legendary-track-record">
+          <h2>A Legendary Track Record</h2>
+          {trophyLoading ? (
+            <div><LoadingSpinner /></div>
+          ) : (
+            <div>
+              {/* Trophy Grid */}
+              <div className="trophy-grid">
+                {trophyTypes.map((type) => (
+                  <div key={type.name} className="trophy-item">
+                    <span className="trophy-icon">{type.icon}</span>
+                    <h3>{type.name}</h3>
+                    <p>{displayedTrophies[type.name]}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Year Slider */}
+              <div className="year-slider-wrapper">
+                <p className="slider-label">{startYear}</p>
+                <input
+                  type="range"
+                  min={startYear}
+                  max={endYear}
+                  value={currentYear}
+                  onChange={(e) => setCurrentYear(Number(e.target.value))}
+                  className="year-slider"
+                />
+                <p className="slider-label">{endYear}</p>
+              </div>
+              <p className="current-year-display">Year: {currentYear}</p>
+            </div>
+          )}
+        </section>
       </main>
     </div>
   );
 };
 
 export default HomePage;
+
+
 
 

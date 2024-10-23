@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import './Login-Page.css';
+import Header from './Header';
 const LoginPage = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -44,11 +45,9 @@ const LoginPage = () => {
   };
 
   return (
+    <div className="page-container">
+      <div className="main-content">
     <div className="login-page">
-      <header>
-        <img src="https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg" alt="Real Madrid Logo" />
-      </header>
-      <section className="hero">
         <h2>Login</h2>
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="input-group">
@@ -77,10 +76,11 @@ const LoginPage = () => {
         </form>
         <p>Don't have an account? <Link to='/signup'>Sign Up</Link></p>
         {message && <p className="message">{message}</p>}
-      </section>
+        </div>
+        </div>
 
       <footer>
-        <p>&copy; 2024 Real Madrid CF. All rights reserved.</p>
+        <p>&copy; 2024 Maccabi React CF. All rights reserved.</p>
       </footer>
     </div>
   );

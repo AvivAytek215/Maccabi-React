@@ -8,7 +8,9 @@ const GetUpcomingGames=require('./routes/UpcomingGames');
 const Sections=require('./routes/Sections');
 const Seats=require('./routes/seats');
 const GetGameById=require('./routes/GameById');
+const GetAllTrophies=require('./routes/GetAllTrophies');
 const Tickets=require('./routes/tickets');
+const Items=require('./routes/Items');
 // Load environment variables
 dotenv.config();
 
@@ -37,6 +39,8 @@ app.use('/api/sections',Sections);
 app.use('/api/seats',Seats);
 app.use('/Photos', express.static('Photos'));
 app.use('/api/tickets',Tickets);
+app.use('/api/items', Items);
+app.use('/api/alltrophies',GetAllTrophies);
 
 
 const PORT = 5000;
