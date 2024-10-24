@@ -5,30 +5,30 @@ import LoadingSpinner from './Loading';
 import HamburgerBar from './HamburgerBar';  
 
 const HomePage = () => {
-  const navigate = useNavigate();  // For navigation
-  const location = useLocation();
-  const { user } = location.state || {};
+  const navigate = useNavigate();  // Navigation hook
+  const location = useLocation();  // Hook to get the current location
+  const { user } = location.state || {};  // Extract the user if available from location
 
-  const [nextMatch, setNextMatch] = useState(null);  // State to store the next match
-  const [loading, setLoading] = useState(true);  // Loading state for matches
-  const [trophies, setTrophies] = useState([]);  // State to store trophies
-  const [trophyLoading, setTrophyLoading] = useState(true);  // Loading state for trophies
-  const [currentYear, setCurrentYear] = useState(1948);  // Updated default value to founding year (most left)
-  const [displayedTrophies, setDisplayedTrophies] = useState({});  // State to store displayed trophies
-  const [message, setMessage] = useState('');  // State to hold error or status messages
-  
+  const [nextMatch, setNextMatch] = useState(null);  // State for storing the next match
+  const [loading, setLoading] = useState(true);  // Loading state for fetching matches
+  const [trophies, setTrophies] = useState([]);  // State for storing trophies
+  const [trophyLoading, setTrophyLoading] = useState(true);  // Loading state for fetching trophies
+  const [currentYear, setCurrentYear] = useState(1948);  // Slider for the year, starting at the founding year
+  const [displayedTrophies, setDisplayedTrophies] = useState({});  // Displayed trophies based on the slider
+  const [sliderPosition, setSliderPosition] = useState(0);  // State for tracking the slider thumb position
+  const [message, setMessage] = useState('');  // Error message state
 
   const startYear = 1948;  // Club founding year
   const endYear = new Date().getFullYear();  // Current year
 
-  // Updated trophy types to include icons
+  // Trophy types with image paths for the icons
   const trophyTypes = [
-    { name: 'Champions League', icon: '🏆' },
-    { name: 'Israeli Premier League', icon: '⚽' },
-    { name: 'Israeli Cup', icon: '🥇' },
-    { name: 'Toto Cup', icon: '🏅' },
-    { name: 'Club World Cup', icon: '🌍' },
-    { name: 'UEFA Super Cup', icon: '🇪🇺' }
+    { name: 'Champions League', icon: '/Photos/ChampionsLeagueLogo.png' },
+    { name: 'Israeli Premier League', icon: '/Photos/IsraeliPremierLeagueLogo.png' },
+    { name: 'Israeli Cup', icon: '/Photos/IsraeliCupLogo.png' },
+    { name: 'Toto Cup', icon: '/Photos/TotoCupLogo.png' },
+    { name: 'Club World Cup', icon: '/Photos/ClubWorldCupLogo.png' },
+    { name: 'UEFA Super Cup', icon: '/Photos/UEFASuperCupLogo.png' }
   ];
 
   // Fetch upcoming match
@@ -49,7 +49,7 @@ const HomePage = () => {
       }
     };
     fetchNextGame();
-  }, []);  // Fetch only once on component mount
+  }, []);
 
   // Fetch all trophies
   useEffect(() => {
@@ -71,58 +71,71 @@ const HomePage = () => {
   useEffect(() => {
     const updatedTrophies = {};
     
-    // Initialize all trophy types to 0
+    // Initialize the trophy count to zero for all types
     trophyTypes.forEach((type) => {
       updatedTrophies[type.name] = 0;
     });
 
-    // Loop through all trophies and accumulate the count based on year
+    // Count the trophies received up to the current year
     trophies.forEach((trophy) => {
       if (parseInt(trophy.yearReceived) <= currentYear) {
         updatedTrophies[trophy.competitionName] += 1;
       }
     });
 
-    setDisplayedTrophies(updatedTrophies);  // Update displayed trophies based on the slider year
+    setDisplayedTrophies(updatedTrophies);  // Update the displayed trophies based on the current year
   }, [currentYear, trophies]);
 
+  // Adjust the slider's thumb position dynamically
+  const handleSliderChange = (e) => {
+    const value = Number(e.target.value);
+    setCurrentYear(value);
+    
+    // Calculate thumb position in percentage
+    const sliderWidth = e.target.offsetWidth;
+    const thumbPosition = ((value - startYear) / (endYear - startYear)) * sliderWidth;
+    setSliderPosition(thumbPosition);  // Update thumb position for styling
+  };
+
   if (loading) {
-    return <div><LoadingSpinner /></div>;  // Show loading spinner if still fetching match
+    return <div><LoadingSpinner /></div>;
   }
 
   return (
     <div className="home-page">
       <main className="main-content">
-        <h2>Next Match</h2>
-        {nextMatch ? (
-          <div className="match-presentation">
-            <div className="teams">
-              <span className="home-team">{nextMatch.homeTeam}</span>
-              <span> vs </span>
-              <span className="away-team">{nextMatch.awayTeam}</span>
+        {/* Next Match Presentation */}
+        <section className="next-match-section">
+          <h2>Next Match</h2>
+          {nextMatch ? (
+            <div className="match-presentation">
+              <div className="teams">
+                <span className="home-team">{nextMatch.homeTeam}</span>
+                <span> vs </span>
+                <span className="away-team">{nextMatch.awayTeam}</span>
+              </div>
+              <div className="match-details">
+                <p>Date: {nextMatch.date}</p>
+                <p>Time: {nextMatch.hour}</p>
+                <p>Location: {nextMatch.stadium}</p>
+              </div>
             </div>
-            <div className="match-details">
-              <p>Date: {nextMatch.date}</p>
-              <p>Time: {nextMatch.hour}</p>
-              <p>Location: {nextMatch.stadium}</p>
-            </div>
-          </div>
-        ) : (
-          <p>{message}</p>
-        )}
+          ) : (
+            <p>{message}</p>
+          )}
+        </section>
 
-        {/* Trophy Section */}
+        {/* Trophy Presentation Section */}
         <section className="legendary-track-record">
           <h2>A Legendary Track Record</h2>
           {trophyLoading ? (
             <div><LoadingSpinner /></div>
           ) : (
             <div>
-              {/* Trophy Grid */}
               <div className="trophy-grid">
                 {trophyTypes.map((type) => (
                   <div key={type.name} className="trophy-item">
-                    <span className="trophy-icon">{type.icon}</span>
+                    <img src={type.icon} alt={`${type.name} Icon`} className="trophy-icon" />
                     <h3>{type.name}</h3>
                     <p>{displayedTrophies[type.name]}</p>
                   </div>
@@ -131,18 +144,21 @@ const HomePage = () => {
 
               {/* Year Slider */}
               <div className="year-slider-wrapper">
-                <p className="slider-label">{startYear}</p>
+                {/* Slider input */}
                 <input
                   type="range"
                   min={startYear}
                   max={endYear}
                   value={currentYear}
-                  onChange={(e) => setCurrentYear(Number(e.target.value))}
+                  onChange={handleSliderChange}
                   className="year-slider"
                 />
-                <p className="slider-label">{endYear}</p>
+                
+                {/* Year displayed above the slider thumb */}
+                <div className="slider-thumb-label" style={{ left: `${sliderPosition}px` }}>
+                  {currentYear}
+                </div>
               </div>
-              <p className="current-year-display">Year: {currentYear}</p>
             </div>
           )}
         </section>
@@ -152,6 +168,8 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
 
 
 

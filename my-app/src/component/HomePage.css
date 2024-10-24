@@ -34,7 +34,7 @@ header {
     justify-content: space-between;  /* Space items across the header */
     align-items: center;  /* Center items vertically */
     position: relative;
-    z-index: 10;  /* Ensures the header is on top */
+    z-index: 10;
 }
 
 /* Club logo */
@@ -70,15 +70,19 @@ header {
 
 /* Main Content */
 .main-content {
-    margin-top: 100px;
-    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    padding: 40px 0;
     background-color: #ffffff;
 }
 
-.main-content h2 {
-    color: #0a1d54;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+/* Next Match Section */
+.next-match-section {
+    width: 100%;
+    margin-bottom: 50px;
 }
 
 /* Match Presentation Section */
@@ -91,7 +95,7 @@ header {
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 50px auto;
+    margin: 0 auto;
     max-width: 900px;
     border: 2px solid #0a1d54;
 }
@@ -113,7 +117,7 @@ header {
 
 .vs-divider {
     font-size: 2.5rem;
-    color: #007BFF; /* Light blue to match the accent color */
+    color: #007BFF;
     font-weight: 700;
     margin: 0 30px;
     align-self: center;
@@ -172,6 +176,7 @@ header {
 
 /* Trophy Section - A Legendary Track Record */
 .legendary-track-record {
+    width: 100%;
     margin-top: 40px;
     padding: 20px;
     background-color: #f7f7f7;
@@ -184,6 +189,7 @@ header {
     margin-bottom: 20px;
 }
 
+/* Trophy Grid */
 .trophy-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -215,32 +221,62 @@ header {
 }
 
 .trophy-icon {
-    font-size: 2rem;
-    color: #007BFF;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+    object-fit: contain;
 }
 
 /* Year Slider */
 .year-slider-wrapper {
+    position: relative;
+    width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: space-between;
     margin-top: 20px;
 }
 
 .year-slider {
-    width: 80%;
-    margin: 0 10px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    appearance: none;
+    background: #007BFF;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+    transition: opacity 0.2s;
 }
 
-.slider-label {
+.year-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #0a1d54;
+    cursor: pointer;
+}
+
+.year-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #0a1d54;
+    cursor: pointer;
+}
+
+/* Slider Year Display Above Thumb */
+.slider-thumb-label {
+    position: absolute;
+    top: -35px; /* Position above the slider */
+    background-color: #0a1d54;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
     font-size: 1rem;
-    color: #0a1d54;
-}
-
-.current-year-display {
-    margin-top: 10px;
-    font-size: 1.2rem;
-    color: #0a1d54;
+    font-weight: bold;
+    transform: translateX(-50%); /* Center it horizontally */
 }
 
 /* Responsive Adjustments */
@@ -257,6 +293,7 @@ header {
         width: 120px;
     }
 }
+
 
 
 
