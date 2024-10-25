@@ -55,22 +55,20 @@ const categories = [
 
 const Shop = () => {
     const dropdownRef = useRef(null);
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle the hamburger menu
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState(null);
     const [itemsInStore, setItemsInStore] = useState([]);
     const [loading, setLoading] = useState(false);
     const [displayedItems, setDisplayedItems] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-    const [cartItems, setCartItems] = useState([]); // State for cart items
-    const [isCartOpen, setIsCartOpen] = useState(false); // State for cart modal
-    const [cartCount, setCartCount] = useState(0); // State for cart item count
+    const [cartItems, setCartItems] = useState([]);
+    const [isCartOpen, setIsCartOpen] = useState(false);
+    const [cartCount, setCartCount] = useState(0);
 
-      // Toggle the hamburger menu's visibility
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);  // Toggle the state between true and false for the menu
+        setIsMenuOpen(!isMenuOpen);
     };
 
-      // Close the menu when clicking outside of it
     const closeMenuOnClickOutside = (e) => {
         if (e.target.className === 'menu-overlay') {
             setIsMenuOpen(false);
@@ -82,45 +80,41 @@ const Shop = () => {
     };
 
     const handleSubCategoryClick = (categoryName, subCategoryName) => {
-        console.log("Category:"+categoryName+" subCategory:"+subCategoryName);
         const filteredItems = itemsInStore.filter(
             (item) => item.category === categoryName && item.subcategory === subCategoryName
         );
         if (filteredItems.length === 0) {
             setErrorMessage('Sorry, products in this category are not available...');
-            setDisplayedItems([]); // Clear the displayed items if nothing is found
+            setDisplayedItems([]);
         } else {
             setDisplayedItems(filteredItems);
-            setErrorMessage(''); // Clear the error message if items are found
+            setErrorMessage('');
         }
         setHoveredCategory(null);
-    };    
+    };
 
     const handleAddToCart = (item, quantity) => {
         setCartItems((prevItems) => {
             const existingItem = prevItems.find((i) => i._id === item._id);
             if (existingItem) {
-                // Update the quantity of the existing item
                 return prevItems.map((i) =>
                     i._id === item._id ? { ...i, quantity: i.quantity + quantity } : i
                 );
             }
-            // Add new item to cart
             return [...prevItems, { ...item, quantity }];
         });
 
-        setCartCount((prevCount) => prevCount + quantity); // Update the cart count
+        setCartCount((prevCount) => prevCount + quantity);
     };
 
-    // Function to handle emptying the cart
     const handleEmptyCart = () => {
-        setCartItems([]); // Clear all cart items
-        setCartCount(0); // Reset the cart count
+        setCartItems([]);
+        setCartCount(0);
     };
 
     const handleCartClick = () => {
-        setIsCartOpen(!isCartOpen);
-    }
+        setIsCartOpen((prevState) => !prevState);
+    };
 
     const closeCartModal = () => {
         setIsCartOpen(false);
@@ -133,50 +127,48 @@ const Shop = () => {
                 const response = await axios.get('http://localhost:5000/api/items/getAllItems');
                 setItemsInStore(response.data);
                 setLoading(false);
-            }
-            catch(err) {
-                console.error("failed to fetch items");
+            } catch (err) {
+                console.error('Failed to fetch items');
                 setLoading(false);
             }
-        }
+        };
         fetchItems();
-    },[]);
-    
-    useEffect(() => {
-        console.log('Items in Store:', itemsInStore); // Check fetched items
-    }, [itemsInStore]);
-        
+    }, []);
 
-    // Use effect to handle mouse leave event
+    useEffect(() => {
+        console.log('Items in Store:', itemsInStore);
+    }, [itemsInStore]);
+
     useEffect(() => {
         const handleMouseLeave = (e) => {
             const header = document.querySelector('.shop header');
             const dropdown = dropdownRef.current;
 
-            // Check if the mouse is not in the header or the dropdown
             if (header && dropdown && !header.contains(e.target) && !dropdown.contains(e.target)) {
                 setHoveredCategory(null);
             }
         };
 
-        // Add mouse move event listener
         document.addEventListener('mousemove', handleMouseLeave);
 
-        // Clean up the event listener on component unmount
         return () => {
             document.removeEventListener('mousemove', handleMouseLeave);
         };
     }, [dropdownRef]);
 
     if (loading) {
-        return <div>Loading...</div>;  // Display loading text while fetching data
+        return <div>Loading...</div>;
     }
 
     return (
         <div className="shop">
             <header>
                 <div className="left-side">
-                    <HamburgerBar/>
+                    <HamburgerBar />
+                </div>
+                <div className="logos">
+                    <img className="img1" src={"/Photos/sponsor.png"} alt="Sponsor Logo" />
+                    <img className="img2" src={"/Photos/MaccabiReact.png"} alt="Team Logo" />
                 </div>
                 <div className="categories-select">
                     {categories.map((category) => (
@@ -190,34 +182,32 @@ const Shop = () => {
                     ))}
                 </div>
                 <div className="cart">
-                    <img className="img3"
-                     src={"/Photos/Cart.png"} 
-                     alt="Cart Logo"
-                     onClick={handleCartClick}
-                     style={{ cursor: 'pointer' }} />
-                     <div className="cart-counter">
-                        {cartCount}
-                    </div>
+                    <img
+                        className="img3"
+                        src={'/Photos/Cart.png'}
+                        alt="Cart Logo"
+                        onClick={handleCartClick}
+                        style={{ cursor: 'pointer' }}
+                    />
+                    <div className="cart-counter">{cartCount}</div>
                 </div>
             </header>
             {isCartOpen && (
                 <Cart items={cartItems} onClose={closeCartModal} onEmptyCart={handleEmptyCart} />
             )}
-            {/* Sliding Menu Overlay */}
             {isMenuOpen && (
                 <div className="menu-overlay" onClick={closeMenuOnClickOutside}>
-                <div className="slide-menu">
-                    <button className="close-menu" onClick={toggleMenu}>
-                    &times;  {/* Unicode for the close 'X' icon */}
-                    </button>
-                    <nav className="menu-links">
-                    <Link to="/tickets" onClick={toggleMenu}>Tickets</Link>
-                    <Link to="/Shop" onClick={toggleMenu}>Shop</Link>
-                    </nav>
-                </div>
+                    <div className="slide-menu">
+                        <button className="close-menu" onClick={toggleMenu}>
+                            &times;
+                        </button>
+                        <nav className="menu-links">
+                            <Link to="/tickets" onClick={toggleMenu}>Tickets</Link>
+                            <Link to="/Shop" onClick={toggleMenu}>Shop</Link>
+                        </nav>
+                    </div>
                 </div>
             )}
-
             <span>
                 {hoveredCategory && (
                     <div className="dropdown-menu" ref={dropdownRef}>
@@ -241,25 +231,18 @@ const Shop = () => {
                     </div>
                 )}
             </span>
-            <div>
             {errorMessage ? (
                 <div className="error-container">
-                    <img className="error-image" src={"/Photos/error.png"} alt="Error"/>
+                    <img className="error-image" src={'/Photos/error.png'} alt="Error" />
                     <h1 className="error">{errorMessage}</h1>
                 </div>
-                    ) : (
+            ) : (
                 <div>
-                    {/* Render displayed items here */}
                     {displayedItems.map((item) => (
-                        <div key={item.id}>
-                            {/* Render item details */}
-                        </div>
+                        <div key={item.id}>{/* Render item details here */}</div>
                     ))}
                 </div>
-                )}
-
-            </div>
-            {/* Display filtered items */}
+            )}
             <div className="products-grid">
                 {displayedItems.map((item) => (
                     <ProductSquare key={item._id} item={item} onAddToCart={handleAddToCart} />
@@ -268,6 +251,5 @@ const Shop = () => {
         </div>
     );
 };
-
 
 export default Shop;

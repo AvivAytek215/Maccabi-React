@@ -1,16 +1,16 @@
 import React from 'react';
 import './Cart.css';
 
-const Cart = ({ items, onClose, onEmptyCart  }) => {
-  // Calculate total quantity and total price 
+const Cart = ({ items, onClose, onEmptyCart }) => {
+  // Calculate total quantity and total price
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
-    <div className="cart-modal-overlay">
-      <div className="cart-modal">
-        <button className="close-modal" onClick={onClose}>
-          &times; {/* Close icon */}
+    <div className="cart-overlay" onClick={onClose}>
+      <div className="cart-menu open" onClick={e => e.stopPropagation()}>
+        <button className="close-cart" onClick={onClose}>
+          &times;
         </button>
         <h2>Your Cart</h2>
         {items.length === 0 ? (
@@ -20,24 +20,24 @@ const Cart = ({ items, onClose, onEmptyCart  }) => {
             <tbody>
               {items.map((item) => (
                 <tr key={item._id} className='cart-row'>
-                  <td className="cart-item-image">
+                  <td>
                     <img src={item.image} alt={item.name} className="cart-item-image" />
                   </td>
                   <td className="cart-item-name">{item.name}</td>
                   <td className="cart-item-quantity">{item.quantity}</td>
                 </tr>
               ))}
-            <tr className='total-items'>
+              <tr className='total-items'>
                 <td className='total-quantity-in-cart' colSpan="3">
-                    The cart contains {totalQuantity} items | {totalPrice}₪ 
+                  Total: {totalQuantity} items | {totalPrice}₪
                 </td>
-            </tr>
+              </tr>
             </tbody>
           </table>
         )}
         <div className='cart-buttons-container'>
-          <button className="Payment" onClick={onClose}>
-            Payment
+          <button className="Payment">
+            Proceed to Payment
           </button>
           <button className="empty-cart" onClick={onEmptyCart}>
             Empty Cart

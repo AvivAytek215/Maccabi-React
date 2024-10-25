@@ -1,60 +1,96 @@
-/* CartModal.css */
-.cart-modal-overlay {
+.cart-overlay {
     position: fixed;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-}
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  h2 {
+    padding-top: 50px;
+  }
 
-.cart-modal {
-    background: white;
-    padding: 70px;
-    border-radius: 5px;
-    max-width: 400px;
-    width: 100%;
-    position: relative;
-}
-
-.close-modal {
+  .cart-menu {
+    position: fixed;
+    top: 0;
+    right: -400px; /* Start off-screen */
+    width: 400px;
+    height: 100vh;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    overflow-y: auto;
+    transition: right 0.3s ease-in-out;
+    z-index: 1001;
+  }
+  
+  .cart-menu.open {
+    right: 0;
+  }
+  
+  .close-cart {
     position: absolute;
-    top: 0px;
+    top: 10px;
     right: 0px;
+    background: #004080;
     border: none;
-    background: #004080;
-    font-size: 20px;
+    font-size: 24px;
     cursor: pointer;
-}
-
-.Payment,.empty-cart{
-    background: #004080;
-    font-size: 20px;
-    padding-bottom: 10px;
-    margin-top: 20px;
-}
-
-.cart-item-image {
-    height:100px;
-    width: 100px;
-}
-
-.cart-row {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ccc;
-    border-radius: 10px;
-}
-
-.cart-item-name {
+    padding: 5px 10px;
+  }
+  
+  .cart-item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+  }
+  
+  .cart-row {
+    display: grid;
+    grid-template-columns: 60px 1fr 60px;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .cart-item-name {
+    padding: 0 10px;
+  }
+  
+  .cart-item-quantity {
     text-align: center;
-    padding-left: 10px;
-}
-
-.cart-item-quantity {
-    padding-right: 15px;
+  }
+  
+  .total-items {
+    margin-top: 20px;
     font-weight: bold;
-}
+  }
+  
+  .cart-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .Payment, .empty-cart {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .Payment {
+    background-color: #004080;
+    color: white;
+  }
+  
+  .empty-cart {
+    background-color: #dc3545;
+    color: white;
+  }

@@ -22,14 +22,13 @@ const Header = ({ isLoggedIn }) => {
                     {/* Left side - Logos */}
                     <div className="header-logos">
                         <img
-                            src={`${process.env.PUBLIC_URL}/Photos/Maccabi React.png`}
+                            src={`${process.env.PUBLIC_URL}/Photos/MaccabiReact.png`}
                             alt="Team Logo"
                             className="team-logo"
                             onClick={handleLogoClicked}
                         />
                         <img
-                            src={`${process.env.PUBLIC_URL}/Photos/sponser.png`} // Add your sponsor logo path
-                            alt="Sponsor Logo"
+                            src={`${process.env.PUBLIC_URL}/Photos/sponsor.png`} 
                             className="sponser-logo"
                         />
                         
