@@ -5,6 +5,7 @@ import './Shop.css';
 import Cart from './Cart';
 import ProductSquare from './ShopProducts';
 import HamburgerBar from './HamburgerBar';
+
 const categories = [
     { id: 1, name: 'Kits' ,
          items:[
@@ -243,7 +244,7 @@ const Shop = () => {
             <div>
             {errorMessage ? (
                 <div className="error-container">
-                    <img className="error-image" src={"/Photos/error.png"} alt="Error Image" />
+                    <img className="error-image" src={"/Photos/error.png"} alt="Error"/>
                     <h1 className="error">{errorMessage}</h1>
                 </div>
                     ) : (

@@ -20,13 +20,12 @@ const HamburgerBar = ({ user }) => {
 
   return (
     <>
-      {/* Hamburger Menu for Navigation Links */}
-      <div className="hamburger-menu">
+      {/* Conditionally render the logo only when the menu is closed */}
+      <div className={`hamburger-menu ${isMenuOpen ? "menu-open" : ''}`}>
         <button className="hamburger-icon" onClick={toggleMenu}>
-          &#9776;  {/* Unicode for the hamburger icon (three horizontal lines) */}
+          &#9776;
         </button>
       </div>
-
       {/* Sliding Menu Overlay */}
       {isMenuOpen && (
         <div className="menu-overlay" onClick={closeMenuOnClickOutside}>

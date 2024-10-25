@@ -14,6 +14,10 @@
     color: white;
 }
 
+.menu-open .hamburger-icon {
+    display: none; /* Hide the icon when the menu is open */
+}
+
 /* Sliding Menu Overlay */
 .menu-overlay {
     position: fixed;
