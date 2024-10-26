@@ -1,10 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Cart.css';
 
 const Cart = ({ items, onClose, onEmptyCart }) => {
   // Calculate total quantity and total price
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const navigate = useNavigate();  // Initialize useNavigate for navigation
+
+  const proceedToPayment = () => {
+    navigate("/payment");
+  };
 
   return (
     <div className="cart-overlay" onClick={onClose}>
@@ -36,8 +43,8 @@ const Cart = ({ items, onClose, onEmptyCart }) => {
           </table>
         )}
         <div className='cart-buttons-container'>
-          <button className="Payment">
-            Proceed to Payment
+          <button className="Payment" onClick = {proceedToPayment}>
+            Proceed to payment
           </button>
           <button className="empty-cart" onClick={onEmptyCart}>
             Empty Cart
