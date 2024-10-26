@@ -10,7 +10,9 @@ import Homepage from './component/HomePage';
 import Shop from './component/Shop';
 import Cart from './component/Cart';
 import Header from './component/Header';
+import Product from './component/ProductPage';
 import { CountdownProvider } from './component/countTimeContext';
+
 const HeaderWrapper = () => {
   const location = useLocation();
   const noHeaderPaths = ['/Shop', '/Cart']; // Add paths where you don't want the header
@@ -35,6 +37,7 @@ const App = () => {
         <Route path="/section/:gameId/:sectionId" element={<Section />} /> 
         <Route path="/payment" element={<Paying/>}/>
         <Route path="/Shop" element={<Shop/>}/>
+        <Route path="/product/:productId" element={<Product />} />
         <Route path="/Cart" element={<Cart/>}/>
         </Routes>
     </BrowserRouter>

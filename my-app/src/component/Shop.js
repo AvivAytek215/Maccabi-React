@@ -84,7 +84,7 @@ const Shop = () => {
             (item) => item.category === categoryName && item.subcategory === subCategoryName
         );
         if (filteredItems.length === 0) {
-            setErrorMessage('Sorry, products in this category are not available...');
+            setErrorMessage('Sorry, products in this category are not available right now...');
             setDisplayedItems([]);
         } else {
             setDisplayedItems(filteredItems);
