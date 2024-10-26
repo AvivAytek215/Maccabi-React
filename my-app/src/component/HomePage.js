@@ -20,15 +20,34 @@ const HomePage = () => {
 
   const startYear = 1948;  // Club founding year
   const endYear = new Date().getFullYear();  // Current year
-
+  //thropy max values for the sliding
+  const trophyMaxValues = {
+    'Champions League': 22,
+    'Israeli Premier League': 20,
+    'Israeli Cup': 5,
+    'Toto Cup': 4,
+    'Club World Cup': 6,
+    'UEFA Super Cup': 7
+  };
+  //animated proccess bar
+  const AnimatedProgress = ({ value }) => {
+    return (
+      <div className="progress-container">
+        <div 
+          className="progress-bar"
+          style={{ width: `${value}%` }}
+        />
+      </div>
+    );
+  };
   // Trophy types with image paths for the icons
   const trophyTypes = [
-    { name: 'Champions League', icon: '/Photos/ChampionsLeagueLogo.png' },
-    { name: 'Israeli Premier League', icon: '/Photos/IsraeliPremierLeagueLogo.png' },
-    { name: 'Israeli Cup', icon: '/Photos/IsraeliCupLogo.png' },
-    { name: 'Toto Cup', icon: '/Photos/TotoCupLogo.png' },
-    { name: 'Club World Cup', icon: '/Photos/ClubWorldCupLogo.png' },
-    { name: 'UEFA Super Cup', icon: '/Photos/UEFASuperCupLogo.png' }
+    { name: 'Champions League', icon:`${process.env.PUBLIC_URL}/Photos/Cups/championsCup.png` },
+    { name: 'Israeli Premier League', icon: `${process.env.PUBLIC_URL}/Photos/Cups/LeaguePlate.png` },
+    { name: 'Israeli Cup', icon: `${process.env.PUBLIC_URL}/Photos/Cups/LeagueCup.png` },
+    { name: 'Toto Cup', icon: `${process.env.PUBLIC_URL}/Photos/Cups/TotoCup.png` },
+    { name: 'Club World Cup', icon: `${process.env.PUBLIC_URL}/Photos/Cups/ClubWorldCup.png` },
+    { name: 'UEFA Super Cup', icon: `${process.env.PUBLIC_URL}/Photos/Cups/UEFACup.png` }
   ];
 
   // Fetch upcoming match
@@ -132,15 +151,27 @@ const HomePage = () => {
             <div><LoadingSpinner /></div>
           ) : (
             <div>
-              <div className="trophy-grid">
-                {trophyTypes.map((type) => (
-                  <div key={type.name} className="trophy-item">
-                    <img src={type.icon} alt={`${type.name} Icon`} className="trophy-icon" />
-                    <h3>{type.name}</h3>
-                    <p>{displayedTrophies[type.name]}</p>
-                  </div>
-                ))}
+   <div>
+      <div className="trophy-grid">
+        {trophyTypes.map((type) => {
+          // Calculate percentage
+          const currentValue = displayedTrophies[type.name] || 0;
+          const maxValue = trophyMaxValues[type.name];
+          const percentage = (currentValue / maxValue) * 100;
+
+          return (
+            <div key={type.name} className="trophy-item">
+              <img src={type.icon} alt={`${type.name} Icon`} className="trophy-icon" />
+              <h3>{type.name}</h3>
+              <div className="trophy-progress">
+                <p>{currentValue}</p>
+                <AnimatedProgress value={percentage} className="w-[60%]" />
               </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
 
               {/* Year Slider */}
               <div className="year-slider-wrapper">
