@@ -168,7 +168,7 @@ const Shop = () => {
                 </div>
                 <div className="logos">
                     <img className="img1" src={"/Photos/sponsor.png"} alt="Sponsor Logo" />
-                    <img className="img2" src={"/Photos/MaccabiReact.png"} alt="Team Logo" />
+                    <img className="img2" src={"/Photos/Maccabi React.png"} alt="Team Logo" />
                 </div>
                 <div className="categories-select">
                     {categories.map((category) => (

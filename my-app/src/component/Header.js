@@ -22,7 +22,7 @@ const Header = ({ isLoggedIn }) => {
                     {/* Left side - Logos */}
                     <div className="header-logos">
                         <img
-                            src={`${process.env.PUBLIC_URL}/Photos/MaccabiReact.png`}
+                            src={`${process.env.PUBLIC_URL}/Photos/Maccabi React.png`}
                             alt="Team Logo"
                             className="team-logo"
                             onClick={handleLogoClicked}

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Header from './Header';
 import './ProductPage.css';
 
 const ProductPage = ({ onAddToCart }) => {
@@ -28,7 +27,6 @@ const ProductPage = ({ onAddToCart }) => {
 
     return (
         <div className="product-page">
-            <Header />
             {item ? (
                 <div className="product-details">
                     <h1 className="product-name">{item.name}</h1>

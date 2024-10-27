@@ -37,7 +37,7 @@ const App = () => {
         <Route path="/section/:gameId/:sectionId" element={<Section />} /> 
         <Route path="/payment" element={<Paying/>}/>
         <Route path="/Shop" element={<Shop/>}/>
-        <Route path="/product/:productId" element={<Product />} />
+        <Route path="/product/:name" element={<Product />} />
         <Route path="/Cart" element={<Cart/>}/>
         </Routes>
     </BrowserRouter>

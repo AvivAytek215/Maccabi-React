@@ -10,7 +10,8 @@ const Cart = ({ items, onClose, onEmptyCart }) => {
   const navigate = useNavigate();  // Initialize useNavigate for navigation
 
   const proceedToPayment = () => {
-    navigate("/payment");
+    const string = "shop";
+    navigate("/payment", { state: { string } });
   };
 
   return (

@@ -8,7 +8,7 @@ import { useCountdown } from './countTimeContext';
 
 const PaymentPage = () => {
   const location = useLocation();
-  const {user, totalPrice, gameDetails } = location.state || {};
+  const {user, totalPrice, gameDetails, string } = location.state || {};
   const [showTimeoutAlert, setShowTimeoutAlert] = useState(false); 
   const [showBackButtonAlert, setShowBackButtonAlert] = useState(false);
   const [unselectedSeats, setUnSelectedSeats] = useState([]);
@@ -90,7 +90,17 @@ const PaymentPage = () => {
       updateUnselectedSeats(preservedSelectedSeats);
     }
 
-    navigate('/tickets', { state: { user, selectedSeats: preservedSelectedSeats } });
+    navigate(
+      string === "section" 
+        ? '/tickets' 
+        : '/Shop', 
+      { 
+        state: string === "section" 
+          ? { user, selectedSeats: preservedSelectedSeats } 
+          : { user } 
+      }
+    );
+    
   }, [navigate, updateUnselectedSeats])
 
   const handleTimeoutAlertClose = useCallback(() => {
@@ -269,11 +279,11 @@ const handleSubmit = async (e) => {
     isVisible={showTimeoutAlert}
     onClose={handleTimeoutAlertClose}
   />
-              <CustomAlert 
-        message="Your seat will be free. Are you sure?"
-        isVisible={showBackButtonAlert}
-        onClose={handleBackButtonAlertClose}
-      />
+  <CustomAlert 
+      message={string === "section" ? "Your seat will be free. Are you sure?" : "Continue shopping?"}
+      isVisible={showBackButtonAlert}
+      onClose={handleBackButtonAlertClose}
+    />
     </div>
   );
 };

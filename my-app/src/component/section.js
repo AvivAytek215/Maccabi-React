@@ -226,6 +226,7 @@ const SeatButton = ({ isTaken, seatNumber, isSelected, onSelect }) => (
     //calculate the total price of the order
     const numberOfSeats=selectedSeatsDetails.length;
     const totalPrice =numberOfSeats*section.price;
+    const string = "section";
     //navigate to the payment page with the relevante data
     navigate('/payment', {
       state: {
@@ -238,6 +239,7 @@ const SeatButton = ({ isTaken, seatNumber, isSelected, onSelect }) => (
           awayTeam: game.awayTeam,
           date: game.date,
           section:section,
+          string,
         }
       }
     });

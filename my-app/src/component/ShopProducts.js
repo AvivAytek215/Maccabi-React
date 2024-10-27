@@ -6,22 +6,19 @@ const ProductSquare = ({ item }) => {
     const navigate = useNavigate();  // Initialize useNavigate for navigation
 
     const handleViewProduct = () => {
-        navigate(`/product/${item.id}`, { state: { item } });
+        const trimedName = item.name.trim();
+        navigate(`/product/${trimedName}`, { state: { item } });
     };
 
 return (
-        <div className="square">
+        <div 
+            className="square" 
+            onClick={handleViewProduct} 
+            style={{ cursor: "pointer" }}>
             <img src={item.image} alt={item.name} />
             <div className="square-text">
                 <div className="price">₪{item.price}</div>
                 <div className="description">{item.description}</div>
-
-                <div className="actions-container">
-                    {/* Add to Cart Button */}
-                    <button className="view-product-btn" onClick={handleViewProduct}>
-                        View Product
-                    </button>
-                </div>
             </div>
         </div>
     );
