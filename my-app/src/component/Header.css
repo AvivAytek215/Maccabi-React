@@ -1,5 +1,5 @@
 /* Header.css */
-/* Header.css */
+
 /* Reset and base styles */
 * {
   margin: 0;
@@ -11,47 +11,45 @@
 .header {
   background-color: #004080;
   width: 100%;
-  padding: 10px 20px;
-  position: relative;
+  padding: 25px 100px;
   color: white;
-}
-
-.header-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.header-content {
   display: flex;
-  justify-content: flex-start; /* Aligns all items to the left */
+  justify-content: space-between; /* Aligns items left and right */
   align-items: center;
-  min-height: 60px;
-  padding: 0 5px;
 }
 
-/* Logo Section Styles */
-.header-logos {
+/* Left Section - Hamburger, Team Logo, and Sponsor Logo */
+.header-left {
   display: flex;
   align-items: center;
-  gap: 10px; /* Adjust the gap as needed */
+  gap: 10px;
 }
 
-.team-logo,
-.sponsor-logo {
-  height: 40px;
+.hamburger-menu {
   display: flex;
   align-items: center;
   gap: 1rem;
+  width:auto;
+  margin-top: -10px;
 }
 
-/* Auth Section Styles */
+.sponsor-logo {
+  width: 100px;
+}
+
+.team-logo {
+  height: 50px;
+  width: 50px;
+}
+
+/* Right Section - Login/Profile */
 .auth-section {
-  margin-left: auto; /* Pushes login/profile button to the right */
   display: flex;
   align-items: center;
+  margin-right: -80px;
 }
 
+/* Login Button Styles */
 .login-button {
   background-color: #007BFF;
   color: white;
@@ -67,49 +65,25 @@
   background-color: #0056b3;
 }
 
-.profile-button {
-  color: white;
-  cursor: pointer;
-  padding: 8px 16px;
-  font-size: 16px;
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start on smaller screens */
+    height: auto;
+  }
+
+  .auth-section {
+    align-self: flex-end;
+    margin-top: 10px;
+  }
 }
 
-/* Desktop Navigation Styles */
-.desktop-nav {
-  align-items: center;
-  gap: 1.5rem; 
+.team-name-header{
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-grow: 1;
+  margin-right: 130px;
 }
 
-.nav-link {
-  color: white;
-  text-decoration: none;
-  transition: color 0.3s;
-  font-size: 16px;
-}
-
-.nav-link:hover {
-  color: #007BFF;
-}
-
-
-/* Animation and Transitions */
-.header-content * {
-  transition: all 0.3s ease;
-}
-
-/* Z-index Management */
-.header {
-  z-index: 100;
-  position: relative;
-}
-/* Accessibility */
-.login-button:focus,
-.team-logo:focus {
-  outline: 2px solid #007BFF;
-  outline-offset: 2px;
-}
-
-/* Optional: Add shadow to header */
-.header {
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
