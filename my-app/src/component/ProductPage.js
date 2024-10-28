@@ -2,25 +2,33 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './ProductPage.css';
 
-const ProductPage = ({ onAddToCart }) => {
+const ProductPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { item } = location.state || {};
+    const { item , cartItems} = location.state || {};
+    const [cartItem, setCartItems] = useState(cartItems || []);
     const [counter, setCounter] = useState(1);
     const [showMessage, setShowMessage] = useState(false);
 
-    const handleAddToCart = () => {
-        onAddToCart(item, counter);
-        setShowMessage(true);
-        // Use setTimeout to simulate an asynchronous operation (e.g., API call)
-        setTimeout(() => {
-        setShowMessage(false);
-        // Navigate back to the Shop page, preserving the previous location
-        navigate('/Shop'); 
-    }, 1000);
-  };
+    const handleAddToCart = (item, quantity) => {
+        setCartItems((prevItems) => {
+            const existingItem = prevItems.find((i) => i._id === item._id);
+            if (existingItem) {
+                return prevItems.map((i) =>
+                    i._id === item._id ? { ...i, quantity: i.quantity + quantity } : i
+                );
+            }
+            setShowMessage(true);
+            setTimeout(() => {
+            setShowMessage(false);
+            navigate('/Shop', {state : {quantity} });
+        }, 1000);
+            return [...prevItems, { ...item, quantity }];
+        });
+     };
 
     const handlePlus = () => setCounter(prevCounter => prevCounter + 1);
+    
     const handleMinus = () => {
         if (counter > 1) setCounter(prevCounter => prevCounter - 1);
     };
@@ -40,7 +48,7 @@ const ProductPage = ({ onAddToCart }) => {
                             <span className="counter-value">{counter}</span>
                             <button className="counter-btn" onClick={handlePlus}>+</button>
                         </div>
-                        <button className="add-to-cart-btn" onClick={handleAddToCart}>
+                        <button className="add-to-cart-btn" onClick={() => handleAddToCart(item, counter)}>
                             Add To Cart
                         </button>
                     </div>

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './ShopProducts.css';
 import { useNavigate } from 'react-router';
 
-const ProductSquare = ({ item }) => {
+const ProductSquare = ({ item, cartItems  }) => {
     const navigate = useNavigate();  // Initialize useNavigate for navigation
 
     const handleViewProduct = () => {
         const trimedName = item.name.trim();
         navigate(`/product/${trimedName}`, { state: { item } });
-    };
+    };    
 
 return (
         <div 

@@ -99,16 +99,17 @@
 /* Shadow message styling */
 .shadow-message {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: rgba(0, 0, 0, 0.8);
+    top: 90%;
+    left: 46%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(57, 55, 55, 0.8);
     color: #fff;
-    padding: 10px 20px;
-    border-radius: 4px;
+    padding: 5px 10px; /* Reduced padding for smaller border */
+    border-radius: 2px; /* Smaller border radius */
     font-size: 14px;
     opacity: 0.9;
     animation: fadeInOut 1s;
-}
+  }
 
 @keyframes fadeInOut {
     0% { opacity: 0; transform: translateY(20px); }

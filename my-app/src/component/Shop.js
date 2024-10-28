@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation} from 'react-router-dom';
 import axios from 'axios';
 import './Shop.css';
 import Cart from './Cart';
@@ -55,15 +55,17 @@ const categories = [
 
 const Shop = () => {
     const dropdownRef = useRef(null);
+    const location = useLocation();
+    const { cartItems: initialCartItems, quantity } = location.state || {}; // renamed to initialCartItems
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState(null);
     const [itemsInStore, setItemsInStore] = useState([]);
     const [loading, setLoading] = useState(false);
     const [displayedItems, setDisplayedItems] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItemsState, setCartItemsState] = useState(initialCartItems || []); // renamed to cartItemsState
     const [isCartOpen, setIsCartOpen] = useState(false);
-    const [cartCount, setCartCount] = useState(0);
+    const [cartCount, setCartCount] = useState(initialCartItems ? initialCartItems.length : 0); // Initialize count
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -93,22 +95,16 @@ const Shop = () => {
         setHoveredCategory(null);
     };
 
-    const handleAddToCart = (item, quantity) => {
-        setCartItems((prevItems) => {
-            const existingItem = prevItems.find((i) => i._id === item._id);
-            if (existingItem) {
-                return prevItems.map((i) =>
-                    i._id === item._id ? { ...i, quantity: i.quantity + quantity } : i
-                );
-            }
-            return [...prevItems, { ...item, quantity }];
-        });
-
-        setCartCount((prevCount) => prevCount + quantity);
+    const handleAddToCartItems = () => {
+        if (quantity) {
+            setCartItemsState((prevItems) => [...prevItems, ...Array(quantity).fill({})]); // Update cart items as needed
+            setCartCount((prevCount) => prevCount + quantity); 
+            setIsCartOpen(true); 
+        }
     };
 
     const handleEmptyCart = () => {
-        setCartItems([]);
+        setCartItemsState([]);
         setCartCount(0);
     };
 
@@ -121,23 +117,24 @@ const Shop = () => {
     };
 
     useEffect(() => {
+        handleAddToCartItems();
+    }, [quantity]);
+
+    useEffect(() => {
         const fetchItems = async () => {
             try {
                 setLoading(true);
                 const response = await axios.get('http://localhost:5000/api/items/getAllItems');
                 setItemsInStore(response.data);
-                setLoading(false);
             } catch (err) {
                 console.error('Failed to fetch items');
+                setErrorMessage('Error fetching items. Please try again.');
+            } finally {
                 setLoading(false);
             }
         };
         fetchItems();
     }, []);
-
-    useEffect(() => {
-        console.log('Items in Store:', itemsInStore);
-    }, [itemsInStore]);
 
     useEffect(() => {
         const handleMouseLeave = (e) => {
@@ -150,7 +147,6 @@ const Shop = () => {
         };
 
         document.addEventListener('mousemove', handleMouseLeave);
-
         return () => {
             document.removeEventListener('mousemove', handleMouseLeave);
         };
@@ -193,7 +189,7 @@ const Shop = () => {
                 </div>
             </header>
             {isCartOpen && (
-                <Cart items={cartItems} onClose={closeCartModal} onEmptyCart={handleEmptyCart} />
+                <Cart items={cartItemsState} onClose={closeCartModal} onEmptyCart={handleEmptyCart} />
             )}
             {isMenuOpen && (
                 <div className="menu-overlay" onClick={closeMenuOnClickOutside}>
@@ -237,17 +233,12 @@ const Shop = () => {
                     <h1 className="error">{errorMessage}</h1>
                 </div>
             ) : (
-                <div>
+                <div className="products-grid">
                     {displayedItems.map((item) => (
-                        <div key={item.id}>{/* Render item details here */}</div>
+                        <ProductSquare key={item._id} item={item} cartItems={cartItemsState} />
                     ))}
                 </div>
             )}
-            <div className="products-grid">
-                {displayedItems.map((item) => (
-                    <ProductSquare key={item._id} item={item} onAddToCart={handleAddToCart} />
-                ))}
-            </div>
         </div>
     );
 };
