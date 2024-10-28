@@ -8,7 +8,7 @@ const CustomAlert = ({ message, isVisible, onClose }) => {
     <div className="custom-alert-overlay">
       <div className="custom-alert">
         <p>{message}</p>
-        <button onClick={onClose}>Close</button>
+        <button onClick={onClose}>Go Back</button>
       </div>
     </div>
   );

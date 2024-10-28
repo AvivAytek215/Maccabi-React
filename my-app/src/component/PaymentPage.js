@@ -111,6 +111,7 @@ const PaymentPage = () => {
     resetTimer();
     navigate('/tickets',{state:user});
   }, [navigate,user,resetTimer])
+  
   const handleAlertClose = useCallback(() => {
     setAlertVisible(false);
     if(paymentStatus==='Approved')
@@ -119,23 +120,25 @@ const PaymentPage = () => {
       navigate('/',{state:user});
     }
   }, [navigate,user,resetTimer,paymentStatus])  
-//function to handle ths submit of the form
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setAlertVisible(false);
-  setPaymentStatus('Processing');
-  try {
-    const createTicket = (seat) => {
-      const userData = user.user;
-      return {
-        Userid: userData.ID,
-        gameId: gameDetails.id,
-        seatrow: seat.row,
-        seatnum: seat.number,
-        section: gameDetails.section.id,
+
+  //function to handle ths submit of the form
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setAlertVisible(false);
+    setPaymentStatus('Processing');
+    try {
+      const createTicket = (seat) => {
+        const userData = user.user;
+        return {
+          Userid: userData.ID,
+          gameId: gameDetails.id,
+          seatrow: seat.row,
+          seatnum: seat.number,
+          section: gameDetails.section.id,
+        };
       };
-    };
+    
     const tickets = selectedSeats.map(createTicket);
 
     const response = await axios.post('http://localhost:5000/api/tickets/newTickets', { tickets });
@@ -283,7 +286,7 @@ const handleSubmit = async (e) => {
     onClose={handleTimeoutAlertClose}
   />
   <CustomAlert 
-      message={string === "section" ? "Your seat will be free. Are you sure?" : "Continue shopping?"}
+      message={string === "section" ? "Your seat will be free. Are you sure?" : "Back to shopping?"}
       isVisible={showBackButtonAlert}
       onClose={handleBackButtonAlertClose}
     />
