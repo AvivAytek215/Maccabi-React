@@ -65,6 +65,8 @@ const Shop = () => {
     const [displayedItems, setDisplayedItems] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const [hasCategorySelected, setHasCategorySelected] = useState(false);
+
     const calculateTotalQuantity = (items) => {
         return items ? items.reduce((total, item) => total + (item.quantity || 0), 0) : 0;
     };
@@ -90,6 +92,7 @@ const Shop = () => {
     };
 
     const handleSubCategoryClick = (categoryName, subCategoryName) => {
+        setHasCategorySelected(true);
         const filteredItems = itemsInStore.filter(
             (item) => item.category === categoryName && item.subcategory === subCategoryName
         );
@@ -212,7 +215,7 @@ const Shop = () => {
                 {hoveredCategory && (
                     <div className="dropdown-menu" ref={dropdownRef}>
                         {categories.find((cat) => cat.id === hoveredCategory)?.items.map((item, index) => (
-                            <div key={index} className="subcategory">
+                            <div key={index} className="subcategory" style={{ cursor : 'default' }}>
                                 {item.name}
                                 <div className="sub-subcategories">
                                     {item.subItems.map((subItem, subIndex) => (
@@ -231,6 +234,12 @@ const Shop = () => {
                     </div>
                 )}
             </span>
+            {!hasCategorySelected && (
+                <div className="shop-display-message">
+                    <img className="shop-image" src={'/Photos/online-store.png'} alt="online shop"></img>
+                    <h1 className="welcome-message">Hello and welcome to our shop, hope you will enjoy our staff!</h1>
+                </div>
+            )}
             {errorMessage ? (
                 <div className="error-container">
                     <img className="error-image" src={'/Photos/error.png'} alt="Error" />
