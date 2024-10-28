@@ -6,8 +6,7 @@ const ProductSquare = ({ item, cartItems  }) => {
     const navigate = useNavigate();  // Initialize useNavigate for navigation
 
     const handleViewProduct = () => {
-        const trimedName = item.name.trim();
-        navigate(`/product/${trimedName}`, { state: { item } });
+        navigate(`/product/${item.name}`, { state: { item,cartItems } });
     };    
 
 return (

@@ -28,7 +28,7 @@
   align-items: center;
   position: relative;
   min-height: 60px;
-  padding: 0 15px;
+  padding: 0 5px;
 }
 
 /* Logo Section Styles */
@@ -40,6 +40,7 @@
 }
 
 .team-logo {
+  padding-left: 100px;
   height: 40px;
   cursor: pointer;
   transition: opacity 0.3s;
@@ -49,17 +50,9 @@
   opacity: 0.8;
 }
 
-.sponser-logo {
-  height: 30px;
-}
-
-/* Mobile Menu Styles */
-.mobile-menu {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  display: flex;
+.sponsor-logo {
+  padding-right: 20px;
+  height: 40px;
 }
 
 /* Auth Section Styles */
@@ -94,9 +87,10 @@
 
 /* Desktop Navigation Styles */
 .desktop-nav {
-  display: none;
+  left:0px;
+  margin-bottom:20px;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem; 
 }
 
 .nav-link {
@@ -110,61 +104,6 @@
   color: #007BFF;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .header-content {
-      padding: 5px 10px;
-  }
-
-  .team-logo {
-      height: 30px;
-  }
-
-  .sponser-logo {
-      height: 25px;
-  }
-
-  .login-button {
-      padding: 6px 12px;
-      font-size: 14px;
-  }
-
-  .header-logos {
-      gap: 10px;
-  }
-}
-
-/* Tablet and smaller screens */
-@media (max-width: 1023px) {
-  .mobile-menu {
-      display: block;
-  }
-
-  .desktop-nav {
-      display: none;
-  }
-
-  .header-content {
-      justify-content: space-between;
-  }
-}
-
-/* Desktop screens */
-@media (min-width: 1024px) {
-  .mobile-menu {
-      display: none;
-  }
-
-  .desktop-nav {
-      display: flex;
-  }
-
-  .header-content {
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-  }
-}
 
 /* Animation and Transitions */
 .header-content * {
@@ -176,11 +115,6 @@
   z-index: 100;
   position: relative;
 }
-
-.mobile-menu {
-  z-index: 1001;
-}
-
 /* Accessibility */
 .login-button:focus,
 .team-logo:focus {
@@ -191,15 +125,4 @@
 /* Optional: Add shadow to header */
 .header {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* Fix for mobile menu positioning */
-@media (max-width: 1023px) {
-  .mobile-menu {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 50%;
-      margin-top: -15px; /* Half of the hamburger height */
-  }
 }

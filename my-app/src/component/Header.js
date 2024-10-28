@@ -29,11 +29,12 @@ const Header = ({ isLoggedIn }) => {
                         />
                         <img
                             src={`${process.env.PUBLIC_URL}/Photos/sponsor.png`} 
-                            className="sponser-logo"
+                            className="sponsor-logo"
+                            alt="sponsor logo"
                         />
                         
                     </div>
-                    <div className="mobile-menu">
+                    <div className="desktop-nav">
                         <HamburgerMenu/>
                     </div>
 

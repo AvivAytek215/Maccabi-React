@@ -5,6 +5,7 @@ import './Shop.css';
 import Cart from './Cart';
 import ProductSquare from './ShopProducts';
 import HamburgerBar from './HamburgerBar';
+import Loading from './Loading';
 
 const categories = [
     { id: 1, name: 'Kits' ,
@@ -56,16 +57,23 @@ const categories = [
 const Shop = () => {
     const dropdownRef = useRef(null);
     const location = useLocation();
-    const { cartItems: initialCartItems, quantity } = location.state || {}; // renamed to initialCartItems
+    const { cartItems:initialCartItems,quantity,items: receivedCartItems } = location.state || {}; // renamed to initialCartItems
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState(null);
     const [itemsInStore, setItemsInStore] = useState([]);
     const [loading, setLoading] = useState(false);
     const [displayedItems, setDisplayedItems] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-    const [cartItemsState, setCartItemsState] = useState(initialCartItems || []); // renamed to cartItemsState
     const [isCartOpen, setIsCartOpen] = useState(false);
-    const [cartCount, setCartCount] = useState(initialCartItems ? initialCartItems.length : 0); // Initialize count
+    const calculateTotalQuantity = (items) => {
+        return items ? items.reduce((total, item) => total + (item.quantity || 0), 0) : 0;
+    };
+    const [cartItemsState, setCartItemsState] = useState(() => {
+        return initialCartItems || receivedCartItems;
+    });
+    
+    // Initialize cart count with total quantity
+    const [cartCount, setCartCount] = useState(calculateTotalQuantity(cartItemsState));// Initialize count
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -94,15 +102,6 @@ const Shop = () => {
         }
         setHoveredCategory(null);
     };
-
-    const handleAddToCartItems = () => {
-        if (quantity) {
-            setCartItemsState((prevItems) => [...prevItems, ...Array(quantity).fill({})]); // Update cart items as needed
-            setCartCount((prevCount) => prevCount + quantity); 
-            setIsCartOpen(true); 
-        }
-    };
-
     const handleEmptyCart = () => {
         setCartItemsState([]);
         setCartCount(0);
@@ -117,9 +116,14 @@ const Shop = () => {
     };
 
     useEffect(() => {
+        const handleAddToCartItems = () => {
+            if (quantity) {
+                setCartItemsState(initialCartItems); 
+                setIsCartOpen(true); 
+            }
+        };
         handleAddToCartItems();
-    }, [quantity]);
-
+    }, []);
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -153,7 +157,7 @@ const Shop = () => {
     }, [dropdownRef]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div><Loading/></div>;
     }
 
     return (

@@ -1,31 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './ProductPage.css';
 
 const ProductPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { item , cartItems} = location.state || {};
-    const [cartItem, setCartItems] = useState(cartItems || []);
+    const { item, cartItems: initialCartItems } = location.state || {};
+    const [cartItems, setCartItems] = useState(initialCartItems || []); // Fixed naming
     const [counter, setCounter] = useState(1);
     const [showMessage, setShowMessage] = useState(false);
 
     const handleAddToCart = (item, quantity) => {
-        setCartItems((prevItems) => {
-            const existingItem = prevItems.find((i) => i._id === item._id);
-            if (existingItem) {
-                return prevItems.map((i) =>
-                    i._id === item._id ? { ...i, quantity: i.quantity + quantity } : i
-                );
-            }
-            setShowMessage(true);
-            setTimeout(() => {
-            setShowMessage(false);
-            navigate('/Shop', {state : {quantity} });
-        }, 1000);
-            return [...prevItems, { ...item, quantity }];
+        setCartItems(prevCartItems => {
+            const existingItem = prevCartItems.find((i) => i._id === item._id);
+            const newCartItems = existingItem
+                ? prevCartItems.map((i) =>
+                    i._id === item._id 
+                        ? { ...i, quantity: i.quantity + quantity }
+                        : i
+                )
+                : [...prevCartItems, { ...item, quantity }];
+            return newCartItems;
         });
-     };
+
+        setShowMessage(true);
+    };
+
+    // Use useEffect to handle navigation after state update
+    useEffect(() => {
+        if (showMessage) {
+            const timer = setTimeout(() => {
+                setShowMessage(false);
+                navigate('/Shop', { 
+                    state: { 
+                        cartItems, // Now this will have the updated value
+                        quantity: counter
+                    } 
+                });
+            }, 1000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [showMessage, cartItems, counter, navigate]);
 
     const handlePlus = () => setCounter(prevCounter => prevCounter + 1);
     
@@ -33,6 +49,7 @@ const ProductPage = () => {
         if (counter > 1) setCounter(prevCounter => prevCounter - 1);
     };
 
+    // Rest of your component remains the same...
     return (
         <div className="product-page">
             {item ? (

@@ -8,7 +8,7 @@ import { useCountdown } from './countTimeContext';
 
 const PaymentPage = () => {
   const location = useLocation();
-  const {user, totalPrice, gameDetails, string } = location.state || {};
+  const {user, totalPrice, gameDetails, string ,items} = location.state || {};
   const [showTimeoutAlert, setShowTimeoutAlert] = useState(false); 
   const [showBackButtonAlert, setShowBackButtonAlert] = useState(false);
   const [unselectedSeats, setUnSelectedSeats] = useState([]);
@@ -27,11 +27,15 @@ const PaymentPage = () => {
   const [paymentStatus, setPaymentStatus] = useState('DisApproved');
   const { timeLeft, formatTime,resetTimer } = useCountdown();
   const navigate=useNavigate();
-  const stateRef = useRef({ user, totalPrice, selectedSeats, gameDetails });
-  console.log(selectedSeats)
     useEffect(() => {
-    stateRef.current = { user, totalPrice, selectedSeats :selectedSeats || [], gameDetails };
-  }, [user, totalPrice, selectedSeats, gameDetails]);
+    if (items) {
+      localStorage.setItem('cartItems', JSON.stringify(items));
+    }
+  }, [items]);
+  const stateRef = useRef({ user, totalPrice, selectedSeats, gameDetails,items:items || JSON.parse(localStorage.getItem('cartItems')) || [] });
+    useEffect(() => {
+    stateRef.current = { user, totalPrice, selectedSeats :selectedSeats || [], gameDetails,items };
+  }, [user, totalPrice, selectedSeats, gameDetails,items]);
 
   const updateUnselectedSeats = useCallback(async () => {
     if (unselectedSeats.length === 0) return; // Don't update if no seats are selected
@@ -61,18 +65,18 @@ const PaymentPage = () => {
 
  
   useEffect(() => {
-    stateRef.current = { user, totalPrice, selectedSeats, gameDetails };
-  }, [user, totalPrice, selectedSeats, gameDetails]);
+    stateRef.current = { user, totalPrice, selectedSeats, gameDetails ,items};
+  }, [user, totalPrice, selectedSeats, gameDetails,items]);
 
   useEffect(() => {
     const handleBackButton = (event) => {
       event.preventDefault();
       setUnSelectedSeats(stateRef.current.selectedSeats || []);
       setShowBackButtonAlert(true);
-      window.history.pushState({ ...stateRef.current, backButtonPressed: true }, '');
+      window.history.pushState({ ...stateRef.current, backButtonPressed: true,items: stateRef.current.items }, '');
     };
 
-    window.history.pushState({ ...stateRef.current, backButtonPressed: false }, '');
+    window.history.pushState({ ...stateRef.current, backButtonPressed: false,items: stateRef.current.items }, '');
     window.addEventListener('popstate', handleBackButton);
 
     return () => {
@@ -83,13 +87,12 @@ const PaymentPage = () => {
   const handleBackButtonAlertClose = useCallback(() => {
     setShowBackButtonAlert(false);
     const preservedState = window.history.state || {};
-    const { user, selectedSeats: preservedSelectedSeats } = preservedState;
-
+    const currentItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const { user, selectedSeats: preservedSelectedSeats} = preservedState;
     if (preservedSelectedSeats) {
       setSelectedSeats(preservedSelectedSeats);
       updateUnselectedSeats(preservedSelectedSeats);
     }
-
     navigate(
       string === "section" 
         ? '/tickets' 
@@ -97,11 +100,11 @@ const PaymentPage = () => {
       { 
         state: string === "section" 
           ? { user, selectedSeats: preservedSelectedSeats } 
-          : { user } 
+          : { user,items:currentItems } 
       }
     );
     
-  }, [navigate, updateUnselectedSeats])
+  }, [navigate, updateUnselectedSeats,string])
 
   const handleTimeoutAlertClose = useCallback(() => {
     setShowTimeoutAlert(false);

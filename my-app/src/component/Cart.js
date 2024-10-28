@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Cart.css';
 
@@ -6,12 +6,19 @@ const Cart = ({ items, onClose, onEmptyCart }) => {
   // Calculate total quantity and total price
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
+  const [message,setMessage]=useState("");
   const navigate = useNavigate();  // Initialize useNavigate for navigation
 
   const proceedToPayment = () => {
-    const string = "shop";
-    navigate("/payment", { state: { string } });
+    if(items.length)
+    {
+      const string = "shop";
+      navigate("/payment", { state: { string,items } });
+    }
+    else{
+     setMessage("Please Pick Items Before Proceeding");
+    }
+
   };
 
   return (
@@ -51,6 +58,11 @@ const Cart = ({ items, onClose, onEmptyCart }) => {
             Empty Cart
           </button>
         </div>
+        {!totalQuantity && (
+                <div className="Error-message">
+                    {message}
+                </div>
+            )}
       </div>
     </div>
   );
