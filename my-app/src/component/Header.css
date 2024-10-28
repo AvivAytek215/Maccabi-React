@@ -24,9 +24,8 @@
 
 .header-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* Aligns all items to the left */
   align-items: center;
-  position: relative;
   min-height: 60px;
   padding: 0 5px;
 }
@@ -35,32 +34,22 @@
 .header-logos {
   display: flex;
   align-items: center;
-  gap: 20px;
-  z-index: 2;
+  gap: 10px; /* Adjust the gap as needed */
 }
 
-.team-logo {
-  padding-left: 100px;
-  height: 40px;
-  cursor: pointer;
-  transition: opacity 0.3s;
-}
-
-.team-logo:hover {
-  opacity: 0.8;
-}
-
+.team-logo,
 .sponsor-logo {
-  padding-right: 20px;
   height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 /* Auth Section Styles */
 .auth-section {
+  margin-left: auto; /* Pushes login/profile button to the right */
   display: flex;
   align-items: center;
-  margin-left: auto;
-  z-index: 2;
 }
 
 .login-button {
@@ -87,8 +76,6 @@
 
 /* Desktop Navigation Styles */
 .desktop-nav {
-  left:0px;
-  margin-bottom:20px;
   align-items: center;
   gap: 1.5rem; 
 }

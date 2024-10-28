@@ -27,11 +27,15 @@ const PaymentPage = () => {
   const [paymentStatus, setPaymentStatus] = useState('DisApproved');
   const { timeLeft, formatTime,resetTimer } = useCountdown();
   const navigate=useNavigate();
-    useEffect(() => {
+
+  const cameFromShop = location.state?.fromShop || false;; // Check if the user came from "/Shop"
+
+  useEffect(() => {
     if (items) {
       localStorage.setItem('cartItems', JSON.stringify(items));
     }
   }, [items]);
+  
   const stateRef = useRef({ user, totalPrice, selectedSeats, gameDetails,items:items || JSON.parse(localStorage.getItem('cartItems')) || [] });
     useEffect(() => {
     stateRef.current = { user, totalPrice, selectedSeats :selectedSeats || [], gameDetails,items };
@@ -55,8 +59,9 @@ const PaymentPage = () => {
   useEffect(() => {
     updateUnselectedSeats();
   }, [updateUnselectedSeats]);
+  
   useEffect(() => {
-    if (timeLeft <= 0){
+    if (!cameFromShop && timeLeft <= 0){ // Only update seats if not coming from "/Shop"
       setUnSelectedSeats(stateRef.selectedSeats|| []);
       updateUnselectedSeats(unselectedSeats);
       setShowTimeoutAlert(true);
@@ -167,9 +172,9 @@ const PaymentPage = () => {
 
   return (
     <div className="payment-page">
-      <div className="countdown-timer">
+      {!cameFromShop && !showBackButtonAlert && <div className="countdown-timer">
         Time left: {formatTime(timeLeft)}
-      </div>
+      </div> }
       <h2>Payment Details</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

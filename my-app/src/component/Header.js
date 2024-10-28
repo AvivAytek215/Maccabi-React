@@ -21,6 +21,9 @@ const Header = ({ isLoggedIn }) => {
                 <div className="header-content">
                     {/* Left side - Logos */}
                     <div className="header-logos">
+                        <div className="desktop-nav">
+                            <HamburgerMenu/>
+                        </div>
                         <img
                             src={`${process.env.PUBLIC_URL}/Photos/Maccabi React.png`}
                             alt="Team Logo"
@@ -33,9 +36,6 @@ const Header = ({ isLoggedIn }) => {
                             alt="sponsor logo"
                         />
                         
-                    </div>
-                    <div className="desktop-nav">
-                        <HamburgerMenu/>
                     </div>
 
                     {/* Right side - Login/Profile */}

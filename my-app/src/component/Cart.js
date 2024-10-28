@@ -13,7 +13,8 @@ const Cart = ({ items, onClose, onEmptyCart }) => {
     if(items.length)
     {
       const string = "shop";
-      navigate("/payment", { state: { string,items } });
+      const fromShop = true;
+      navigate("/payment", { state: { string, items, fromShop } });
     }
     else{
      setMessage("Please Pick Items Before Proceeding");
