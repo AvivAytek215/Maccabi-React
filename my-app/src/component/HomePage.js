@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './HomePage.css';  
-import LoadingSpinner from './Loading';  
-import HamburgerBar from './HamburgerBar';  
+import LoadingSpinner from './Loading';   
+import Player from './Player';
 
 const HomePage = () => {
   const navigate = useNavigate();  // Navigation hook
@@ -15,11 +15,10 @@ const HomePage = () => {
   const [trophyLoading, setTrophyLoading] = useState(true);  // Loading state for fetching trophies
   const [currentYear, setCurrentYear] = useState(1948);  // Slider for the year, starting at the founding year
   const [displayedTrophies, setDisplayedTrophies] = useState({});  // Displayed trophies based on the slider
-  const [sliderPosition, setSliderPosition] = useState(0);  // State for tracking the slider thumb position
   const [message, setMessage] = useState('');  // Error message state
-
-  const startYear = 1948;  // Club founding year
-  const endYear = new Date().getFullYear();  // Current year
+   const [value, setValue] = useState(1948);  // State for tracking the slider thumb position
+    const min = 1948;// Club founding year
+    const max = 2024; // Current year
   //thropy max values for the sliding
   const trophyMaxValues = {
     'Champions League': 22,
@@ -32,11 +31,13 @@ const HomePage = () => {
   //animated proccess bar
   const AnimatedProgress = ({ value }) => {
     return (
+      <div className="progress-wrapper">
       <div className="progress-container">
         <div 
           className="progress-bar"
           style={{ width: `${value}%` }}
         />
+      </div>
       </div>
     );
   };
@@ -105,16 +106,15 @@ const HomePage = () => {
     setDisplayedTrophies(updatedTrophies);  // Update the displayed trophies based on the current year
   }, [currentYear, trophies]);
 
-  // Adjust the slider's thumb position dynamically
-  const handleSliderChange = (e) => {
-    const value = Number(e.target.value);
-    setCurrentYear(value);
-    
-    // Calculate thumb position in percentage
-    const sliderWidth = e.target.offsetWidth;
-    const thumbPosition = ((value - startYear) / (endYear - startYear)) * sliderWidth;
-    setSliderPosition(thumbPosition);  // Update thumb position for styling
-  };
+    const handleSliderChange = (e) => {
+      setValue(parseInt(e.target.value));
+      setCurrentYear(value);
+    };
+  
+    const calculateProgress = () => {
+      return ((value - min) / (max - min)) * 100;
+    };
+
 
   if (loading) {
     return <div><LoadingSpinner /></div>;
@@ -165,7 +165,7 @@ const HomePage = () => {
               <h3>{type.name}</h3>
               <div className="trophy-progress">
                 <p>{currentValue}</p>
-                <AnimatedProgress value={percentage} className="w-[60%]" />
+                <AnimatedProgress value={percentage} className="w" />
               </div>
             </div>
           );
@@ -173,26 +173,35 @@ const HomePage = () => {
       </div>
     </div>
 
-              {/* Year Slider */}
-              <div className="year-slider-wrapper">
-                {/* Slider input */}
-                <input
-                  type="range"
-                  min={startYear}
-                  max={endYear}
-                  value={currentYear}
-                  onChange={handleSliderChange}
-                  className="year-slider"
-                />
-                
-                {/* Year displayed above the slider thumb */}
-                <div className="slider-thumb-label" style={{ left: `${sliderPosition}px` }}>
-                  {currentYear}
-                </div>
-              </div>
+    <div className="slider-container">
+      <div className="slider-wrapper">
+        <div 
+          className="slider-track"
+          style={{
+            background: `linear-gradient(to right, 
+              #007BFF ${calculateProgress()}%, 
+              #E5E7EB ${calculateProgress()}%)`
+          }}
+        />
+        <input
+          type="range"
+          min={min}
+          max={max}
+          value={value}
+          onChange={handleSliderChange}
+          className="year-slider"
+        />
+      </div>
+      <div className="year-display">
+        Year: {value}
+      </div>
+    </div>
             </div>
           )}
+          
         </section>
+       <h1 >Our Players</h1> 
+        <div><Player/></div>
       </main>
     </div>
   );

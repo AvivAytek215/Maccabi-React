@@ -198,21 +198,23 @@ header {
 }
 
 .trophy-item {
+    position: relative;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 200px;  /* Fixed width for consistency */
+    height: 230px; /* Fixed height for consistency */
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #ffffff;
-    /* border: 1px solid #0a1d54; */
-    padding: 15px;
-    width: 150px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .trophy-item h3 {
-    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
     color: #0a1d54;
-    margin-top: 10px;
 }
 
 .trophy-item p {
@@ -221,16 +223,22 @@ header {
 }
 
 .trophy-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-    object-fit: contain;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 0.5rem;
 }
 /*progress bar*/
+.progress-wrapper {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    width: calc(100% - 2rem); /* Account for left and right padding */
+  }
 
 .progress-container {
     width: 100%;
-    height: 20px;
+    height: 10px;
     background-color: #e5e7eb;
     border-radius: 10px;
     overflow: hidden;
@@ -241,66 +249,74 @@ header {
 .progress-bar {
     height: 100%;
     background: linear-gradient(90deg, #0a1d54, #007BFF);
-    border-radius: 10px;
     transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
 }
 
-.progress-bar::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-        90deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.2) 50%,
-        rgba(255,255,255,0) 100%
-    );
-    animation: shimmer 2s infinite;
-}
-
-/* Year Slider */
-.year-slider-wrapper {
+.slider-container {
+    width: 100%;
+    padding: 2rem 1rem;
+  }
+  
+  .slider-wrapper {
     position: relative;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.year-slider {
+  }
+  
+  .slider-track {
+    position: absolute;
+    top: 50%;
     width: 100%;
-    margin: 0;
-    padding: 0;
-    appearance: none;
-    background: #007BFF;
     height: 8px;
+    transform: translateY(-50%);
     border-radius: 4px;
+  }
+  
+  .year-slider {
+    position: relative;
+    width: 100%;
+    height: 8px;
+    background: transparent;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+  }
+  
+  .year-slider:focus {
     outline: none;
-    transition: opacity 0.2s;
-}
-
-.year-slider::-webkit-slider-thumb {
+  }
+  
+  .year-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
     appearance: none;
     width: 24px;
     height: 24px;
     border-radius: 50%;
     background: #0a1d54;
     cursor: pointer;
-}
-
-.year-slider::-moz-range-thumb {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .year-slider::-moz-range-thumb {
     width: 24px;
     height: 24px;
     border-radius: 50%;
     background: #0a1d54;
     cursor: pointer;
-}
+    position: relative;
+    z-index: 2;
+    border: none;
+  }
+  
+  .year-display {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
 
 /* Slider Year Display Above Thumb */
 .slider-thumb-label {

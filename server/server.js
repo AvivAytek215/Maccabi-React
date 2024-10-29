@@ -11,6 +11,7 @@ const GetGameById=require('./routes/GameById');
 const GetAllTrophies=require('./routes/GetAllTrophies');
 const Tickets=require('./routes/tickets');
 const Items=require('./routes/Items');
+const Players=require('./routes/Player');
 // Load environment variables
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.use('/Photos', express.static('Photos'));
 app.use('/api/tickets',Tickets);
 app.use('/api/items', Items);
 app.use('/api/alltrophies',GetAllTrophies);
+app.use('/api/Players',Players);
 
 
 const PORT = 5000;

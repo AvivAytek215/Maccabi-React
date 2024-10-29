@@ -34,6 +34,9 @@ const HamburgerBar = ({ user }) => {
               &times;  {/* Unicode for the close 'X' icon */}
             </button>
             <nav className="menu-links">
+            <Link to="/" state={{ user: user }} onClick={toggleMenu}>
+                Home
+              </Link>
               <Link to="/Tickets" state={{ user: user }} onClick={toggleMenu}>
                 Tickets
               </Link>

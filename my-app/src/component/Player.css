@@ -1,0 +1,68 @@
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .position-section {
+    margin-bottom: 2rem;
+  }
+  
+  .position-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0a1d54;
+    padding: 1rem 0;
+    border-bottom: 2px solid #e5e7eb;
+    margin-bottom: 1.5rem;
+  }
+  
+  .players-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .player-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .player-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .player-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+  }
+  
+  .player-info {
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+  
+  .player-number {
+    padding-left: 30px;
+    text-align: center;
+    font-weight: 600;
+    color: #4b5563;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
+  } 
+ .container {
+      padding: 10px;
+}
