@@ -11,7 +11,7 @@ const PlayerGrid = () => {
     const fetchPlayers = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:5000/api/players/allPlayers');
+        const response = await fetch('http://localhost:5000/api/Players/allPlayers');
         const data = await response.json();
         setPlayers(data);
       } catch (error) {
