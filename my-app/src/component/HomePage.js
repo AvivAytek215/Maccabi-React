@@ -5,21 +5,26 @@ import LoadingSpinner from './Loading';
 import Player from './Player';
 
 const HomePage = () => {
-  const navigate = useNavigate();  // Navigation hook
-  const location = useLocation();  // Hook to get the current location
-  const { user } = location.state || {};  // Extract the user if available from location
+  const navigate = useNavigate();  // Hook for navigating to different routes
+  const location = useLocation();  // Hook for accessing route location data
+  const { user } = location.state || {};  // Extract user data if available
 
-  const [nextMatch, setNextMatch] = useState(null);  // State for storing the next match
-  const [loading, setLoading] = useState(true);  // Loading state for fetching matches
-  const [trophies, setTrophies] = useState([]);  // State for storing trophies
-  const [trophyLoading, setTrophyLoading] = useState(true);  // Loading state for fetching trophies
-  const [currentYear, setCurrentYear] = useState(1948);  // Slider for the year, starting at the founding year
-  const [displayedTrophies, setDisplayedTrophies] = useState({});  // Displayed trophies based on the slider
-  const [message, setMessage] = useState('');  // Error message state
-   const [value, setValue] = useState(1948);  // State for tracking the slider thumb position
-    const min = 1948;// Club founding year
-    const max = 2024; // Current year
-  //thropy max values for the sliding
+  // State variables to manage data and UI states
+  const [nextMatch, setNextMatch] = useState(null);  // Stores the next match details
+  const [loading, setLoading] = useState(true);  // Indicates if next match data is being loaded
+  const [trophies, setTrophies] = useState([]);  // Stores the trophies data
+  const [trophyLoading, setTrophyLoading] = useState(true);  // Indicates if trophies data is being loaded
+  const [currentYear, setCurrentYear] = useState(1948);  // Year slider value, starting from the club's founding year
+  const [displayedTrophies, setDisplayedTrophies] = useState({});  // Trophies count displayed based on the selected year
+  const [message, setMessage] = useState('');  // Error message for next match fetch issues
+  const [value, setValue] = useState(1948);  // Value of the year slider, from 1948 to present year
+  const [articles, setArticles] = useState([]); // Stores the fetched articles
+
+  // Define minimum and maximum years for the year slider
+  const min = 1948; // Club founding year
+  const max = 2024; // Current year
+  
+  // Maximum values for each trophy type, used to calculate progress percentages
   const trophyMaxValues = {
     'Champions League': 22,
     'Israeli Premier League': 20,
@@ -28,20 +33,22 @@ const HomePage = () => {
     'Club World Cup': 6,
     'UEFA Super Cup': 7
   };
-  //animated proccess bar
+
+  // Component for the animated progress bar in the trophy display
   const AnimatedProgress = ({ value }) => {
     return (
       <div className="progress-wrapper">
-      <div className="progress-container">
-        <div 
-          className="progress-bar"
-          style={{ width: `${value}%` }}
-        />
-      </div>
+        <div className="progress-container">
+          <div 
+            className="progress-bar"
+            style={{ width: `${value}%` }}
+          />
+        </div>
       </div>
     );
   };
-  // Trophy types with image paths for the icons
+
+  // Trophy types, each with a specific image path for the icon
   const trophyTypes = [
     { name: 'Champions League', icon:`${process.env.PUBLIC_URL}/Photos/Cups/championsCup.png` },
     { name: 'Israeli Premier League', icon: `${process.env.PUBLIC_URL}/Photos/Cups/LeaguePlate.png` },
@@ -51,71 +58,88 @@ const HomePage = () => {
     { name: 'UEFA Super Cup', icon: `${process.env.PUBLIC_URL}/Photos/Cups/UEFACup.png` }
   ];
 
-  // Fetch upcoming match
+  // Fetch the upcoming match data when the component mounts
   useEffect(() => {
     const fetchNextGame = async () => {
       try {
+        // Fetching next match from API
         const response = await fetch('http://localhost:5000/api/Games/upcoming');
         const data = await response.json();
         if (data.message === 'No upcoming games found') {
-          setMessage(data.message);
+          setMessage(data.message);  // Set message if no match found
         } else {
-          setNextMatch(data);
+          setNextMatch(data);  // Update state with match data
         }
-        setLoading(false);
+        setLoading(false);  // Set loading to false once data is fetched
       } catch (error) {
-        setMessage('Error fetching next match');
-        setLoading(false);
+        setMessage('Error fetching next match');  // Error message if fetch fails
+        setLoading(false);  // Stop loading state
       }
     };
     fetchNextGame();
   }, []);
 
-  // Fetch all trophies
+  // Fetch all trophies data when the component mounts
   useEffect(() => {
     const fetchTrophies = async () => {
       try {
+        // Fetching trophies from API
         const response = await fetch('http://localhost:5000/api/alltrophies/alltrophies');
         const data = await response.json();
-        setTrophies(data);
-        setTrophyLoading(false);
+        setTrophies(data);  // Update state with trophies data
+        setTrophyLoading(false);  // Stop loading state
       } catch (error) {
         console.error('Error fetching trophies:', error);
-        setTrophyLoading(false);
+        setTrophyLoading(false);  // Stop loading state on error
       }
     };
     fetchTrophies();
   }, []);
 
-  // Update displayed trophies based on the current year
+  // Fetch all articles data when the component mounts
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        // Fetching articles from API
+        const response = await fetch('http://localhost:5000/api/allreports/allreports');
+        const data = await response.json();
+        // Sort articles by date in descending order (newest first)
+        setArticles(data.sort((a, b) => new Date(b.date) - new Date(a.date))); 
+      } catch (error) {
+        console.error('Error fetching articles:', error);
+      }
+    };
+    fetchArticles();
+  }, []);
+
+  // Update displayed trophies based on the selected year (currentYear)
   useEffect(() => {
     const updatedTrophies = {};
-    
-    // Initialize the trophy count to zero for all types
+    // Initialize trophies count to zero
     trophyTypes.forEach((type) => {
       updatedTrophies[type.name] = 0;
     });
-
-    // Count the trophies received up to the current year
+    // Count trophies up to the selected year
     trophies.forEach((trophy) => {
       if (parseInt(trophy.yearReceived) <= currentYear) {
         updatedTrophies[trophy.competitionName] += 1;
       }
     });
-
-    setDisplayedTrophies(updatedTrophies);  // Update the displayed trophies based on the current year
+    setDisplayedTrophies(updatedTrophies);  // Update displayed trophies
   }, [currentYear, trophies]);
 
-    const handleSliderChange = (e) => {
-      setValue(parseInt(e.target.value));
-      setCurrentYear(value);
-    };
-  
-    const calculateProgress = () => {
-      return ((value - min) / (max - min)) * 100;
-    };
+  // Handle slider change to update the year and slider thumb position
+  const handleSliderChange = (e) => {
+    setValue(parseInt(e.target.value));
+    setCurrentYear(parseInt(e.target.value));
+  };
 
+  // Calculate progress percentage for the slider track based on current year
+  const calculateProgress = () => {
+    return ((value - min) / (max - min)) * 100;
+  };
 
+  // Display loading spinner while data is being fetched
   if (loading) {
     return <div><LoadingSpinner /></div>;
   }
@@ -140,7 +164,7 @@ const HomePage = () => {
               </div>
             </div>
           ) : (
-            <p>{message}</p>
+            <p>{message}</p>  // Display message if no match found or error
           )}
         </section>
 
@@ -148,66 +172,76 @@ const HomePage = () => {
         <section className="legendary-track-record">
           <h2>A Legendary Track Record</h2>
           {trophyLoading ? (
-            <div><LoadingSpinner /></div>
+            <div><LoadingSpinner /></div>  // Show spinner if trophies are loading
           ) : (
             <div>
-   <div>
-      <div className="trophy-grid">
-        {trophyTypes.map((type) => {
-          // Calculate percentage
-          const currentValue = displayedTrophies[type.name] || 0;
-          const maxValue = trophyMaxValues[type.name];
-          const percentage = (currentValue / maxValue) * 100;
+              {/* Trophy Grid */}
+              <div className="trophy-grid">
+                {trophyTypes.map((type) => {
+                  const currentValue = displayedTrophies[type.name] || 0;  // Current count of trophies
+                  const maxValue = trophyMaxValues[type.name];  // Maximum value for trophy type
+                  const percentage = (currentValue / maxValue) * 100;  // Calculate progress percentage
+                  return (
+                    <div key={type.name} className="trophy-item">
+                      <img src={type.icon} alt={`${type.name} Icon`} className="trophy-icon" />
+                      <h3>{type.name}</h3>
+                      <div className="trophy-progress">
+                        <p>{currentValue}</p>
+                        <AnimatedProgress value={percentage} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
-          return (
-            <div key={type.name} className="trophy-item">
-              <img src={type.icon} alt={`${type.name} Icon`} className="trophy-icon" />
-              <h3>{type.name}</h3>
-              <div className="trophy-progress">
-                <p>{currentValue}</p>
-                <AnimatedProgress value={percentage} className="w" />
+              {/* Year Slider */}
+              <div className="slider-container">
+                <div className="slider-wrapper">
+                  <div 
+                    className="slider-track"
+                    style={{
+                      background: `linear-gradient(to right, #007BFF ${calculateProgress()}%, #E5E7EB ${calculateProgress()}%)`
+                    }}
+                  />
+                  <input
+                    type="range"
+                    min={min}
+                    max={max}
+                    value={value}
+                    onChange={handleSliderChange}
+                    className="year-slider"
+                  />
+                </div>
+                <div className="year-display">
+                  Year: {value}
+                </div>
               </div>
             </div>
-          );
-        })}
-      </div>
-    </div>
-
-    <div className="slider-container">
-      <div className="slider-wrapper">
-        <div 
-          className="slider-track"
-          style={{
-            background: `linear-gradient(to right, 
-              #007BFF ${calculateProgress()}%, 
-              #E5E7EB ${calculateProgress()}%)`
-          }}
-        />
-        <input
-          type="range"
-          min={min}
-          max={max}
-          value={value}
-          onChange={handleSliderChange}
-          className="year-slider"
-        />
-      </div>
-      <div className="year-display">
-        Year: {value}
-      </div>
-    </div>
-            </div>
           )}
-          
         </section>
-       <h1 >Our Players</h1> 
+
+        {/* Player Component */}
+        <h1>Our Players</h1> 
         <div><Player/></div>
+
+        {/* Articles Section */}
+        <section className="articles-section">
+          <h2>Articles</h2>
+          {articles.map((article) => (
+            <div key={article._id} className="article-item">
+              <h3>{article.headline}</h3>
+              <p className="reporter">By {article.reporter}</p>
+              <p>{article.body}</p>
+            </div>
+          ))}
+        </section>
       </main>
     </div>
   );
 };
 
 export default HomePage;
+
 
 
 

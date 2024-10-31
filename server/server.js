@@ -9,6 +9,7 @@ const Sections=require('./routes/Sections');
 const Seats=require('./routes/seats');
 const GetGameById=require('./routes/GameById');
 const GetAllTrophies=require('./routes/GetAllTrophies');
+const GetAllReports=require('./routes/GetAllReports');
 const Tickets=require('./routes/tickets');
 const Items=require('./routes/Items');
 const Players=require('./routes/Player');
@@ -42,6 +43,7 @@ app.use('/Photos', express.static('Photos'));
 app.use('/api/tickets',Tickets);
 app.use('/api/items', Items);
 app.use('/api/alltrophies',GetAllTrophies);
+app.use('/api/allreports',GetAllReports);
 app.use('/api/Players',Players);
 
 

@@ -28,11 +28,11 @@ html, body {
 header {
     background-color: #0a1d54; /* Dark Blue similar to Real Madrid's */
     color: white;
-    padding: 30px 0;  /* Add more padding to move the header lower */
+    padding: 30px 0;
     border-bottom: 3px solid #007BFF; /* Light Blue bottom border */
     display: flex;
-    justify-content: space-between;  /* Space items across the header */
-    align-items: center;  /* Center items vertically */
+    justify-content: space-between;
+    align-items: center;
     position: relative;
     z-index: 10;
 }
@@ -203,8 +203,8 @@ header {
     padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 200px;  /* Fixed width for consistency */
-    height: 230px; /* Fixed height for consistency */
+    width: 200px;
+    height: 230px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -227,14 +227,15 @@ header {
     height: 40px;
     margin-bottom: 0.5rem;
 }
-/*progress bar*/
+
+/* Progress bar */
 .progress-wrapper {
     position: absolute;
     bottom: 1rem;
     left: 1rem;
     right: 1rem;
-    width: calc(100% - 2rem); /* Account for left and right padding */
-  }
+    width: calc(100% - 2rem);
+}
 
 .progress-container {
     width: 100%;
@@ -254,26 +255,27 @@ header {
     box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
 }
 
+/* Year Slider */
 .slider-container {
     width: 100%;
     padding: 2rem 1rem;
-  }
-  
-  .slider-wrapper {
+}
+
+.slider-wrapper {
     position: relative;
     width: 100%;
-  }
-  
-  .slider-track {
+}
+
+.slider-track {
     position: absolute;
     top: 50%;
     width: 100%;
     height: 8px;
     transform: translateY(-50%);
     border-radius: 4px;
-  }
-  
-  .year-slider {
+}
+
+.year-slider {
     position: relative;
     width: 100%;
     height: 8px;
@@ -282,53 +284,97 @@ header {
     -webkit-appearance: none;
     -moz-appearance: none;
     cursor: pointer;
-  }
-  
-  .year-slider:focus {
+}
+
+.year-slider:focus {
     outline: none;
-  }
-  
-  .year-slider::-webkit-slider-thumb {
+}
+
+/* Rectangular Slider Thumb */
+.year-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+    width: 30px; /* Rectangle width */
+    height: 15px; /* Rectangle height */
+    border-radius: 4px;
     background: #0a1d54;
     cursor: pointer;
     position: relative;
     z-index: 2;
-  }
-  
-  .year-slider::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+}
+
+.year-slider::-moz-range-thumb {
+    width: 30px; /* Rectangle width */
+    height: 15px; /* Rectangle height */
+    border-radius: 4px;
     background: #0a1d54;
     cursor: pointer;
     position: relative;
     z-index: 2;
     border: none;
-  }
-  
-  .year-display {
+}
+
+.year-display {
     margin-top: 0.5rem;
     text-align: center;
     font-size: 0.875rem;
     font-weight: 500;
-  }
+}
 
 /* Slider Year Display Above Thumb */
 .slider-thumb-label {
     position: absolute;
-    top: -35px; /* Position above the slider */
+    top: -35px;
     background-color: #0a1d54;
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 1rem;
     font-weight: bold;
-    transform: translateX(-50%); /* Center it horizontally */
+    transform: translateX(-50%);
+}
+
+/* Articles Section */
+.articles-section {
+    width: 100%;
+    padding: 2rem 1rem;
+    background-color: #f9f9f9;
+    margin-top: 40px;
+    text-align: center;
+}
+
+.articles-section h2 {
+    font-size: 2rem;
+    color: #0a1d54;
+    margin-bottom: 1.5rem;
+}
+
+.article-item {
+    margin: 1rem 0;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.article-item h3 {
+    font-size: 1.5rem;
+    color: #007BFF;
+    margin-bottom: 0.5rem;
+}
+
+.article-item .reporter {
+    font-size: 1rem;
+    color: #666;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.article-item p {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
 }
 
 /* Responsive Adjustments */
@@ -345,6 +391,7 @@ header {
         width: 120px;
     }
 }
+
 
 
 
