@@ -14,11 +14,15 @@ const Cart = ({ items = [], onClose, onEmptyCart }) => {
     {
       const string = "shop";
       const fromShop = true;
-      navigate("/payment", { state: { string, items, fromShop } });
+      navigate("/payment", { state: { string, items, fromShop, totalPrice } });
     }
     else{
      setMessage("Please Pick Items Before Proceeding");
     }
+
+  };
+
+  const deleteItemFromCart = () => {
 
   };
 
