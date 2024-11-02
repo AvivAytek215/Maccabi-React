@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './HomePage.css';  
 import LoadingSpinner from './Loading';   
 import Player from './Player';
+import ArticlesSection from './article';
 
 const HomePage = () => {
   const navigate = useNavigate();  // Hook for navigating to different routes
@@ -18,7 +19,7 @@ const HomePage = () => {
   const [displayedTrophies, setDisplayedTrophies] = useState({});  // Trophies count displayed based on the selected year
   const [message, setMessage] = useState('');  // Error message for next match fetch issues
   const [value, setValue] = useState(1948);  // Value of the year slider, from 1948 to present year
-  const [articles, setArticles] = useState([]); // Stores the fetched articles
+ 
 
   // Define minimum and maximum years for the year slider
   const min = 1948; // Club founding year
@@ -96,21 +97,7 @@ const HomePage = () => {
     fetchTrophies();
   }, []);
 
-  // Fetch all articles data when the component mounts
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        // Fetching articles from API
-        const response = await fetch('http://localhost:5000/api/allreports/allreports');
-        const data = await response.json();
-        // Sort articles by date in descending order (newest first)
-        setArticles(data.sort((a, b) => new Date(b.date) - new Date(a.date))); 
-      } catch (error) {
-        console.error('Error fetching articles:', error);
-      }
-    };
-    fetchArticles();
-  }, []);
+
 
   // Update displayed trophies based on the selected year (currentYear)
   useEffect(() => {
@@ -225,16 +212,7 @@ const HomePage = () => {
         <div><Player/></div>
 
         {/* Articles Section */}
-        <section className="articles-section">
-          <h2>Articles</h2>
-          {articles.map((article) => (
-            <div key={article._id} className="article-item">
-              <h3>{article.headline}</h3>
-              <p className="reporter">By {article.reporter}</p>
-              <p>{article.body}</p>
-            </div>
-          ))}
-        </section>
+          <div><ArticlesSection/></div>
       </main>
     </div>
   );
