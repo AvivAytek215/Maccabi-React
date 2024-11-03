@@ -11,6 +11,8 @@ import Shop from './component/Shop';
 import Cart from './component/Cart';
 import Header from './component/Header';
 import Product from './component/ProductPage';
+import News from './component/newsPage';
+import Article from './component/article'
 import { CountdownProvider } from './component/countTimeContext';
 
 const HeaderWrapper = () => {
@@ -39,6 +41,8 @@ const App = () => {
         <Route path="/Shop" element={<Shop/>}/>
         <Route path="/product/:name" element={<Product />} />
         <Route path="/Cart" element={<Cart/>}/>
+        <Route path="/Article" element={<News/>}/>
+        <Route path="/Article/:id" element={<Article/>}/>
         </Routes>
     </BrowserRouter>
     </CountdownProvider>

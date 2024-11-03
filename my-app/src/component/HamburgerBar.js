@@ -43,6 +43,9 @@ const HamburgerBar = ({ user }) => {
               <Link to="/Shop" state={{ user: user }} onClick={toggleMenu}>
                 Shop
               </Link>
+              <Link to="/Article" state={{ user: user }} onClick={toggleMenu}>
+                Article
+              </Link>
             </nav>
           </div>
         </div>

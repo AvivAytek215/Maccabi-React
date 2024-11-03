@@ -188,23 +188,61 @@ header {
     font-size: 2rem;
     margin-bottom: 20px;
 }
+/* Trophy Section - A Legendary Track Record */
+.legendary-track-record {
+    width: 100%;
+    padding: 20px 20px;
+    background-color: #f7f7f7;
+}
 
-/* Trophy Grid */
+.legendary-track-record h2 {
+    color: #0a1d54;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* New container for photo and trophies layout */
+.track-record-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 50px;
+}
+
+/* Left side - Photo */
+.trophy-photo-container {
+    flex: 0 0 50%;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.trophy-showcase-image {
+    width: 100%;
+    height: 600px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* Right side - Trophies and Slider */
+.trophy-content-container {
+    flex: 0 0 50%;
+}
+
+/* Updated Trophy Grid */
 .trophy-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    justify-items: center;
+    grid-template-columns: repeat(2,1fr);
+    margin-bottom: 30px;
 }
 
 .trophy-item {
     position: relative;
-    background: white;
-    padding: 1rem;
+    padding: 0.5rem;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    height: 230px;
+    height: auto;
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -212,31 +250,24 @@ header {
 
 .trophy-item h3 {
     text-align: center;
-    margin-bottom: 0.5rem;
+    margin: 0.5rem 0;
     font-weight: 500;
     color: #0a1d54;
-}
-
-.trophy-item p {
-    font-size: 1.1rem;
-    color: #333333;
 }
 
 .trophy-icon {
     width: 40px;
     height: 40px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.trophy-progress {
+    width: 100%;
+    margin-top: auto;
+    padding-top: 0.5rem;
 }
 
 /* Progress bar */
-.progress-wrapper {
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    right: 1rem;
-    width: calc(100% - 2rem);
-}
-
 .progress-container {
     width: 100%;
     height: 10px;
@@ -244,7 +275,7 @@ header {
     border-radius: 10px;
     overflow: hidden;
     position: relative;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 0.5rem;
 }
 
 .progress-bar {
@@ -252,18 +283,18 @@ header {
     background: linear-gradient(90deg, #0a1d54, #007BFF);
     transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
 }
 
-/* Year Slider */
+/* Updated Slider styles */
 .slider-container {
-    width: 100%;
-    padding: 2rem 1rem;
+    padding: 1rem;
+    border-radius: 12px;
 }
 
 .slider-wrapper {
     position: relative;
-    width: 100%;
+    width: 75%;
+    padding: 1rem 0;
 }
 
 .slider-track {
@@ -277,78 +308,50 @@ header {
 
 .year-slider {
     position: relative;
-    width: 100%;
+    width: 105%;
     height: 8px;
     background: transparent;
     appearance: none;
     -webkit-appearance: none;
-    -moz-appearance: none;
     cursor: pointer;
+    z-index: 2;
 }
 
-.year-slider:focus {
-    outline: none;
-}
-
-/* Rectangular Slider Thumb */
 .year-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    appearance: none;
-    width: 30px; /* Rectangle width */
-    height: 15px; /* Rectangle height */
+    width: 30px;
+    height: 15px;
     border-radius: 4px;
     background: #0a1d54;
     cursor: pointer;
-    position: relative;
-    z-index: 2;
+    border: 2px solid white;
 }
 
 .year-slider::-moz-range-thumb {
-    width: 30px; /* Rectangle width */
-    height: 15px; /* Rectangle height */
+    width: 30px;
+    height: 15px;
     border-radius: 4px;
     background: #0a1d54;
     cursor: pointer;
-    position: relative;
-    z-index: 2;
-    border: none;
+    border: 2px solid white;
 }
 
 .year-display {
-    margin-top: 0.5rem;
+    margin-top: 1rem;
     text-align: center;
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
-/* Slider Year Display Above Thumb */
-.slider-thumb-label {
-    position: absolute;
-    top: -35px;
-    background-color: #0a1d54;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
     font-size: 1rem;
-    font-weight: bold;
-    transform: translateX(-50%);
+    font-weight: 600;
+    color: #0a1d54;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .match-presentation {
-        padding: 20px;
-    }
-
-    .trophy-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .trophy-item {
-        width: 120px;
-    }
+/* Loading state */
+.loading-container {
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
 
 
 

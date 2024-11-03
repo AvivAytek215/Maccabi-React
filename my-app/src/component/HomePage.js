@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './HomePage.css';  
 import LoadingSpinner from './Loading';   
 import Player from './Player';
-import ArticlesSection from './article';
+import ArticlesSection from './HomePageArticle';
 
 const HomePage = () => {
   const navigate = useNavigate();  // Hook for navigating to different routes
@@ -120,6 +120,9 @@ const HomePage = () => {
     setValue(parseInt(e.target.value));
     setCurrentYear(parseInt(e.target.value));
   };
+  const getImagePath = (imagePath) => {
+    return `${process.env.PUBLIC_URL}/${imagePath}`;
+  };
 
   // Calculate progress percentage for the slider track based on current year
   const calculateProgress = () => {
@@ -155,57 +158,68 @@ const HomePage = () => {
           )}
         </section>
 
-        {/* Trophy Presentation Section */}
         <section className="legendary-track-record">
-          <h2>A Legendary Track Record</h2>
-          {trophyLoading ? (
-            <div><LoadingSpinner /></div>  // Show spinner if trophies are loading
-          ) : (
-            <div>
-              {/* Trophy Grid */}
-              <div className="trophy-grid">
-                {trophyTypes.map((type) => {
-                  const currentValue = displayedTrophies[type.name] || 0;  // Current count of trophies
-                  const maxValue = trophyMaxValues[type.name];  // Maximum value for trophy type
-                  const percentage = (currentValue / maxValue) * 100;  // Calculate progress percentage
-                  return (
-                    <div key={type.name} className="trophy-item">
-                      <img src={type.icon} alt={`${type.name} Icon`} className="trophy-icon" />
-                      <h3>{type.name}</h3>
-                      <div className="trophy-progress">
-                        <p>{currentValue}</p>
-                        <AnimatedProgress value={percentage} />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+  <h2>A Legendary Track Record</h2>
+  {trophyLoading ? (
+    <div className="loading-container"><LoadingSpinner /></div>
+  ) : (
+    <div className="track-record-container">
+      {/* Left Side - Photo */}
+      <div className="trophy-photo-container">
+        <img 
+          src={getImagePath('Photos/Cups/TrophyCabbin.png')}
+          alt="Trophy Display"
+          className="trophy-showcase-image"
+        />
+      </div>
 
-              {/* Year Slider */}
-              <div className="slider-container">
-                <div className="slider-wrapper">
-                  <div 
-                    className="slider-track"
-                    style={{
-                      background: `linear-gradient(to right, #007BFF ${calculateProgress()}%, #E5E7EB ${calculateProgress()}%)`
-                    }}
-                  />
-                  <input
-                    type="range"
-                    min={min}
-                    max={max}
-                    value={value}
-                    onChange={handleSliderChange}
-                    className="year-slider"
-                  />
-                </div>
-                <div className="year-display">
-                  Year: {value}
+      {/* Right Side - Trophies and Slider */}
+      <div className="trophy-content-container">
+        {/* Trophy Grid */}
+        <div className="trophy-grid">
+          {trophyTypes.map((type) => {
+            const currentValue = displayedTrophies[type.name] || 0;
+            const maxValue = trophyMaxValues[type.name];
+            const percentage = (currentValue / maxValue) * 100;
+            return (
+              <div key={type.name} className="trophy-item">
+                <img src={type.icon} alt={`${type.name} Icon`} className="trophy-icon" />
+                <h3>{type.name}</h3>
+                <div className="trophy-progress">
+                  <p>{currentValue}</p>
+                  <AnimatedProgress value={percentage} />
                 </div>
               </div>
-            </div>
-          )}
-        </section>
+            );
+          })}
+        </div>
+
+        {/* Year Slider */}
+        <div className="slider-container">
+          <div className="slider-wrapper">
+            <div 
+              className="slider-track"
+              style={{
+                background: `linear-gradient(to right, #007BFF ${calculateProgress()}%, #E5E7EB ${calculateProgress()}%)`
+              }}
+            />
+            <input
+              type="range"
+              min={min}
+              max={max}
+              value={value}
+              onChange={handleSliderChange}
+              className="year-slider"
+            />
+          </div>
+          <div className="year-display">
+            Year: {value}
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</section>
 
         {/* Player Component */}
         <h1>Our Players</h1> 
