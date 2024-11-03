@@ -147,11 +147,36 @@ const HomePage = () => {
                 <span> vs </span>
                 <span className="away-team">{nextMatch.awayTeam}</span>
               </div>
-              <div className="match-details">
-                <p>Date: {nextMatch.date}</p>
-                <p>Time: {nextMatch.hour}</p>
-                <p>Location: {nextMatch.stadium}</p>
-              </div>
+              <div className='teams-logo'>
+              <img
+                    src={`/Photos/${nextMatch.homeTeam}.png`}
+                    alt={`${nextMatch.homeTeam} logo`}
+                    className="team-logo-home"
+                  />
+             <img
+                    src={`/Photos/${nextMatch.awayTeam}.png`}
+                    alt={`${nextMatch.awayTeam} logo`}
+                    className="team-logo-away"
+                  />
+                  </div>
+                  <div className="match-details">
+    <div className="detail-item">
+      <span className="detail-label">Date: </span>
+      {new Date(nextMatch.date).toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      })}
+    </div>
+    <div className="detail-item">
+      <span className="detail-label">Time: </span>
+      {nextMatch.hour}
+    </div>
+    <div className="detail-item">
+      <span className="detail-label">Location: </span>
+      {nextMatch.stadium}
+    </div>
+  </div>
             </div>
           ) : (
             <p>{message}</p>  // Display message if no match found or error

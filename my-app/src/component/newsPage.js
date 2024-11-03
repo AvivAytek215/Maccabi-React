@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from './Loading';
-import './article.css';
-import { Link,useNavigate } from 'react-router-dom';
+import './newsPage.css';
+import {useNavigate } from 'react-router-dom';
 
 const NewsPage = () => {
   const [articles, setArticles] = useState([]);
@@ -23,7 +23,7 @@ const NewsPage = () => {
     fetchArticles();
   }, []);
   const handleClick=(article)=>{
-    navigate(`/Articles/${article._id}`,{state:{article}});
+    navigate(`/Article/${article._id}`,{state:{article}});
   };
 
   const getImagePath = (imagePath) => {
@@ -57,7 +57,7 @@ const NewsPage = () => {
                 <h3 className="article-headline">{article.headline}</h3>
                 <p className="article-author">By {article.reporter}</p>
                 <p className="article-preview">{article.body?.substring(0, 150)}...</p>
-                <button className="read-more-btn" onClick={handleClick(article)}>Read More</button>
+                <button className="read-more-btn" onClick={() => handleClick(article)}>Read More</button>
               </div>
             </article>
           ))}

@@ -1,50 +1,40 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import {useLocation } from 'react-router-dom';
 import './article.css';
 
 const ArticleDetail = () => {
-  const { article } = useParams();
+    const location = useLocation();
+  const {article} = location.state || {};
   if (!article) {
     return <div className="error-message">Article not found</div>;
   }
-
+  const getImagePath = (imagePath) => {
+    return `${process.env.PUBLIC_URL}/${imagePath}`;
+  };
   return (
-    <div className="article-detail-container">
-      {/* Article Header */}
-      <header className="article-header">
-        <h1 className="article-title">{article.headline}</h1>
-        <div className="article-meta">
-          <span className="article-author">By {article.reporter}</span>
-          <span className="article-date">
-            {new Date(article.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </span>
-        </div>
-      </header>
-
-      {/* Featured Image */}
-      <div className="article-hero-image">
-        <img
-          src={`${process.env.PUBLIC_URL}/${article.Image}`}
-          alt={article.headline}
-          onError={(e) => {
-            e.target.src = '/fallback-image.jpg';
-            e.target.onerror = null;
-          }}
-        />
-      </div>
-
-      {/* Article Content */}
-      <div className="article-content">
-        <div className="article-body">
-          {article.body.split('\n').map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
-          ))}
-        </div>
-
+        <article className="article-detail-container">
+          <div className="article-header">
+            <h1 className="article-headline">{article.headline}</h1>
+            <div className="article-meta">
+              <span className="article-author">By {article.reporter}</span>
+              <span className="article-date">{article.date}</span>
+            </div>
+          </div>
+    
+          <div className="article-image">
+            <img
+              src={getImagePath(article.Image)}
+              alt={article.headline || 'Article image'}
+              onError={(e) => {
+                e.target.src = '/fallback-image.jpg';
+                e.target.onerror = null;
+              }}
+            />
+          </div>
+    
+          <div className="article-content">
+            <p>{article.body}</p>
+          </div>
         {/* Share Section */}
         <div className="article-share">
           <h3>Share this article</h3>
@@ -54,8 +44,7 @@ const ArticleDetail = () => {
             <button className="share-button linkedin">LinkedIn</button>
           </div>
         </div>
-      </div>
-    </div>
+      </article>
   );
 };
 
