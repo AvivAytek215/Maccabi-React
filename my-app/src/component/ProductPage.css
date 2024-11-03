@@ -63,7 +63,7 @@
 }
 
 .counter-btn {
-    background-color: #f0f0f0;
+    background-color: #007BFF;
     border: none;
     padding: 5px 10px;
     font-size: 16px;
@@ -73,7 +73,7 @@
 }
 
 .counter-btn:hover {
-    background-color: #e0e0e0;
+    background-color: #0056b3;
 }
 
 .counter-value {
@@ -123,4 +123,27 @@
     font-size: 18px;
     color: #999;
     text-align: center;
+}
+.support-message{
+    font-weight: bold;
+    text-align: center;
+    margin-top: 100px;
+}
+
+
+
+.logo1 {
+    position: absolute;
+    filter: blur(2px); /* Add blur for shadow effect */
+    transform: scale(1); 
+    right: 80px;
+    top:210px;
+} 
+
+.logo2 {
+    position: absolute;
+    filter: blur(2px); /* Add blur for shadow effect */
+    transform: scale(1.5);
+    left: 180px;
+    top: 385px;
 }

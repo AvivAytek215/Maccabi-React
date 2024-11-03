@@ -50,6 +50,8 @@ const categories = [
                 subItems: ['BEANIES', 'BASEBALL CAP']},
             { name: 'SCARVES',
                 subItems: ['FAN SCARF', 'DESIGNED SCARF']},
+            { name: 'SOCCER BALLS',
+                subItems: ['SOCCER BALLS']},
         ]
     },
 ];

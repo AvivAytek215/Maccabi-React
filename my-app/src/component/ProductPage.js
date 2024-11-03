@@ -49,9 +49,12 @@ const ProductPage = () => {
         if (counter > 1) setCounter(prevCounter => prevCounter - 1);
     };
 
-    // Rest of your component remains the same...
     return (
         <div className="product-page">
+            <div className="logo-shadow-container">
+                <img className="logo1" src={'/Photos/Maccabi React.png'} alt="Logo 1"/>
+                <img className="logo2" src={'/Photos/sponsor.png'} alt="Logo 2"/>
+            </div>
             {item ? (
                 <div className="product-details">
                     <h1 className="product-name">{item.name}</h1>
@@ -73,7 +76,7 @@ const ProductPage = () => {
             ) : (
                 <p className="not-found-message">Product not found</p>
             )}
-
+            <p className='support-message'>Thank You For Supporting Our Shop 😁</p>
             {showMessage && (
                 <div className="shadow-message">
                     Item added to cart
