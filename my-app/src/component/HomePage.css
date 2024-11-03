@@ -107,7 +107,7 @@ header {
     width: auto;
     height: auto;
 }
-.home-team, .away-team {
+.home-team, .away-team, .vs {
     font-size: 1.8rem;
     color: #0a1d54;
     font-weight: 700;
@@ -350,7 +350,6 @@ header {
     justify-content: center;
     align-items: center;
 }
-
 
 
 

@@ -118,6 +118,12 @@ const Shop = () => {
         setIsCartOpen(false);
     };
 
+    // Function to update cart items
+    const updateCartItems = (updatedItems) => {
+        setCartItemsState(updatedItems);
+        setCartCount(calculateTotalQuantity(updatedItems));
+    };
+
     useEffect(() => {
         const handleAddToCartItems = () => {
             if (quantity) {
@@ -196,7 +202,10 @@ const Shop = () => {
                 </div>
             </header>
             {isCartOpen && (
-                <Cart items={cartItemsState} onClose={closeCartModal} onEmptyCart={handleEmptyCart} />
+                <Cart items={cartItemsState} 
+                      onClose={closeCartModal} 
+                      onEmptyCart={handleEmptyCart} 
+                      updateCartItems={updateCartItems} />
             )}
             {isMenuOpen && (
                 <div className="menu-overlay" onClick={closeMenuOnClickOutside}>

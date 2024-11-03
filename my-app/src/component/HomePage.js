@@ -144,7 +144,6 @@ const HomePage = () => {
             <div className="match-presentation">
               <div className="teams">
                 <span className="home-team">{nextMatch.homeTeam}</span>
-                <span> vs </span>
                 <span className="away-team">{nextMatch.awayTeam}</span>
               </div>
               <div className='teams-logo'>
@@ -153,7 +152,8 @@ const HomePage = () => {
                     alt={`${nextMatch.homeTeam} logo`}
                     className="team-logo-home"
                   />
-             <img
+              <span className='vs'> vs </span>
+              <img
                     src={`/Photos/${nextMatch.awayTeam}.png`}
                     alt={`${nextMatch.awayTeam} logo`}
                     className="team-logo-away"

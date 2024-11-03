@@ -1,4 +1,4 @@
-.cart-overlay {
+  .cart-overlay {
     position: fixed;
     top: 0;
     right: 0;
@@ -8,7 +8,7 @@
     z-index: 1000;
     display: flex;
     justify-content: flex-end;
-  }
+  } 
   
   h2 {
     padding-top: 50px;
@@ -17,7 +17,7 @@
   .cart-menu {
     position: fixed;
     top: 0;
-    right: -400px; /* Start off-screen */
+    right: -400px;
     width: 400px;
     height: 100vh;
     background-color: white;
@@ -51,14 +51,10 @@
   
   .cart-row {
     display: grid;
-    grid-template-columns: 60px 1fr 60px;
+    grid-template-columns: 60px 1fr 120px 60px;
     align-items: center;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
-  }
-  
-  .cart-item-name {
-    padding: 0 10px;
   }
   
   .cart-item-quantity {
@@ -100,3 +96,51 @@
     margin-top: 100px;
     margin-left: 50px;
   }
+
+  /* Updated styles for quantity buttons and item row */
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.minus-button, .plus-button {
+  background-color: #0068d0;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.cart-item-quantity .quantity-display {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.cart-item-name {
+  padding: 0 10px;
+  font-size: 16px;
+}
+
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+}
