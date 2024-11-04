@@ -14,10 +14,11 @@ import Header from './component/Header';
 import Product from './component/ProductPage';
 import News from './component/newsPage';
 import Article from './component/article';
+import Account from './component/account';
 import { CountdownProvider } from './component/countTimeContext';
 
 // Component to render Header based on path
-const HeaderWrapper = ({ isLoggedIn, userName, onLogout }) => {
+const HeaderWrapper = ({ isLoggedIn, user, onLogout }) => {
   const location = useLocation();
   const noHeaderPaths = ['/Shop', '/Cart']; // Paths where header is hidden
 
@@ -25,30 +26,30 @@ const HeaderWrapper = ({ isLoggedIn, userName, onLogout }) => {
     return null;
   }
 
-  return <Header isLoggedIn={isLoggedIn} userName={userName} onLogout={onLogout} />;
+  return <Header isLoggedIn={isLoggedIn} user={user} onLogout={onLogout} />;
 };
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);  // Track if user is logged in
-  const [userName, setUserName] = useState('');  // Store logged-in user's name
+  const [user, setUser] = useState('');  // Store logged-in user's 
 
   // Function to handle login, called from LoginPage
-  const handleLogin = (name) => {
+  const handleLogin = (user) => {
     setIsLoggedIn(true);
-    setUserName(name);  // Update the userName state to the logged-in user's name
+    setUser(user); // Update the user state to the logged-in user's 
   };
 
   // Function to handle logout
   const handleLogout = () => {
     setIsLoggedIn(false);
-    setUserName('');  // Clear the userName on logout
+    setUser('');  // Clear the userName on logout
   };
 
   return (
     <CountdownProvider>
       <BrowserRouter>
         {/* Pass isLoggedIn, userName, and onLogout to HeaderWrapper */}
-        <HeaderWrapper isLoggedIn={isLoggedIn} userName={userName} onLogout={handleLogout} />
+        <HeaderWrapper isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/Login" element={<LoginPage onLogin={handleLogin} />} /> 
@@ -61,6 +62,7 @@ const App = () => {
           <Route path="/product/:name" element={<Product />} />
           <Route path="/Cart" element={<Cart />} />
           <Route path="/Article" element={<News />} />
+          <Route path="/account" element={<Account/>} />
           <Route path="/Article/:id" element={<Article />} />
         </Routes>
       </BrowserRouter>

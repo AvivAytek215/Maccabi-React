@@ -13,6 +13,7 @@ const GetAllReports=require('./routes/GetAllReports');
 const Tickets=require('./routes/tickets');
 const Items=require('./routes/Items');
 const Players=require('./routes/Player');
+const UpdateDetails=require('./routes/UpdateDetails');
 // Load environment variables
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.use('/api/items', Items);
 app.use('/api/alltrophies',GetAllTrophies);
 app.use('/api/allreports',GetAllReports);
 app.use('/api/Players',Players);
+app.use('/api/users',UpdateDetails);
 
 
 const PORT = 5000;

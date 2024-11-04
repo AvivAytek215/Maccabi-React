@@ -192,7 +192,7 @@ const HomePage = () => {
       {/* Left Side - Photo */}
       <div className="trophy-photo-container">
         <img 
-          src={getImagePath('Photos/Cups/TrophyCabbin.png')}
+          src={getImagePath('Photos/Cups/trophies.jpg')}
           alt="Trophy Display"
           className="trophy-showcase-image"
         />

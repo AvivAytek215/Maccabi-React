@@ -27,7 +27,7 @@ const LoginPage = ({ onLogin }) => {  // Receive onLogin prop from App
 
       if (response.data.message === "Login successful") {
         const user = response.data;  // Assuming user data is in response.data
-        onLogin(user.username);  // Call onLogin with the user's name to update App state
+        onLogin(user.user);  // Call onLogin with the user's name to update App state
 
         navigate('/', { state: { user } });  // Navigate to homepage with user data
       } else {

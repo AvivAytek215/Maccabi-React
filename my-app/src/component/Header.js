@@ -5,11 +5,11 @@ import HamburgerMenu from './HamburgerBar'; // Importing the Hamburger menu comp
 import './Header.css'; // Importing the CSS file for styling the header
 
 // Header component with props to handle login status, user name, and logout function
-const Header = ({ isLoggedIn, userName, onLogout }) => {
+const Header = ({ isLoggedIn, user, onLogout }) => {
     const navigate = useNavigate(); // `useNavigate` hook for navigation within the app
     const [dropdownVisible, setDropdownVisible] = useState(false); // State to control the visibility of the dropdown menu
     const dropdownRef = useRef(null);  // Reference to the dropdown to detect outside clicks and close it
-
+    console.log(user);
     // Function to navigate to the home page when the team logo is clicked
     const handleLogoClicked = () => {
         navigate('/');
@@ -22,7 +22,7 @@ const Header = ({ isLoggedIn, userName, onLogout }) => {
 
     // Function to navigate to the account page when the account button in the dropdown is clicked
     const handleAccountClick = () => {
-        navigate('/account');
+        navigate('/account',{state:{user}});
     };
 
     // Function to toggle the dropdown menu visibility when the user icon is clicked
@@ -92,7 +92,7 @@ const Header = ({ isLoggedIn, userName, onLogout }) => {
                         {dropdownVisible && (
                             <div className="user-dropdown">
                                 {/* Greeting message with the logged-in user's name */}
-                                <p>Hello, {userName}</p> {/* Display the user's name from the `userName` prop */}
+                                <p>Hello, {user.Username}</p> {/* Display the user's name from the `userName` prop */}
                                 
                                 {/* Account button - navigates to the account page */}
                                 <button onClick={handleAccountClick}>Account</button>
