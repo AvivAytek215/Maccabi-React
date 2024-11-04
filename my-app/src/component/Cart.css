@@ -17,8 +17,8 @@
   .cart-menu {
     position: fixed;
     top: 0;
-    right: -400px;
-    width: 400px;
+    right: -500px;
+    width: 500px;
     height: 100vh;
     background-color: white;
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
@@ -51,7 +51,7 @@
   
   .cart-row {
     display: grid;
-    grid-template-columns: 60px 1fr 120px 60px;
+    grid-template-columns: 60px 1fr 100px 110px;
     align-items: center;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
@@ -127,6 +127,8 @@
   cursor: pointer;
   padding: 5px 10px;
   font-size: 14px;
+  width:60px;
+  height:30px;
 }
 
 .cart-item-quantity .quantity-display {
@@ -143,4 +145,8 @@
   display: flex;
   align-items: center;
   gap: 10px; 
+}
+
+.cart-item-size div {
+  text-align: center; /* Optional: center-align the text */
 }

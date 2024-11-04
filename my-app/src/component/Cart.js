@@ -66,6 +66,10 @@ const Cart = ({ items = [], onClose, onEmptyCart, updateCartItems  }) => {
                     <img src={item.image} alt={item.name} className="cart-item-image" />
                   </td>
                   <td className="cart-item-name">{item.name}</td>
+                  <td className="cart-item-size">
+                    <div>Size:</div>
+                    <div>{item.size}</div>
+                  </td>
                   <td className="cart-item-controls">
                     <button className="minus-button" onClick={() => decreaseItemQuantity(item._id)}>-</button>
                     <span className="cart-item-quantity">{item.quantity}</span>

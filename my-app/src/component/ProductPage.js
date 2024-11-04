@@ -9,20 +9,25 @@ const ProductPage = () => {
     const [cartItems, setCartItems] = useState(initialCartItems || []); // Fixed naming
     const [counter, setCounter] = useState(1);
     const [showMessage, setShowMessage] = useState(false);
+    const [selectedSize, setSelectedSize] = useState(null);
 
     const handleAddToCart = (item, quantity) => {
+        if (!selectedSize) {
+            alert("Please select a size before adding to cart.");
+            return;
+        }
         setCartItems(prevCartItems => {
-            const existingItem = prevCartItems.find((i) => i._id === item._id);
+            const existingItem = prevCartItems.find((i) => i._id === item._id && i.size === selectedSize);
             const newCartItems = existingItem
                 ? prevCartItems.map((i) =>
-                    i._id === item._id 
+                    i._id === item._id && i.size === selectedSize
                         ? { ...i, quantity: i.quantity + quantity }
                         : i
                 )
-                : [...prevCartItems, { ...item, quantity }];
+                : [...prevCartItems, { ...item, quantity, size: selectedSize }];  
             return newCartItems;
         });
-
+    
         setShowMessage(true);
     };
 
@@ -33,7 +38,7 @@ const ProductPage = () => {
                 setShowMessage(false);
                 navigate('/Shop', { 
                     state: { 
-                        cartItems, // Now this will have the updated value
+                        cartItems, 
                         quantity: counter
                     } 
                 });
@@ -61,7 +66,20 @@ const ProductPage = () => {
                     <img className="product-image" src={item.image} alt={item.name} />
                     <p className="product-description">{item.description}</p>
                     <p className="product-price">₪{item.price}</p>
-
+                    <div className="size-options">
+                        <p>Available Sizes:</p>
+                        <div className="size-line">
+                            {item.size && item.size.map((sizeOption, index) => (
+                                <span 
+                                    key={index} 
+                                    className={`size-item ${selectedSize === sizeOption ? 'selected' : ''}`} 
+                                    onClick={() => setSelectedSize(sizeOption)}
+                                >
+                                    {sizeOption}{index < item.size.length - 1 }
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                     <div className="actions">
                         <div className="counter">
                             <button className="counter-btn" onClick={handleMinus}>-</button>
