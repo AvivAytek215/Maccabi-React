@@ -22,8 +22,8 @@ const categories = [
         items:[
             { name: 'T-SHIRTS', 
                 subItems: ['MEN TRAINING T-SHIRTS', 'WOMEN TRAINING T-SHIRTS', 'KIDS TRAINING T-SHIRTS']},
-            { name: 'PANTS AND SHORTS', 
-                subItems: ['MEN PANTS AND SHORTS', 'WOMEN PANTS AND SHORTS', 'KIDS PANTS AND SHORTS']},
+            { name: 'SHORTS', 
+                subItems: ['MEN TRAINING SHORTS', 'WOMEN TRAINING SHORTS', 'KIDS TRAINING SHORTS']},
             { name:'JACKETS', 
                 subItems: ['MEN JACKETS', 'WOMEN JACKETS', 'KIDS JACKETS']},
             { name: 'TRACKSUITS', 
