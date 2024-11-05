@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import HamburgerMenu from './HamburgerBar'; // Importing the Hamburger menu component for the navigation menu
 import './Header.css'; // Importing the CSS file for styling the header
 
-// Header component with props to handle login status, user name, and logout function
+// Header component with props to handle login status, user data, and logout function
 const Header = ({ isLoggedIn, user, onLogout }) => {
     const navigate = useNavigate(); // `useNavigate` hook for navigation within the app
     const [dropdownVisible, setDropdownVisible] = useState(false); // State to control the visibility of the dropdown menu
     const dropdownRef = useRef(null);  // Reference to the dropdown to detect outside clicks and close it
-    console.log(user);
+
     // Function to navigate to the home page when the team logo is clicked
     const handleLogoClicked = () => {
         navigate('/');
@@ -20,12 +20,17 @@ const Header = ({ isLoggedIn, user, onLogout }) => {
         navigate('/Login');
     };
 
-    // Function to navigate to the account page when the account button in the dropdown is clicked
-    const handleAccountClick = () => {
-        navigate('/account',{state:{user}});
+    // Function to navigate to the signup page when the signup button is clicked
+    const handleSignUpClick = () => {
+        navigate('/signup');
     };
 
-    // Function to toggle the dropdown menu visibility when the user icon is clicked
+    // Function to navigate to the account page when the account button in the dropdown is clicked
+    const handleAccountClick = () => {
+        navigate('/account', { state: { user } });
+    };
+
+    // Toggle dropdown visibility when user icon is clicked
     const toggleDropdown = () => {
         setDropdownVisible((prev) => !prev); // Invert the current state of `dropdownVisible`
     };
@@ -33,80 +38,68 @@ const Header = ({ isLoggedIn, user, onLogout }) => {
     // Effect to close the dropdown menu if the user clicks outside of it
     useEffect(() => {
         const handleClickOutside = (event) => {
-            // Check if the click target is outside the dropdown element
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setDropdownVisible(false);  // Set `dropdownVisible` to false to close the dropdown
+                setDropdownVisible(false);  // Close the dropdown if clicking outside of it
             }
         };
         
-        // Attach the event listener to detect clicks outside of the dropdown
-        document.addEventListener('mousedown', handleClickOutside);
-        
-        // Clean up the event listener when the component is unmounted
+        document.addEventListener('mousedown', handleClickOutside); // Attach the event listener
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('mousedown', handleClickOutside); // Cleanup on component unmount
         };
     }, []);
 
     return (
-        <header className="header"> {/* Main header container */}
+        <header className="header">
             {/* Left side of the header with the hamburger menu, sponsor logo, and team logo */}
             <div className="header-left">
-                <div className="hamburger-menu"> {/* Container for the hamburger menu */}
-                    <HamburgerMenu /> {/* Renders the HamburgerMenu component */}
+                <div className="hamburger-menu">
+                    <HamburgerMenu /> {/* Hamburger menu for navigation */}
                 </div>
-                
-                {/* Sponsor logo */}
                 <img
                     src={`${process.env.PUBLIC_URL}/Photos/sponsor.png`} 
-                    className="sponsor-logo" // CSS class for styling the sponsor logo
-                    alt="sponsor logo" // Alt text for accessibility
+                    className="sponsor-logo" 
+                    alt="sponsor logo"
                 />
-                
-                {/* Team logo, which navigates to the home page when clicked */}
                 <img
                     src={`${process.env.PUBLIC_URL}/Photos/Maccabi React.png`}
                     alt="Team Logo"
-                    className="team-logo" // CSS class for styling the team logo
-                    onClick={handleLogoClicked} // Click handler to navigate to the home page
+                    className="team-logo"
+                    onClick={handleLogoClicked} // Navigate to home page on click
                 />
             </div>
 
-            {/* Centered team name or header text */}
             <h1 className="team-name-header">Maccabi React Official Website</h1>
 
-            {/* Right side of the header for authentication (login or profile dropdown) */}
+            {/* Right side of the header for authentication (login/signup or profile dropdown) */}
             <div className="auth-section">
-                {isLoggedIn ? ( // Conditionally render based on login status
-                    <div className="user-icon-wrapper" ref={dropdownRef}> {/* Wrapper for user icon and dropdown, uses `ref` for click detection */}
-                        {/* User icon image */}
+                {isLoggedIn ? (
+                    <div className="user-icon-wrapper" ref={dropdownRef}>
                         <img 
-                            src={`${process.env.PUBLIC_URL}/Photos/user-icon.png`} // Custom user icon image
-                            alt="User Icon" // Alt text for accessibility
-                            className="user-icon" // CSS class for styling the user icon
-                            onClick={toggleDropdown}  // Click handler to toggle the dropdown visibility
-                            title="User Profile" // Tooltip text for the user icon
+                            src={`${process.env.PUBLIC_URL}/Photos/user-icon.png`} 
+                            alt="User Icon" 
+                            className="user-icon" 
+                            onClick={toggleDropdown} 
+                            title="User Profile"
                         />
-                        
-                        {/* Dropdown menu, visible only if `dropdownVisible` is true */}
                         {dropdownVisible && (
                             <div className="user-dropdown">
-                                {/* Greeting message with the logged-in user's name */}
-                                <p>Hello, {user.Username}</p> {/* Display the user's name from the `userName` prop */}
-                                
-                                {/* Account button - navigates to the account page */}
+                                <p>Hello, {user.Username}</p> {/* Display the user's name */}
                                 <button onClick={handleAccountClick}>Account</button>
-                                
-                                {/* Log Out button - triggers the `onLogout` function to log the user out */}
                                 <button onClick={onLogout}>Log Out</button>
                             </div>
                         )}
                     </div>
                 ) : (
-                    // Login button, visible if the user is not logged in
-                    <button className="login-button" onClick={handleLoginClick}>
-                        Login
-                    </button>
+                    // Display Login and Sign Up buttons if the user is not logged in
+                    <>
+                        <button className="login-button" onClick={handleLoginClick}>
+                            Login
+                        </button>
+                        <button className="signup-button" onClick={handleSignUpClick}>
+                            Sign Up
+                        </button>
+                    </>
                 )}
             </div>
         </header>
@@ -114,4 +107,3 @@ const Header = ({ isLoggedIn, user, onLogout }) => {
 };
 
 export default Header;
-
