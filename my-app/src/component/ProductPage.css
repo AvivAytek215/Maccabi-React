@@ -134,7 +134,7 @@
 
 .logo1 {
     position: absolute;
-    filter: blur(2px); 
+    filter: blur(1px); 
     transform: scale(1); 
     right: 80px;
     top:210px;
@@ -142,7 +142,7 @@
 
 .logo2 {
     position: absolute;
-    filter: blur(2px); 
+    filter: blur(1px); 
     transform: scale(1.5);
     left: 180px;
     top: 385px;

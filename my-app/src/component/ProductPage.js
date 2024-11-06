@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './ProductPage.css';
+import CustomAlert from './CustomAlert';
 
 const ProductPage = () => {
     const location = useLocation();
@@ -8,12 +9,15 @@ const ProductPage = () => {
     const { item, cartItems: initialCartItems } = location.state || {};
     const [cartItems, setCartItems] = useState(initialCartItems || []); // Fixed naming
     const [counter, setCounter] = useState(1);
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
     const [showMessage, setShowMessage] = useState(false);
     const [selectedSize, setSelectedSize] = useState(null);
 
     const handleAddToCart = (item, quantity) => {
         if (!selectedSize) {
-            alert("Please select a size before adding to cart.");
+            setAlertMessage("Please select a size before adding to cart.");
+            setShowAlert(true);
             return;
         }
         setCartItems(prevCartItems => {
@@ -95,6 +99,11 @@ const ProductPage = () => {
                 <p className="not-found-message">Product not found</p>
             )}
             <p className='support-message'>Thank You For Supporting Our Shop 😁</p>
+            <CustomAlert
+                message={alertMessage}
+                isVisible={showAlert}
+                onClose={() => setShowAlert(false)}
+            />
             {showMessage && (
                 <div className="shadow-message">
                     Item added to cart
