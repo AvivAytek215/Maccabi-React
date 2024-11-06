@@ -59,7 +59,7 @@ const categories = [
 const Shop = () => {
     const dropdownRef = useRef(null);
     const location = useLocation();
-    const { cartItems:initialCartItems,quantity,items: receivedCartItems } = location.state || {}; // renamed to initialCartItems
+    const { cartItems:initialCartItems, quantity, items: receivedCartItems } = location.state || {}; // renamed to initialCartItems
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState(null);
     const [itemsInStore, setItemsInStore] = useState([]);
@@ -135,6 +135,7 @@ const Shop = () => {
         };
         handleAddToCartItems();
     }, []);
+
     useEffect(() => {
         const fetchItems = async () => {
             try {

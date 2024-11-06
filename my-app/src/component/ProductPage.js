@@ -71,7 +71,6 @@ const ProductPage = () => {
                     <p className="product-description">{item.description}</p>
                     <p className="product-price">₪{item.price}</p>
                     <div className="size-options">
-                        <p>Available Sizes:</p>
                         <div className="size-line">
                             {item.size && item.size.map((sizeOption, index) => (
                                 <span 
