@@ -122,7 +122,7 @@ const SignUp = () => {
           />
         </div>
         <button id="submitSignUp" type="submit">Sign Up</button>
-        <button id="goBackToLogin" onClick={() => navigate('/')}>Back to Login</button>
+        <button id="goBackToLogin" onClick={() => navigate('/Login')}>Back to Login</button>
       </form>
       <p className={message === 'Signup successful!' ? 'success-message' : 'error-message'}>{message}</p>
     </div>
