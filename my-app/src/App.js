@@ -20,7 +20,7 @@ import { CountdownProvider } from './component/countTimeContext';
 // Component to render Header based on path
 const HeaderWrapper = ({ isLoggedIn, user, onLogout }) => {
   const location = useLocation();
-  const noHeaderPaths = ['/Shop', '/Cart']; // Paths where header is hidden
+  const noHeaderPaths = ['/Shop', '/Cart'];
 
   if (noHeaderPaths.includes(location.pathname)) {
     return null;
@@ -32,11 +32,19 @@ const HeaderWrapper = ({ isLoggedIn, user, onLogout }) => {
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);  // Track if user is logged in
   const [user, setUser] = useState('');  // Store logged-in user's 
+  const [cartItems, setCartItems] = useState([]);
 
   // Function to handle login, called from LoginPage
   const handleLogin = (user) => {
     setIsLoggedIn(true);
     setUser(user); // Update the user state to the logged-in user's 
+  };
+  const updateCartItems = (items) => {
+    setCartItems(items);
+  };
+
+  const emptyCart = () => {
+    setCartItems([]);
   };
 
   // Function to handle logout
@@ -58,9 +66,9 @@ const App = () => {
           <Route path="/Stadium/:gameId" element={<Stadium />} /> 
           <Route path="/section/:gameId/:sectionId" element={<Section />} /> 
           <Route path="/payment" element={<Paying />} />
-          <Route path="/Shop" element={<Shop />} />
+          <Route path="/Shop" element={<Shop isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />} />
           <Route path="/product/:name" element={<Product />} />
-          <Route path="/Cart" element={<Cart />} />
+          <Route path="/Cart" element={<Cart  items={cartItems}  updateCartItems={updateCartItems}  onEmptyCart={emptyCart} />} />
           <Route path="/Article" element={<News />} />
           <Route path="/account" element={<Account/>} />
           <Route path="/Article/:id" element={<Article />} />

@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Cart.css';
 
-const Cart = ({ items = [], onClose, onEmptyCart, updateCartItems  }) => {
+const Cart = ({ items = [], onClose, onEmptyCart, updateCartItems}) => {
   // Calculate total quantity and total price
   const totalQuantity = items.length > 0 ? items.reduce((sum, item) => sum + item.quantity, 0) : 0;
   const totalPrice = items.length > 0 ? items.reduce((sum, item) => sum + item.price * item.quantity, 0) : 0;
   const [message,setMessage] = useState("");
   const navigate = useNavigate();  // Initialize useNavigate for navigation
-
   const proceedToPayment = () => {
     if(items.length)
     {

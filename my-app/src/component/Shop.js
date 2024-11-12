@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation} from 'react-router-dom';
+import { Link, useLocation,useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import './Shop.css';
 import Cart from './Cart';
@@ -56,9 +56,10 @@ const categories = [
     },
 ];
 
-const Shop = () => {
+const Shop = ({ isLoggedIn, user, onLogout}) => {
     const dropdownRef = useRef(null);
     const location = useLocation();
+    const navigate=useNavigate();
     const { cartItems:initialCartItems, quantity, items: receivedCartItems } = location.state || {}; // renamed to initialCartItems
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState(null);
@@ -68,7 +69,8 @@ const Shop = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [hasCategorySelected, setHasCategorySelected] = useState(false);
-
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+    console.log( isLoggedIn, user, onLogout);
     const calculateTotalQuantity = (items) => {
         return items ? items.reduce((total, item) => total + (item.quantity || 0), 0) : 0;
     };
@@ -91,6 +93,24 @@ const Shop = () => {
 
     const handleCategoryHover = (categoryId) => {
         setHoveredCategory(categoryId);
+    };
+    const handleLogoClicked = () => {
+        navigate('/');
+    };
+
+    const handleLoginClick = () => {
+        navigate('/Login');
+    };
+
+    const handleSignUpClick = () => {
+        navigate('/signup');
+    };
+
+    const handleAccountClick = () => {
+        navigate('/account', { state: { user } });
+    };
+    const toggleDropdown = () => {
+        setDropdownVisible((prev) => !prev);
     };
 
     const handleSubCategoryClick = (categoryName, subCategoryName) => {
@@ -193,6 +213,33 @@ const Shop = () => {
                         </div>
                     ))}
                 </div>
+                {isLoggedIn ? (
+                    <div className="user-icon-wrapper" ref={dropdownRef}>
+                        <img 
+                            src={`${process.env.PUBLIC_URL}/Photos/user-icon.png`} 
+                            alt="User Icon" 
+                            className="user-icon" 
+                            onClick={toggleDropdown} 
+                            title="User Profile"
+                        />
+                        {dropdownVisible && (
+                            <div className="user-dropdown">
+                                <p>Hello, {user.Username}</p>
+                                <button onClick={handleAccountClick}>Account</button>
+                                <button onClick={onLogout}>Log Out</button>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div className="auth-buttons">
+                        <button className="login-button" onClick={handleLoginClick}>
+                            Login
+                        </button>
+                        <button className="signup-button" onClick={handleSignUpClick}>
+                            Sign Up
+                        </button>
+                    </div>
+                )}
                 <div className="cart">
                     <img
                         className="img3"
@@ -204,12 +251,16 @@ const Shop = () => {
                     <div className="cart-counter">{cartCount}</div>
                 </div>
             </header>
+    
             {isCartOpen && (
-                <Cart items={cartItemsState} 
-                      onClose={closeCartModal} 
-                      onEmptyCart={handleEmptyCart} 
-                      updateCartItems={updateCartItems} />
+                <Cart 
+                    items={cartItemsState} 
+                    onClose={closeCartModal} 
+                    onEmptyCart={handleEmptyCart} 
+                    updateCartItems={updateCartItems} 
+                />
             )}
+    
             {isMenuOpen && (
                 <div className="menu-overlay" onClick={closeMenuOnClickOutside}>
                     <div className="slide-menu">
@@ -223,35 +274,36 @@ const Shop = () => {
                     </div>
                 </div>
             )}
-            <span>
-                {hoveredCategory && (
-                    <div className="dropdown-menu" ref={dropdownRef}>
-                        {categories.find((cat) => cat.id === hoveredCategory)?.items.map((item, index) => (
-                            <div key={index} className="subcategory" style={{ cursor : 'default' }}>
-                                {item.name}
-                                <div className="sub-subcategories">
-                                    {item.subItems.map((subItem, subIndex) => (
-                                        <div
-                                            key={subIndex}
-                                            className="sub-subcategory"
-                                            onClick={() => handleSubCategoryClick(item.name, subItem)}
-                                            style={{ cursor: 'pointer' }}
-                                        >
-                                            {subItem}
-                                        </div>
-                                    ))}
-                                </div>
+    
+            {hoveredCategory && (
+                <div className="dropdown-menu" ref={dropdownRef}>
+                    {categories.find((cat) => cat.id === hoveredCategory)?.items.map((item, index) => (
+                        <div key={index} className="subcategory" style={{ cursor: 'default' }}>
+                            {item.name}
+                            <div className="sub-subcategories">
+                                {item.subItems.map((subItem, subIndex) => (
+                                    <div
+                                        key={subIndex}
+                                        className="sub-subcategory"
+                                        onClick={() => handleSubCategoryClick(item.name, subItem)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        {subItem}
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-                )}
-            </span>
+                        </div>
+                    ))}
+                </div>
+            )}
+    
             {!hasCategorySelected && (
                 <div className="shop-display-message">
-                    <img className="shop-image" src={'/Photos/online-store.png'} alt="online shop"></img>
+                    <img className="shop-image" src={'/Photos/online-store.png'} alt="online shop" />
                     <h1 className="welcome-message">Hello and welcome to our shop, hope you will enjoy our staff!</h1>
                 </div>
             )}
+    
             {errorMessage ? (
                 <div className="error-container">
                     <img className="error-image" src={'/Photos/error.png'} alt="Error" />

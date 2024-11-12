@@ -48,6 +48,98 @@
     color: #fff;
 }
 
+/* Container for the buttons */
+.auth-buttons {
+    margin-right: 20px;
+    display: flex;
+    gap: 8px;  /* Space between buttons */
+    align-items: center;
+}
+
+/* Login Button Styles */
+.login-button {
+    background-color: #007BFF;
+    color: white;
+    padding: 8px 12px;  /* Reduced padding */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;  /* Reduced font size */
+    transition: background-color 0.3s;
+    height: 32px;  /* Fixed height */
+}
+
+.login-button:hover {
+    background-color: #0056b3;
+}
+
+/* Sign Up Button Styles */
+.signup-button {
+    background-color: white;
+    color: #007BFF;
+    padding: 6px 12px;  /* Reduced padding */
+    border: 2px solid #007BFF;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;  /* Reduced font size */
+    line-height: 1;
+    white-space: nowrap;
+    transition: background-color 0.3s, color 0.3s;
+    height: 32px;  /* Fixed height */
+}
+
+.signup-button:hover {
+    background-color: #e0e0e0;
+    color: #0056b3;
+}
+.user-icon-wrapper {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .user-icon {
+    margin-right:20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .user-dropdown {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background-color: white;
+    color: #333;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 150px;
+    text-align: left;
+    z-index: 10;
+  }
+  
+  .user-dropdown p {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .user-dropdown button {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #004080;
+    padding: 5px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  
+  .user-dropdown button:hover {
+    color: #007BFF;
+  }
+
 .logos {
     display: flex;
     align-items: center;
