@@ -1,18 +1,23 @@
+// Component for displaying a grid of news articles with previews and navigation
 import React, { useState, useEffect } from 'react';
 import LoadingSpinner from './Loading';
 import './newsPage.css';
 import {useNavigate } from 'react-router-dom';
 
 const NewsPage = () => {
+  // State management for articles and loading status
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+
+  // Fetch and sort articles on component mount
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         setLoading(true);
         const response = await fetch('http://localhost:5000/api/allreports/allreports');
         const data = await response.json();
+        // Sort articles by date, newest first
         setArticles(data.sort((a, b) => new Date(b.date) - new Date(a.date)));
       } catch (error) {
         console.error('Error fetching articles:', error);
@@ -22,13 +27,18 @@ const NewsPage = () => {
     };
     fetchArticles();
   }, []);
-  const handleClick=(article)=>{
-    navigate(`/Article/${article._id}`,{state:{article}});
+
+  // Navigate to article detail page with article data
+  const handleClick = (article) => {
+    navigate(`/Article/${article._id}`, { state: { article } });
   };
 
+  // Utility function to construct image paths
   const getImagePath = (imagePath) => {
     return `${process.env.PUBLIC_URL}/${imagePath}`;
   };
+
+  // Show loading spinner while fetching data
   if (loading) {
     return (
       <div className="loading-container">
@@ -36,13 +46,17 @@ const NewsPage = () => {
       </div>
     );
   }
+
   return (
     <section className="articles-section">
       <div className="articles-container">
         <h1 className="articles-title">Latest News</h1>
+        
+        {/* Articles grid layout */}
         <div className="articles-grid">
           {articles.map((article) => (
             <article key={article._id} className="article-card">
+              {/* Article image with fallback */}
               <div className="article-image">
                 <img
                   src={getImagePath(article.Image)}
@@ -53,11 +67,19 @@ const NewsPage = () => {
                   }}
                 />
               </div>
+
+              {/* Article preview content */}
               <div className="article-content">
                 <h3 className="article-headline">{article.headline}</h3>
                 <p className="article-author">By {article.reporter}</p>
+                {/* Show first 150 characters of article body */}
                 <p className="article-preview">{article.body?.substring(0, 150)}...</p>
-                <button className="read-more-btn" onClick={() => handleClick(article)}>Read More</button>
+                <button 
+                  className="read-more-btn" 
+                  onClick={() => handleClick(article)}
+                >
+                  Read More
+                </button>
               </div>
             </article>
           ))}
@@ -66,4 +88,5 @@ const NewsPage = () => {
     </section>
   );
 };
+
 export default NewsPage;

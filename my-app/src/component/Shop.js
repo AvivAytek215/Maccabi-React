@@ -56,31 +56,41 @@ const categories = [
     },
 ];
 
-const Shop = ({ isLoggedIn, user, onLogout}) => {
+// Main shop component handling product display, cart management, and user interactions
+const Shop = ({ isLoggedIn, user, onLogout }) => {
+    // Refs and routing hooks
     const dropdownRef = useRef(null);
     const location = useLocation();
-    const navigate=useNavigate();
-    const { cartItems:initialCartItems, quantity, items: receivedCartItems } = location.state || {}; // renamed to initialCartItems
+    const navigate = useNavigate();
+
+    // Extract cart data from location state
+    const { cartItems: initialCartItems, quantity, items: receivedCartItems } = location.state || {};
+
+    // State management for UI elements
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hoveredCategory, setHoveredCategory] = useState(null);
-    const [itemsInStore, setItemsInStore] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [displayedItems, setDisplayedItems] = useState([]);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [dropdownVisible, setDropdownVisible] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [hasCategorySelected, setHasCategorySelected] = useState(false);
-    const [dropdownVisible, setDropdownVisible] = useState(false);
-    console.log( isLoggedIn, user, onLogout);
+
+    // State management for shop data
+    const [itemsInStore, setItemsInStore] = useState([]);
+    const [displayedItems, setDisplayedItems] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    // Cart quantity calculation helper
     const calculateTotalQuantity = (items) => {
         return items ? items.reduce((total, item) => total + (item.quantity || 0), 0) : 0;
     };
+
+    // Initialize cart state
     const [cartItemsState, setCartItemsState] = useState(() => {
         return initialCartItems || receivedCartItems;
     });
-    
-    // Initialize cart count with total quantity
-    const [cartCount, setCartCount] = useState(calculateTotalQuantity(cartItemsState));// Initialize count
+    const [cartCount, setCartCount] = useState(calculateTotalQuantity(cartItemsState));
 
+    // Menu toggle handlers
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -91,28 +101,22 @@ const Shop = ({ isLoggedIn, user, onLogout}) => {
         }
     };
 
+    // Category interaction handlers
     const handleCategoryHover = (categoryId) => {
         setHoveredCategory(categoryId);
     };
-    const handleLogoClicked = () => {
-        navigate('/');
-    };
 
-    const handleLoginClick = () => {
-        navigate('/Login');
-    };
-
-    const handleSignUpClick = () => {
-        navigate('/signup');
-    };
-
-    const handleAccountClick = () => {
-        navigate('/account', { state: { user } });
-    };
+    // Navigation handlers
+    const handleLogoClicked = () => navigate('/');
+    const handleLoginClick = () => navigate('/Login');
+    const handleSignUpClick = () => navigate('/signup');
+    const handleAccountClick = () => navigate('/account', { state: { user } });
+    
     const toggleDropdown = () => {
         setDropdownVisible((prev) => !prev);
     };
 
+    // Product filtering by category
     const handleSubCategoryClick = (categoryName, subCategoryName) => {
         setHasCategorySelected(true);
         const filteredItems = itemsInStore.filter(
@@ -127,6 +131,8 @@ const Shop = ({ isLoggedIn, user, onLogout}) => {
         }
         setHoveredCategory(null);
     };
+
+    // Cart management handlers
     const handleEmptyCart = () => {
         setCartItemsState([]);
         setCartCount(0);
@@ -140,22 +146,24 @@ const Shop = ({ isLoggedIn, user, onLogout}) => {
         setIsCartOpen(false);
     };
 
-    // Function to update cart items
+    // Update cart items and count
     const updateCartItems = (updatedItems) => {
         setCartItemsState(updatedItems);
         setCartCount(calculateTotalQuantity(updatedItems));
     };
 
+    // Effect for handling cart updates from product page
     useEffect(() => {
         const handleAddToCartItems = () => {
             if (quantity) {
-                setCartItemsState(initialCartItems); 
-                setIsCartOpen(true); 
+                setCartItemsState(initialCartItems);
+                setIsCartOpen(true);
             }
         };
         handleAddToCartItems();
     }, []);
 
+    // Effect for fetching shop items
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -172,6 +180,7 @@ const Shop = ({ isLoggedIn, user, onLogout}) => {
         fetchItems();
     }, []);
 
+    // Effect for handling category hover behavior
     useEffect(() => {
         const handleMouseLeave = (e) => {
             const header = document.querySelector('.shop header');
@@ -188,10 +197,11 @@ const Shop = ({ isLoggedIn, user, onLogout}) => {
         };
     }, [dropdownRef]);
 
+    // Loading state
     if (loading) {
         return <div><Loading/></div>;
     }
-
+    
     return (
         <div className="shop">
             <header>

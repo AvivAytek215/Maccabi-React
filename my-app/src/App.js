@@ -1,6 +1,7 @@
-// App.js
+// Main application component handling routing and global state management
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+// Component imports
 import LoginPage from './component/Login-Page';
 import SignUp from './component/SignUp';
 import Tickets from './component/tickets';
@@ -17,11 +18,13 @@ import Article from './component/article';
 import Account from './component/account';
 import { CountdownProvider } from './component/countTimeContext';
 
-// Component to render Header based on path
+// Header wrapper component for conditional header rendering
 const HeaderWrapper = ({ isLoggedIn, user, onLogout }) => {
   const location = useLocation();
+  // Paths where header should not be shown
   const noHeaderPaths = ['/Shop', '/Cart'];
 
+  // Conditionally render header based on current path
   if (noHeaderPaths.includes(location.pathname)) {
     return null;
   }
@@ -30,15 +33,23 @@ const HeaderWrapper = ({ isLoggedIn, user, onLogout }) => {
 };
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);  // Track if user is logged in
-  const [user, setUser] = useState('');  // Store logged-in user's 
-  const [cartItems, setCartItems] = useState([]);
+  // Global state management
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  // Authentication state
+  const [user, setUser] = useState('');                 // User data
+  const [cartItems, setCartItems] = useState([]);       // Shopping cart items
 
-  // Function to handle login, called from LoginPage
+  // Authentication handlers
   const handleLogin = (user) => {
     setIsLoggedIn(true);
-    setUser(user); // Update the user state to the logged-in user's 
+    setUser(user);
   };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUser('');
+  };
+
+  // Cart management handlers
   const updateCartItems = (items) => {
     setCartItems(items);
   };
@@ -47,31 +58,57 @@ const App = () => {
     setCartItems([]);
   };
 
-  // Function to handle logout
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUser('');  // Clear the userName on logout
-  };
-
   return (
+    // Wrap application in countdown context provider
     <CountdownProvider>
       <BrowserRouter>
-        {/* Pass isLoggedIn, userName, and onLogout to HeaderWrapper */}
-        <HeaderWrapper isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+        {/* Conditional header rendering */}
+        <HeaderWrapper 
+          isLoggedIn={isLoggedIn} 
+          user={user} 
+          onLogout={handleLogout} 
+        />
+
+        {/* Application routes */}
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Homepage />} />
-          <Route path="/Login" element={<LoginPage onLogin={handleLogin} />} /> 
-          <Route path="/signup" element={<SignUp />} /> 
-          <Route path="/Tickets" element={<Tickets />} /> 
-          <Route path="/Stadium/:gameId" element={<Stadium />} /> 
-          <Route path="/section/:gameId/:sectionId" element={<Section />} /> 
-          <Route path="/payment" element={<Paying />} />
-          <Route path="/Shop" element={<Shop isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />} />
-          <Route path="/product/:name" element={<Product />} />
-          <Route path="/Cart" element={<Cart  items={cartItems}  updateCartItems={updateCartItems}  onEmptyCart={emptyCart} />} />
+          <Route path="/Login" element={<LoginPage onLogin={handleLogin} />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/Article" element={<News />} />
-          <Route path="/account" element={<Account/>} />
           <Route path="/Article/:id" element={<Article />} />
+
+          {/* Ticket-related routes */}
+          <Route path="/Tickets" element={<Tickets />} />
+          <Route path="/Stadium/:gameId" element={<Stadium />} />
+          <Route path="/section/:gameId/:sectionId" element={<Section />} />
+          <Route path="/payment" element={<Paying />} />
+
+          {/* Shop-related routes */}
+          <Route 
+            path="/Shop" 
+            element={
+              <Shop 
+                isLoggedIn={isLoggedIn} 
+                user={user} 
+                onLogout={handleLogout} 
+              />
+            } 
+          />
+          <Route path="/product/:name" element={<Product />} />
+          <Route 
+            path="/Cart" 
+            element={
+              <Cart 
+                items={cartItems}
+                updateCartItems={updateCartItems}
+                onEmptyCart={emptyCart}
+              />
+            } 
+          />
+
+          {/* User account route */}
+          <Route path="/account" element={<Account/>} />
         </Routes>
       </BrowserRouter>
     </CountdownProvider>

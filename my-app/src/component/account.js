@@ -1,4 +1,4 @@
-// AccountPage.jsx
+// Component for managing and updating user account details
 import React, { useState } from 'react';
 import './account.css';
 import { useLocation } from 'react-router';
@@ -6,8 +6,11 @@ import axios from 'axios';
 import Loading from './Loading';
 
 const AccountPage = () => {
+    // Initialize user data from router state
     const location = useLocation();
     const {user} = location.state || {};
+
+    // State management for form data and UI controls
     const [formData, setFormData] = useState({
         Username: user.Username,
         Password: user.Password,
@@ -22,6 +25,7 @@ const AccountPage = () => {
     const [success, setSuccess] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    // Handle input changes in the form
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -29,7 +33,10 @@ const AccountPage = () => {
             [name]: value
         }));
     };
+
     if (isLoading) return <div><Loading/></div>;
+
+    // Handle form submission and API call
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
@@ -40,7 +47,6 @@ const AccountPage = () => {
             
             setSuccess('Details updated successfully!');
             setIsEditing(false);
-            // Optionally refresh user data
         } catch (error) {
             setError(error.response?.data?.message || 'Failed to update details');
             console.error('Update error:', error);
@@ -53,6 +59,7 @@ const AccountPage = () => {
         <div className="account-page">
             <div className="account-container">
                 <h1>Account Details</h1>
+                {/* Account details form with editable fields */}
                 <form onSubmit={handleSubmit} className="account-form">
                     <div className="form-group">
                         <label htmlFor="Username">Username:</label>
@@ -66,6 +73,7 @@ const AccountPage = () => {
                         />
                     </div>
 
+                    {/* Password field with show/hide toggle */}
                     <div className="form-group">
                         <label htmlFor="password">Password:</label>
                         <div className="password-input">
@@ -123,6 +131,7 @@ const AccountPage = () => {
                         />
                     </div>
 
+                    {/* Conditional rendering of action buttons based on edit mode */}
                     <div className="button-group">
                         {isEditing ? (
                             <>

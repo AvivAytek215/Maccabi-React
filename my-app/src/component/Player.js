@@ -1,12 +1,15 @@
+// Component for displaying a grid of players organized by their positions
 import React, { useState, useEffect } from 'react';
 import './Player.css';
 import LoadingSpinner from './Loading';
 
 const PlayerGrid = () => {
+  // State management for players data and UI states
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch players data on component mount
   useEffect(() => {
     const fetchPlayers = async () => {
       try {
@@ -25,6 +28,7 @@ const PlayerGrid = () => {
     fetchPlayers();
   }, []);
 
+  // Position mappings for categorizing players
   const POSITION_MAPPINGS = {
     'CB': 'Defence',
     'LB': 'Defence',
@@ -44,6 +48,7 @@ const PlayerGrid = () => {
     'COACH': 'Coach'
   };
 
+  // Define display order for position groups
   const POSITION_ORDER = {
     'Goalkeeper': 1,
     'Defence': 2,
@@ -52,14 +57,16 @@ const PlayerGrid = () => {
     'Coach': 5
   };
 
+  // Helper function to normalize position strings
   const normalizePosition = (position) => {
     if (!position) return 'Other';
     const upperPosition = position.toUpperCase().trim();
     return POSITION_MAPPINGS[upperPosition] || 'Other';
   };
 
+  // Function to group and sort players by their positions
   const groupPlayersByPosition = (playersList) => {
-    // Return empty groups if players is undefined or empty
+    // Initialize empty groups if no players
     if (!playersList || !Array.isArray(playersList) || playersList.length === 0) {
       return {
         Goalkeeper: [],
@@ -70,6 +77,7 @@ const PlayerGrid = () => {
       };
     }
 
+    // Create groups object with arrays for each position
     const groups = {
       Goalkeeper: [],
       Defence: [],
@@ -78,6 +86,7 @@ const PlayerGrid = () => {
       Coach: []
     };
 
+    // Sort players into their respective position groups
     playersList.forEach(player => {
       if (player && player.position) {
         const category = normalizePosition(player.position);
@@ -87,7 +96,7 @@ const PlayerGrid = () => {
       }
     });
 
-    // Sort players within each group by number
+    // Sort players by number within each group (except coaches)
     Object.keys(groups).forEach(category => {
       if (category !== 'Coach') {
         groups[category].sort((a, b) => (a.number || 99) - (b.number || 99));
@@ -97,36 +106,42 @@ const PlayerGrid = () => {
     return groups;
   };
 
+  // Loading state display
   if (loading) {
     return <div className="text-center py-8"><LoadingSpinner/></div>;
   }
 
+  // Error state display
   if (error) {
     return <div className="text-center py-8 text-red-600">{error}</div>;
   }
 
+  // Group players by their positions
   const grouped = groupPlayersByPosition(players);
 
   return (
     <div className="container">
+      {/* Map through position groups and render sections */}
       {Object.entries(grouped).map(([position, positionPlayers]) => (
         positionPlayers.length > 0 && (
           <div key={position} className="position-section">
             <h2 className="position-title">
               {position}
             </h2>
+            {/* Grid of players within each position */}
             <div className="players-grid">
               {positionPlayers.map(player => (
                 player && (
                   <div key={player._id} className="player-card">
                     <h3 className="player-name">{player.fullName}</h3>
                     <div className="player-info">
-                     <span>{player.position}</span>
-                        {player.position !== "Coach" && player.number && (
+                      <span>{player.position}</span>
+                      {/* Show player number for all except coaches */}
+                      {player.position !== "Coach" && player.number && (
                         <span className="player-number ml-2">
-                        {player.number}
+                          {player.number}
                         </span>
-                         )}
+                      )}
                     </div>
                   </div>
                 )

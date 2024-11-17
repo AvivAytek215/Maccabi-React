@@ -1,17 +1,19 @@
+// Component for responsive navigation hamburger menu with sliding panel
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './HamburgerBar.css';  // Import CSS for HamburgerBar styles
+import './HamburgerBar.css';
 
 const HamburgerBar = ({ user }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle the hamburger menu
-  const navigate = useNavigate();  // Initialize useNavigate for navigation
+  // State to manage menu visibility
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
-  // Toggle the hamburger menu's visibility
+  // Menu visibility toggle handler
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);  // Toggle the state between true and false for the menu
+    setIsMenuOpen(!isMenuOpen);
   };
 
-  // Close the menu when clicking outside of it
+  // Close menu when clicking overlay (outside menu area)
   const closeMenuOnClickOutside = (e) => {
     if (e.target.className === 'menu-overlay') {
       setIsMenuOpen(false);
@@ -20,21 +22,25 @@ const HamburgerBar = ({ user }) => {
 
   return (
     <>
-      {/* Conditionally render the logo only when the menu is closed */}
+      {/* Hamburger button with dynamic classes for animation */}
       <div className={`hamburger-menu ${isMenuOpen ? "menu-open" : ''}`}>
         <button className="hamburger-icon" onClick={toggleMenu}>
-          &#9776;
+          &#9776; {/* Unicode hamburger icon */}
         </button>
       </div>
-      {/* Sliding Menu Overlay */}
+
+      {/* Sliding menu panel with overlay - conditionally rendered */}
       {isMenuOpen && (
         <div className="menu-overlay" onClick={closeMenuOnClickOutside}>
           <div className="slide-menu">
+            {/* Close button for menu */}
             <button className="close-menu" onClick={toggleMenu}>
-              &times;  {/* Unicode for the close 'X' icon */}
+              &times;
             </button>
+
+            {/* Navigation links - passes user state to destinations */}
             <nav className="menu-links">
-            <Link to="/" state={{ user: user }} onClick={toggleMenu}>
+              <Link to="/" state={{ user: user }} onClick={toggleMenu}>
                 Home
               </Link>
               <Link to="/Tickets" state={{ user: user }} onClick={toggleMenu}>

@@ -1,3 +1,4 @@
+// Component for displaying upcoming games schedule and handling ticket purchases
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -6,11 +7,14 @@ import LoadingSpinner from './Loading';
 import CustomAlert from './CustomAlert';
 
 const GameTable = ({ user }) => {
+  // State management for games data and UI controls
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [alertState, setAlertState] = useState({ isVisible: false, message: '' });
   const navigate = useNavigate();
+
+  // Handler for ticket purchase attempts with access control logic
   const handleTicketClick = useCallback((game) => {
     if (!user) {
       setAlertState({
@@ -20,11 +24,13 @@ const GameTable = ({ user }) => {
       return;
     }
     
+    // Calculate days until game for access control
     const currentDate = new Date();
     const gameDate = new Date(game.date);
     const daysDifference = Math.ceil((gameDate - currentDate) / (1000 * 60 * 60 * 24));
 
-    if (user.member&&user.subscription===null && daysDifference <= 3) {
+    // Ticket purchase access rules based on user status
+    if (user.member && user.subscription === null && daysDifference <= 3) {
       navigate(`/Stadium/${game.gameId}`,{ state: user }  );
     } else if (user.subscription !== null && daysDifference <= 1) {
       navigate(`/Stadium/${game.gameId}`,{state:user});
@@ -38,6 +44,7 @@ const GameTable = ({ user }) => {
     }
   }, [user, navigate]);
 
+  // Alert handling functions
   const closeAlert = useCallback(() => {
     setAlertState({ isVisible: false, message: '' });
   }, []);
@@ -46,6 +53,7 @@ const GameTable = ({ user }) => {
     navigate('/login');
   }, [navigate]);
 
+  // Fetch games data on component mount
   useEffect(() => {
     const fetchGames = async () => {
       try {
@@ -62,6 +70,7 @@ const GameTable = ({ user }) => {
     fetchGames();
   }, []);
 
+  // Loading and error states handling
   if (loading) return <LoadingSpinner />;
   if (error) return <CustomAlert message={error} isVisible={true} onClose={() => setError('')} />;
 
@@ -70,9 +79,11 @@ const GameTable = ({ user }) => {
       {games.length === 0 ? (
         <p>No games available</p>
       ) : (
+        // Games display grid
         <div className="game-tables-container">
           {games.map((game) => (
             <div key={game.gameId} className="game-table">
+              {/* Teams header with logos */}
               <div className="teams-header-horizontal">
                 <div className="team-info-horizontal">
                   <h3>{game.homeTeam}</h3>
@@ -92,6 +103,8 @@ const GameTable = ({ user }) => {
                   />
                 </div>
               </div>
+
+              {/* Game details section */}
               <div className="game-details">
                 <p><strong>Date:</strong> {new Date(game.date).toLocaleDateString()}</p>
                 <p><strong>Time:</strong> {game.hour}</p>
@@ -102,6 +115,8 @@ const GameTable = ({ user }) => {
           ))}
         </div>
       )}
+
+      {/* Alert component for user notifications */}
       <CustomAlert 
         message={alertState.message}
         isVisible={alertState.isVisible}

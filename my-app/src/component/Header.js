@@ -1,4 +1,4 @@
-// Header.jsx
+// Main header component with navigation, authentication, and responsive design
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HamburgerMenu from './HamburgerBar';
@@ -6,9 +6,11 @@ import './Header.css';
 
 const Header = ({ isLoggedIn, user, onLogout}) => {
     const navigate = useNavigate();
+    // State and ref for user dropdown menu
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef(null);
 
+    // Navigation handlers
     const handleLogoClicked = () => {
         navigate('/');
     };
@@ -24,10 +26,13 @@ const Header = ({ isLoggedIn, user, onLogout}) => {
     const handleAccountClick = () => {
         navigate('/account', { state: { user } });
     };
+
+    // Toggle dropdown menu visibility
     const toggleDropdown = () => {
         setDropdownVisible((prev) => !prev);
     };
 
+    // Click outside listener to close dropdown
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -43,10 +48,12 @@ const Header = ({ isLoggedIn, user, onLogout}) => {
 
     return (
         <header className="header">
+            {/* Left section: Hamburger menu, logos */}
             <div className="header-left">
                 <div className="hamburger-menu">
                     <HamburgerMenu />
                 </div>
+                {/* Sponsor and team logos */}
                 <img
                     src={`${process.env.PUBLIC_URL}/Photos/sponsor.png`} 
                     className="sponsor-logo" 
@@ -60,11 +67,13 @@ const Header = ({ isLoggedIn, user, onLogout}) => {
                 />
             </div>
     
+            {/* Center section: Website title */}
             <h1 className="team-name-header">Maccabi React Official Website</h1>
     
+            {/* Right section: Authentication controls */}
             <div className="auth-section">
-                {/* User authentication section */}
                 {isLoggedIn ? (
+                    // User profile dropdown when logged in
                     <div className="user-icon-wrapper" ref={dropdownRef}>
                         <img 
                             src={`${process.env.PUBLIC_URL}/Photos/user-icon.png`} 
@@ -73,6 +82,7 @@ const Header = ({ isLoggedIn, user, onLogout}) => {
                             onClick={toggleDropdown} 
                             title="User Profile"
                         />
+                        {/* Conditional dropdown menu */}
                         {dropdownVisible && (
                             <div className="user-dropdown">
                                 <p>Hello, {user.Username}</p>
@@ -82,6 +92,7 @@ const Header = ({ isLoggedIn, user, onLogout}) => {
                         )}
                     </div>
                 ) : (
+                    // Login/Signup buttons when not logged in
                     <div className="auth-buttons">
                         <button className="login-button" onClick={handleLoginClick}>
                             Login
@@ -95,4 +106,5 @@ const Header = ({ isLoggedIn, user, onLogout}) => {
         </header>
     );
 };
+
 export default Header;
