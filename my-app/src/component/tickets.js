@@ -30,7 +30,7 @@ const Tickets = () => {
         </p>
       </main>
       <footer>
-        <p>&copy; 2024 Kiryat motzkin CF. All rights reserved.</p>
+        <p>&copy; 2024 Maccabi React CF. All rights reserved.</p>
         <p><a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
       </footer>
     </div>

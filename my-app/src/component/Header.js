@@ -51,7 +51,7 @@ const Header = ({ isLoggedIn, user, onLogout}) => {
             {/* Left section: Hamburger menu, logos */}
             <div className="header-left">
                 <div className="hamburger-menu">
-                    <HamburgerMenu />
+                    <HamburgerMenu user={user}/>
                 </div>
                 {/* Sponsor and team logos */}
                 <img

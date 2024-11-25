@@ -16,13 +16,14 @@ const GameTable = ({ user }) => {
 
   // Handler for ticket purchase attempts with access control logic
   const handleTicketClick = useCallback((game) => {
-    if (!user) {
+    if (user.user===undefined&&user===undefined) {
       setAlertState({
         isVisible: true,
         message: "You need to be logged in to purchase tickets."
       });
       return;
     }
+    
     
     // Calculate days until game for access control
     const currentDate = new Date();
@@ -82,7 +83,7 @@ const GameTable = ({ user }) => {
         // Games display grid
         <div className="game-tables-container">
           {games.map((game) => (
-            <div key={game.gameId} className="game-table">
+            <div key={game.date} className="game-table">
               {/* Teams header with logos */}
               <div className="teams-header-horizontal">
                 <div className="team-info-horizontal">

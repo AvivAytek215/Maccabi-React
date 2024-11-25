@@ -42,7 +42,7 @@ const HomePage = () => {
         <div className="progress-container">
           <div 
             className="progress-bar"
-            style={{ width: '${value}%' }}
+            style={{ width: `${value}`}}
           />
         </div>
       </div>
@@ -51,13 +51,13 @@ const HomePage = () => {
 
   // Trophy types, each with a specific image path for the icon
   const trophyTypes = [
-    { name: 'Champions League', icon:'${process.env.PUBLIC_URL}/Photos/Cups/championsCup.png' },
-    { name: 'Israeli Premier League', icon: '${process.env.PUBLIC_URL}/Photos/Cups/LeaguePlate.png' },
-    { name: 'Israeli Cup', icon:' ${process.env.PUBLIC_URL}/Photos/Cups/LeagueCup.png' },
-    { name: 'Toto Cup', icon: '${process.env.PUBLIC_URL}/Photos/Cups/TotoCup.png' },
-    { name: 'Club World Cup', icon: '${process.env.PUBLIC_URL}/Photos/Cups/ClubWorldCup.png' },
-    { name: 'UEFA Super Cup', icon: '${process.env.PUBLIC_URL}/Photos/Cups/UEFACup.png' }
-  ];
+    { name: 'Champions League', icon: `${process.env.PUBLIC_URL}/Photos/Cups/championsCup.png` },
+    { name: 'Israeli Premier League', icon: `${process.env.PUBLIC_URL}/Photos/Cups/LeaguePlate.png` },
+    { name: 'Israeli Cup', icon: `${process.env.PUBLIC_URL}/Photos/Cups/LeagueCup.png` },
+    { name: 'Toto Cup', icon: `${process.env.PUBLIC_URL}/Photos/Cups/TotoCup.png` },
+    { name: 'Club World Cup', icon: `${process.env.PUBLIC_URL}/Photos/Cups/ClubWorldCup.png` },
+    { name: 'UEFA Super Cup', icon: `${process.env.PUBLIC_URL}/Photos/Cups/UEFACup.png` }
+];
 
   // Fetch the upcoming match data when the component mounts
   useEffect(() => {
@@ -121,12 +121,7 @@ const HomePage = () => {
     setCurrentYear(parseInt(e.target.value));
   };
   const getImagePath = (imagePath) => {
-    return '${process.env.PUBLIC_URL}/${imagePath}';
-  };
-
-  // Calculate progress percentage for the slider track based on current year
-  const calculateProgress = () => {
-    return ((value - min) / (max - min)) * 100;
+    return `${process.env.PUBLIC_URL}/${imagePath}`;
   };
 
   // Display loading spinner while data is being fetched
@@ -148,14 +143,14 @@ const HomePage = () => {
               </div>
               <div className='teams-logo'>
               <img
-                    src={'/Photos/${nextMatch.homeTeam}.png'}
-                    alt={'${nextMatch.homeTeam} logo'}
+                    src={`/Photos/${nextMatch.homeTeam}.png`}
+                    alt={`${nextMatch.homeTeam} logo`}
                     className="team-logo-home"
                   />
               <span className='vs'> vs </span>
               <img
-                    src={'/Photos/${nextMatch.awayTeam}.png'}
-                    alt={'${nextMatch.awayTeam} logo'}
+                    src={`/Photos/${nextMatch.awayTeam}.png`}
+                    alt={`${nextMatch.awayTeam} logo`}
                     className="team-logo-away"
                   />
                   </div>
@@ -208,7 +203,7 @@ const HomePage = () => {
             const percentage = (currentValue / maxValue) * 100;
             return (
               <div key={type.name} className="trophy-item">
-                <img src={type.icon} alt={'${type.name} Icon'} className="trophy-icon" />
+                <img src={type.icon} alt={`${type.name} Icon`} className="trophy-icon" />
                 <h3>{type.name}</h3>
                 <div className="trophy-progress">
                   <p>{currentValue}</p>

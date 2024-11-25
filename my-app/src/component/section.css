@@ -1,12 +1,12 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding-top: 20px;
+  padding-top: 100px;
 }
 
-.countdown-timer {
+/* .countdown-timer {
   position: fixed;
-  top: 20px;
+  top: 50px;
   left: 20px;
   font-size: 1em;
   font-weight: bold;
@@ -22,7 +22,7 @@
   align-items: flex-start;
   justify-content: center;
   min-width: 100px;
-}
+} */
 main {
   width: 100%;
 }

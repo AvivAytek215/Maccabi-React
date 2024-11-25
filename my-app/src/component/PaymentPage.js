@@ -5,13 +5,11 @@ import axios from 'axios';
 import './PaymentPage.css';
 import LoadingSpinner from './Loading';
 import CustomAlert from './CustomAlert';
-import { useCountdown } from './countTimeContext';
 
 const PaymentPage = () => {
   // Get route state and extract necessary data
   const location = useLocation();
-  const { user, totalPrice, gameDetails, string, items } = location.state || {};
-
+  const { user, totalPrice,string, gameDetails, items } = location.state || {};
   // State management for alerts and UI interactions
   const [showTimeoutAlert, setShowTimeoutAlert] = useState(false);
   const [showBackButtonAlert, setShowBackButtonAlert] = useState(false);
@@ -34,7 +32,6 @@ const PaymentPage = () => {
   const [paymentStatus, setPaymentStatus] = useState('DisApproved');
 
   // Hooks for navigation and timer
-  const { timeLeft, formatTime, resetTimer } = useCountdown();
   const navigate = useNavigate();
 
   // Flag to determine if user came from shop or ticket selection
@@ -52,14 +49,18 @@ const PaymentPage = () => {
     user, 
     totalPrice, 
     selectedSeats, 
+    string,
     gameDetails,
     items: items || JSON.parse(localStorage.getItem('cartItems')) || [] 
   });
+  if (stateRef.current.string) {
+    localStorage.setItem('pageSource', stateRef.current.string);
+}
 
   // Keep stateRef updated with latest values
   useEffect(() => {
-    stateRef.current = { user, totalPrice, selectedSeats: selectedSeats || [], gameDetails, items };
-  }, [user, totalPrice, selectedSeats, gameDetails, items]);
+    stateRef.current = { user, totalPrice, selectedSeats: selectedSeats || [],string, gameDetails, items };
+  }, [user, totalPrice, selectedSeats, gameDetails,string, items]);
 
   // Handle updating unselected seats in the database
   const updateUnselectedSeats = useCallback(async () => {
@@ -85,12 +86,12 @@ const PaymentPage = () => {
   
   // Handle timer expiration for ticket selection
   useEffect(() => {
-    if (!cameFromShop && timeLeft <= 0) {
+    if (!cameFromShop) {
       setUnSelectedSeats(stateRef.selectedSeats || []);
       updateUnselectedSeats(unselectedSeats);
       setShowTimeoutAlert(true);
     }
-  }, [timeLeft, navigate, user, selectedSeats, updateUnselectedSeats, unselectedSeats]);
+  }, [ navigate, user, selectedSeats, updateUnselectedSeats, unselectedSeats]);
 
   // Handle browser back button
   useEffect(() => {
@@ -101,7 +102,8 @@ const PaymentPage = () => {
       window.history.pushState({ 
         ...stateRef.current, 
         backButtonPressed: true,
-        items: stateRef.current.items 
+        items: stateRef.current.items ,
+        string:stateRef.current.string
       }, '');
     };
 
@@ -109,7 +111,8 @@ const PaymentPage = () => {
     window.history.pushState({ 
       ...stateRef.current, 
       backButtonPressed: false,
-      items: stateRef.current.items 
+      items: stateRef.current.items ,
+      string:stateRef.current.string
     }, '');
     
     window.addEventListener('popstate', handleBackButton);
@@ -121,39 +124,31 @@ const PaymentPage = () => {
     setShowBackButtonAlert(false);
     const preservedState = window.history.state || {};
     const currentItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    const { user, selectedSeats: preservedSelectedSeats } = preservedState;
-
+    const { user, selectedSeats: preservedSelectedSeats,string:preString} = preservedState;
+    const currentString = stateRef.current.string|| localStorage.getItem('pageSource');
+    console.log(currentString)
     if (preservedSelectedSeats) {
       setSelectedSeats(preservedSelectedSeats);
       updateUnselectedSeats(preservedSelectedSeats);
     }
-
     // Navigate based on origin (shop or tickets)
     navigate(
-      string === "section" ? '/tickets' : '/Shop',
+      currentString  === "section" ? '/tickets' : '/Shop',
       {
-        state: string === "section"
+        state: currentString  === "section"
           ? { user, selectedSeats: preservedSelectedSeats }
           : { user, items: currentItems }
       }
     );
-  }, [navigate, updateUnselectedSeats, string]);
-
-  // Handle timeout alert closure
-  const handleTimeoutAlertClose = useCallback(() => {
-    setShowTimeoutAlert(false);
-    resetTimer();
-    navigate('/tickets', { state: user });
-  }, [navigate, user, resetTimer]);
+  }, [navigate, updateUnselectedSeats]);
 
   // Handle payment status alert closure
   const handleAlertClose = useCallback(() => {
     setAlertVisible(false);
     if (paymentStatus === 'Approved') {
-      resetTimer();
       navigate('/', { state: user });
     }
-  }, [navigate, user, resetTimer, paymentStatus]);
+  }, [navigate, user, paymentStatus]);
 
   // Handle form submission and payment processing
   const handleSubmit = async (e) => {
@@ -197,7 +192,6 @@ const PaymentPage = () => {
   return (
     <div className="payment-page">
       {!cameFromShop && !showBackButtonAlert && <div className="countdown-timer">
-        Time left: {formatTime(timeLeft)}
       </div> }
       <h2>Payment Details</h2>
       <form onSubmit={handleSubmit}>
@@ -310,12 +304,7 @@ const PaymentPage = () => {
   
 )}
   <CustomAlert 
-    message={`Your Time is Up! returning to the ticket Page`}
-    isVisible={showTimeoutAlert}
-    onClose={handleTimeoutAlertClose}
-  />
-  <CustomAlert 
-      message={string === "section" ? "Your seat will be free. Are you sure?" : "Back to shopping?"}
+      message={localStorage.getItem('pageSource') === "section" ? "Your seat will be free. Are you sure?" : "Back to shopping?"}
       isVisible={showBackButtonAlert}
       onClose={handleBackButtonAlertClose}
     />

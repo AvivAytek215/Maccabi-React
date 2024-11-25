@@ -7,7 +7,6 @@ const HamburgerBar = ({ user }) => {
   // State to manage menu visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-
   // Menu visibility toggle handler
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

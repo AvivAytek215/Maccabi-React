@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useParams,useNavigate,useLocation } from 'react-router-dom';
 import CustomAlert from './CustomAlert';
 import LoadingSpinner from './Loading';
-import { useCountdown} from './countTimeContext';
 import './section.css';
 //this component for the visualiztion of the seats and their status
 const SeatSVG = ({ isSelected, isTaken, seatNumber }) => {
@@ -76,7 +75,7 @@ const SeatButton = ({ isTaken, seatNumber, isSelected, onSelect }) => (
     const location = useLocation();
     const { user , section } = location.state || {};
     const MAX_SEATS=3;
-    const { timeLeft, formatTime,resetTimer } = useCountdown();
+
     const stateRef = useRef({ user });
     useEffect(() => {
     stateRef.current =user;
@@ -153,14 +152,6 @@ const SeatButton = ({ isTaken, seatNumber, isSelected, onSelect }) => (
     updateSeats();
   }, [updateSeats]);
 
-  
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      setUnSelectedSeats(selectedSeats);
-      updateUnselectedSeats(unselectedSeats);
-      setShowTimeoutAlert(true);
-    }
-  }, [timeLeft,navigate,user,selectedSeats,updateUnselectedSeats,unselectedSeats]);
 
   useEffect(() => {
     const handleBackButton = (event) => {
@@ -183,15 +174,13 @@ const SeatButton = ({ isTaken, seatNumber, isSelected, onSelect }) => (
     const preservedState = window.history.state || {};
     const user = preservedState;
     setShowBackButtonAlert(false);
-    resetTimer();
     navigate('/tickets', { state: user });
-  }, [navigate,resetTimer]);
+  }, [navigate]);
 
   const handleTimeoutAlertClose = useCallback(() => {
     setShowTimeoutAlert(false);
-    resetTimer();
     navigate('/tickets',{state:user});
-  }, [navigate,user,resetTimer])
+  }, [navigate,user])
   //function that handles the seat selected by the user
   const handleSeatSelect = (seat) => {
     // If the seat is taken but not selected, we can't select it
@@ -233,13 +222,13 @@ const SeatButton = ({ isTaken, seatNumber, isSelected, onSelect }) => (
         user,
         totalPrice,
         selectedSeats: selectedSeatsDetails,
+        string,
         gameDetails: {
           id: gameId,
           homeTeam: game.homeTeam,
           awayTeam: game.awayTeam,
           date: game.date,
           section:section,
-          string,
         }
       }
     });
@@ -319,7 +308,6 @@ const SeatButton = ({ isTaken, seatNumber, isSelected, onSelect }) => (
     return (
         <div className="container">
          <div className="countdown-timer">
-        Time left: {formatTime(timeLeft)}
           </div>
           <main>
          <CustomAlert 
