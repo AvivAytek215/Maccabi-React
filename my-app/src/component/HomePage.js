@@ -36,13 +36,13 @@ const HomePage = () => {
   };
 
   // Component for the animated progress bar in the trophy display
-  const AnimatedProgress = ({ value }) => {
+  const AnimatedProgress = ({ percentage }) => {
     return (
       <div className="progress-wrapper">
         <div className="progress-container">
           <div 
             className="progress-bar"
-            style={{ width: `${value}`}}
+            style={{ width: `${percentage}%`}}
           />
         </div>
       </div>
@@ -207,7 +207,7 @@ const HomePage = () => {
                 <h3>{type.name}</h3>
                 <div className="trophy-progress">
                   <p>{currentValue}</p>
-                  <AnimatedProgress value={percentage} />
+                  <AnimatedProgress percentage={percentage} />
                 </div>
               </div>
             );
